@@ -1,0 +1,588 @@
+#VOG	Function	Taxonomy (LCA)
+VOG00022	sp|A7U6E9|MCP_POV01 Major capsid protein	Varidnaviria;Bamfordvirae;Nucleocytoviricota;NA;NA;NA
+VOG00138	sp|Q197F3|007R_IIV3 Uncharacterized protein 007R	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG00152	REFSEQ zinc finger protein	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG00168	sp|P04011|VP2_POVLY Minor capsid protein VP2	Monodnaviria;Shotokuvirae;Cossaviricota;Papovaviricetes;Sepolyvirales;Polyomaviridae
+VOG00198	sp|P03071|LT_POVBK Large T antigen	Monodnaviria;Shotokuvirae;Cossaviricota;NA;NA;NA
+VOG00228	REFSEQ F-box containing protein	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG00238	sp|Q67621|AC4_TYCS2 Protein C4	Monodnaviria;Shotokuvirae;Cressdnaviricota;Repensiviricetes;Geplafuvirales;Geminiviridae
+VOG00240	sp|Q9E785|MATRX_BEFVB Matrix protein	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Rhabdoviridae
+VOG00247	sp|P0DOL5|E10_VAR67 Probable FAD-linked sulfhydryl oxidase E10	Varidnaviria;Bamfordvirae;Nucleocytoviricota;NA;NA;NA
+VOG00251	sp|P03724|GP14_BPT7 Internal virion protein gp14	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;Caudovirales;Autographiviridae
+VOG00259	sp|P09504|P0_TYYVF Suppressor of silencing P0	Riboviria;Orthornavirae;NA;NA;NA;NA
+VOG00342	sp|Q80921|VE7_HPV48 Protein E7	Monodnaviria;Shotokuvirae;Cossaviricota;Papovaviricetes;Zurhausenvirales;Papillomaviridae
+VOG00358	sp|Q5UP93|YL017_MIMIV Uncharacterized protein L17	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG00365	sp|Q5UPD4|YL060_MIMIV Putative F-box and FNIP repeat-containing protein L60	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG00389	sp|O57044|RDRP_HV19S Probable RNA-directed RNA polymerase	Riboviria;Orthornavirae;NA;NA;NA;NA
+VOG00397	sp|Q196V5|VF359_IIV3 Uncharacterized protein 105R	Varidnaviria;Bamfordvirae;Nucleocytoviricota;NA;NA;NA
+VOG00400	sp|P16073|PHOSP_NDVA Phosphoprotein	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Paramyxoviridae
+VOG00452	sp|Q5UPE6|YR069_MIMIV Uncharacterized protein R69	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG00477	sp|Q5UQD6|YR465_MIMIV Uncharacterized protein R465	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG00518	sp|P12555|HN_NDVD Hemagglutinin-neuraminidase	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Paramyxoviridae
+VOG00523	sp|P04295|TRM3_HHV11 Tripartite terminase subunit 3	Duplodnaviria;Heunggongvirae;NA;NA;NA;NA
+VOG00609	sp|P0DSW1|A13_VAR67 Virion membrane protein A13	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG00618	sp|P07613|L2_VACCW Protein L2	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG00631	sp|P89876|POLG_LMVE Genome polyprotein	Riboviria;Orthornavirae;Pisuviricota;Stelpaviricetes;Patatavirales;Potyviridae
+VOG00651	sp|Q5UQ12|YR190_MIMIV Putative ankyrin repeat protein R190	Varidnaviria;Bamfordvirae;Nucleocytoviricota;NA;NA;NA
+VOG00704	sp|Q00143|VG39_ICHVA Uncharacterized protein ORF39	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Alloherpesviridae
+VOG00718	sp|P03145|HBSAG_DHBV1 Large envelope protein	Riboviria;Pararnavirae;Artverviricota;Revtraviricetes;Blubervirales;Hepadnaviridae
+VOG00842	sp|P89083|E434_ADE09 Early E4 34 kDa protein	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Rowavirales;Adenoviridae
+VOG00852	sp|P60170|VSGP_EBOZM Pre-small/secreted glycoprotein	Riboviria;NA;NA;NA;NA;NA
+VOG00856	sp|P16602|ATI_COWPX A-type inclusion protein A25 homolog	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG00874	sp|O57167|C10_VACCA Protein C10	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG00925	sp|P27282|POLN_EEVVT Polyprotein P1234	Riboviria;Orthornavirae;Kitrinoviricota;Alsuviricetes;NA;NA
+VOG00961	sp|P27578|CAPSD_BYDVN Major capsid protein	Riboviria;Orthornavirae;NA;NA;NA;NA
+VOG00969	REFSEQ RNA-dependent RNA polymerase	Riboviria;Orthornavirae;Pisuviricota;Pisoniviricetes;Picornavirales;NA
+VOG01000	sp|O57187|RPO5_VACCA DNA-directed RNA polymerase 30 kDa polypeptide	Varidnaviria;Bamfordvirae;Nucleocytoviricota;NA;NA;NA
+VOG01001	sp|P19192|CAPSD_BPCHP Capsid protein VP1	Monodnaviria;Sangervirae;Phixviricota;Malgrandaviricetes;Petitvirales;Microviridae
+VOG01005	sp|Q5UQY8|YL897_MIMIV Putative ankyrin repeat protein L897	Varidnaviria;Bamfordvirae;Nucleocytoviricota;NA;NA;NA
+VOG01017	sp|Q66639|UL96_EHV2 Gene 35 protein	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG01062	sp|Q6GZW1|014R_FRG3G Uncharacterized protein 014R	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Pimascovirales;Iridoviridae
+VOG01063	sp|P17529|CAPSD_PVMR Capsid protein	Riboviria;Orthornavirae;Kitrinoviricota;Alsuviricetes;Tymovirales;NA
+VOG01254	sp|P09592|POLS_EEVVT Structural polyprotein	Riboviria;Orthornavirae;Kitrinoviricota;Alsuviricetes;Martellivirales;Togaviridae
+VOG01262	sp|Q5UP97|YL021_MIMIV Putative sel1-like repeat-containing protein L21	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG01264	sp|P21080|E2_VACCC Protein E2	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG01286	sp|Q5UNW2|YR706_MIMIV Uncharacterized protein R706	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG01289	sp|P68600|C7_VACCW Interferon antagonist C7	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG01310	sp|Q9J7Z0|CAPSD_PAV Capsid protein alpha	Riboviria;Orthornavirae;NA;NA;NA;NA
+VOG01311	REFSEQ putative glycoprotein	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Lispiviridae
+VOG01319	sp|Q5UQR9|YL334_MIMIV Uncharacterized protein L334	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG01328	sp|Q5UNT2|YL672_MIMIV Uncharacterized protein L672	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG01436	sp|B4YNF9|V19_SPTNK Structural protein V19	Varidnaviria;Bamfordvirae;Preplasmiviricota;Maveriviricetes;Priklausovirales;Lavidaviridae
+VOG01461	sp|Q05233|VG26_BPML5 Minor tail protein Gp26	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;Caudovirales;NA
+VOG01468	sp|P07297|CAPSD_PAVBP Minor capsid protein VP1	Monodnaviria;Shotokuvirae;Cossaviricota;Quintoviricetes;Piccovirales;Parvoviridae
+VOG01512	sp|P17190|HBEAG_HPBDB External core antigen	Riboviria;Pararnavirae;Artverviricota;Revtraviricetes;Blubervirales;Hepadnaviridae
+VOG01513	sp|P20997|RUVV_VACCC Resolvase A22	Varidnaviria;Bamfordvirae;Nucleocytoviricota;NA;NA;NA
+VOG01527	sp|P13699|NCAP_LASSJ Nucleoprotein	Riboviria;Orthornavirae;Negarnaviricota;Ellioviricetes;Bunyavirales;Arenaviridae
+VOG01534	sp|O09705|L_LASSJ RNA-directed RNA polymerase L	Riboviria;Orthornavirae;Negarnaviricota;Ellioviricetes;Bunyavirales;NA
+VOG01585	sp|Q6GZS5|051R_FRG3G Uncharacterized protein 051R	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Pimascovirales;NA
+VOG01632	sp|A4VWG9|RQCH_STRSY Rqc2 homolog RqcH	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Algavirales;Phycodnaviridae
+VOG01641	sp|Q98514|A464_PBCV1 Putative protein A464R	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG01693	sp|Q6GZT1|045L_FRG3G Uncharacterized protein 045L	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Pimascovirales;NA
+VOG02047	sp|Q07856|VE6_HPV65 Protein E6	Monodnaviria;Shotokuvirae;Cossaviricota;Papovaviricetes;Zurhausenvirales;Papillomaviridae
+VOG02049	sp|P89440|CVC1_HHV2H Capsid vertex component 1	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG02065	sp|P03616|COAT_BPPRR Coat protein	Riboviria;Orthornavirae;Lenarviricota;Leviviricetes;Norzivirales;Fiersviridae
+VOG02099	sp|P04021|F13_VACCW Envelope phospholipase F13	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG02155	sp|Q5UP02|YL750_MIMIV Uncharacterized protein L750	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG02165	sp|Q5UPA1|YR024_MIMIV Uncharacterized protein R24	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG02178	sp|P0DSU3|A51_VAR67 Protein A51	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG02202	sp|Q5UR09|YR648_MIMIV Uncharacterized protein R648	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG02216	sp|Q5UNT7|YR679_MIMIV Putative serine/threonine-protein kinase R679	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG02237	sp|P0DOM3|G3_VAR67 Protein G3	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG02257	sp|Q5UPE0|YL065_MIMIV Uncharacterized protein L65	Varidnaviria;Bamfordvirae;Nucleocytoviricota;NA;NA;NA
+VOG02264	sp|Q5UQI0|YR830_MIMIV Putative BTB/POZ domain-containing protein R830	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG02266	sp|P0DSR8|A21_VARV Virion membrane protein A21	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG02328	sp|Q5UPS8|YL243_MIMIV Uncharacterized protein L243	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG02336	sp|Q5UNT0|YL674_MIMIV Putative BTB/POZ domain-containing protein L674	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG02352	sp|Q5UQJ3|YL862_MIMIV Uncharacterized protein L862	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG02362	sp|Q5UP95|YL015_MIMIV Uncharacterized protein L15	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG02372	sp|Q5URA4|YL144_MIMIV Uncharacterized protein L144	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG02393	sp|Q5UR50|YL567_MIMIV Uncharacterized protein L567	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG02400	sp|Q5UQH5|YR822_MIMIV Uncharacterized protein R822	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG02423	sp|P0DSU1|G7_VAR67 Assembly protein G7	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG02430	REFSEQ histone H2B/H2A fusion protein	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Pimascovirales;Marseilleviridae
+VOG02471	sp|Q197B8|VF136_IIV3 Uncharacterized protein 042R	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG02485	sp|B4YNG0|CAPSD_SPTNK Putative capsid protein V20	Varidnaviria;Bamfordvirae;Preplasmiviricota;Maveriviricetes;Priklausovirales;Lavidaviridae
+VOG02534	REFSEQ ubiquitin-like protein	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Pimascovirales;Marseilleviridae
+VOG02592	sp|Q01013|AN_SHV21 Shutoff alkaline exonuclease	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;NA
+VOG02608	sp|Q6DN67|L_CPSVP RNA-directed RNA polymerase L	Riboviria;Orthornavirae;Negarnaviricota;NA;NA;NA
+VOG02650	sp|P09511|MVP_TYYVF Movement protein	Riboviria;Orthornavirae;NA;NA;NA;NA
+VOG02655	REFSEQ 1ab	Riboviria;Orthornavirae;Pisuviricota;Pisoniviricetes;Nidovirales;NA
+VOG02702	sp|A8E1C4|LTP_MUHVK Large tegument protein deneddylase	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG02720	sp|Q66625|GH_EHV2 Envelope glycoprotein H	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG02722	sp|Q8JVC1|CAPSD_PCVC Capsid protein	Riboviria;Orthornavirae;Duplornaviricota;Chrymotiviricetes;Ghabrivirales;Chrysoviridae
+VOG02723	sp|Q00131|VG28_ICHVA Uncharacterized protein ORF28	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Alloherpesviridae
+VOG02742	sp|Q00125|VG60_ICHVA Uncharacterized protein ORF60	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Alloherpesviridae
+VOG02771	sp|Q00158|VG54_ICHVA Uncharacterized protein ORF54	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Alloherpesviridae
+VOG02777	sp|P28276|ICP27_HHV2H mRNA export factor	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG02781	sp|P68493|MP44_VACCT Metalloendopeptidase G1	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG02786	sp|Q197E3|VF335_IIV3 Uncharacterized protein 017R	Varidnaviria;Bamfordvirae;Nucleocytoviricota;NA;NA;NA
+VOG02788	sp|Q00099|VG56_ICHVA Uncharacterized protein ORF56	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Alloherpesviridae
+VOG02799	sp|Q8JVB9|P4_PCVC Uncharacterized protein p4	Riboviria;Orthornavirae;NA;NA;NA;NA
+VOG02809	REFSEQ nucleopasid protein	Riboviria;Orthornavirae;Negarnaviricota;Ellioviricetes;Bunyavirales;Phasmaviridae
+VOG02813	sp|Q96684|CAP3_ADECR Pre-hexon-linking protein IIIa	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Rowavirales;Adenoviridae
+VOG02825	sp|Q5UNX2|YL715_MIMIV Putative ankyrin repeat protein L715	Varidnaviria;Bamfordvirae;Nucleocytoviricota;NA;NA;NA
+VOG02838	sp|Q5UQT7|RNC_MIMIV Probable ribonuclease 3	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG02881	sp|P89430|CEP1_HHV2H Cytoplasmic envelopment protein 1	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG02924	sp|P22535|CAPSD_BPPRD Major capsid protein P3	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Kalamavirales;Tectiviridae
+VOG02999	sp|Q80944|VE2_HPV60 Regulatory protein E2	Monodnaviria;Shotokuvirae;Cossaviricota;Papovaviricetes;Zurhausenvirales;Papillomaviridae
+VOG03002	REFSEQ ORF1+2p	Riboviria;Orthornavirae;Pisuviricota;NA;NA;NA
+VOG03028	sp|P0DJX1|PKG2_ADE02 Packaging protein 2	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Rowavirales;Adenoviridae
+VOG03081	sp|P07580|P12_BPPH6 Morphogenetic protein	Riboviria;Orthornavirae;Duplornaviricota;Vidaverviricetes;Mindivirales;Cystoviridae
+VOG03116	sp|Q6GZX2|003R_FRG3G Uncharacterized protein 3R	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG03158	sp|P03245|E1B55_ADE07 E1B 55 kDa protein	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Rowavirales;Adenoviridae
+VOG03194	sp|Q6GZN8|087L_FRG3G Uncharacterized protein 087L	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Pimascovirales;Iridoviridae
+VOG03214	sp|Q33339|RDRP_CPMV1 RNA-directed RNA polymerase	Riboviria;Orthornavirae;Lenarviricota;NA;NA;NA
+VOG03217	sp|Q6GZR8|057R_FRG3G Putative phosphotransferase 057R	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG03239	sp|P08669|GLYC_LASSJ Pre-glycoprotein polyprotein GP complex	Riboviria;Orthornavirae;Negarnaviricota;Ellioviricetes;Bunyavirales;Arenaviridae
+VOG03399	sp|P0DOL1|P4A_VAR67 Major core protein 4a precursor	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG03517	sp|Q6GZM9|096R_FRG3G Uncharacterized protein 096R	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Pimascovirales;Iridoviridae
+VOG03650	sp|Q6GZX3|002L_FRG3G Uncharacterized protein 002L	Varidnaviria;Bamfordvirae;Nucleocytoviricota;NA;NA;NA
+VOG03691	sp|Q01005|UL24_SHV21 Protein UL24 homolog	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG03709	sp|P07579|CAPSD_BPPH6 Major outer capsid protein	Riboviria;Orthornavirae;Duplornaviricota;Vidaverviricetes;Mindivirales;Cystoviridae
+VOG03747	sp|P07394|MATA_BPGA Maturation protein A	Riboviria;Orthornavirae;Lenarviricota;Leviviricetes;Norzivirales;Fiersviridae
+VOG03749	sp|P07393|RDRP_BPGA RNA-directed RNA polymerase beta chain	Riboviria;Orthornavirae;Lenarviricota;Leviviricetes;Norzivirales;Fiersviridae
+VOG03781	REFSEQ hypothetical protein 1	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Artoviridae
+VOG03793	sp|Q6GZS7|049L_FRG3G Putative SAP domain-containing protein 049L	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Pimascovirales;Iridoviridae
+VOG03892	sp|Q5UPL9|YR151_MIMIV Uncharacterized acetyltransferase R151	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG03897	sp|P33835|A9_VAR67 Virion membrane protein A9	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG03921	sp|Q5UPX5|YL237_MIMIV Uncharacterized protein L237	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04059	sp|Q5UR42|YR564_MIMIV Uncharacterized protein R564	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04080	sp|Q5UQM1|YL421_MIMIV Uncharacterized protein L421	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04092	sp|Q5UPC8|YL054_MIMIV Uncharacterized protein L54	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04094	sp|Q5UQJ7|YL399_MIMIV Uncharacterized protein L399	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04156	sp|Q5UQQ4|YL859_MIMIV Uncharacterized protein L859	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04159	sp|Q5UPJ5|YR119_MIMIV Uncharacterized protein R119	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04178	sp|C1JJY5|ORF6_HAPV1 Uncharacterized protein 6	Monodnaviria;Trapavirae;Saleviricota;Huolimaviricetes;Haloruvirales;Pleolipoviridae
+VOG04220	sp|Q5UNY5|YR727_MIMIV Uncharacterized protein R727	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04223	sp|P0DOU1|L5_VAR67 Protein L5	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG04229	sp|Q5UP43|YR646_MIMIV Uncharacterized protein R646	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04232	sp|Q9J5A5|V117_FOWPN Protein FPV117	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG04323	sp|P0DOP5|F11_VAR67 Protein F11	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG04327	sp|Q5UPR5|YL775_MIMIV Putative PAN domain-containing protein L775	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04347	sp|Q5UPM1|YL149_MIMIV Uncharacterized protein L149	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04351	sp|Q5UQG9|YR816_MIMIV Uncharacterized protein R816	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04354	sp|Q5UR27|YL550_MIMIV Uncharacterized protein L550	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04392	sp|Q5UNT3|YL671_MIMIV Uncharacterized protein L671	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04393	sp|Q5UNY8|YR736_MIMIV Uncharacterized protein R736	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04416	sp|Q5UQ79|YL516_MIMIV Uncharacterized protein L516	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04499	sp|P0DSX1|E6_VAR67 Protein E6	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG04528	sp|P0DOS8|G9_VARV Myristoylated protein G9	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG04553	sp|Q5UPT3|YL248_MIMIV Uncharacterized protein L248	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04603	sp|P0DOO7|A15_VAR67 Core protein A15	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG04608	sp|Q5UQ87|YR522_MIMIV Uncharacterized protein R522	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04631	sp|A4KXB2|Y057_HVAVE Uncharacterized protein ORF57	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Pimascovirales;Ascoviridae
+VOG04639	REFSEQ RNA-dependent RNA polymerase	Riboviria;Orthornavirae;Negarnaviricota;NA;NA;NA
+VOG04734	sp|Q5UQJ9|YL397_MIMIV Uncharacterized protein L397	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04758	REFSEQ putative early transcription factor large subunit	Varidnaviria;Bamfordvirae;Nucleocytoviricota;NA;NA;NA
+VOG04766	sp|P07608|A25_VACCW Protein A2.5	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG04781	REFSEQ hypothetical protein 1	Riboviria;Orthornavirae;Kitrinoviricota;Magsaviricetes;Nodamuvirales;Sinhaliviridae
+VOG04793	sp|Q5UQ29|YR212_MIMIV Uncharacterized protein R212	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04828	sp|Q5UP44|YL645_MIMIV Uncharacterized protein L645	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04833	sp|Q5UNU3|YL686_MIMIV Uncharacterized protein L686	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04870	sp|O57216|VLTF2_VACCA Viral late gene transcription factor 2	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG04928	sp|Q5UNU8|YR694_MIMIV Uncharacterized protein R694	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04940	sp|Q5UQG6|YL494_MIMIV Uncharacterized protein L494	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG04946	sp|P07242|H5_VACCW Late transcription elongation factor H5	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05020	sp|P14968|TRAP_CLVN Transcriptional activator protein	Monodnaviria;Shotokuvirae;Cressdnaviricota;Repensiviricetes;Geplafuvirales;Geminiviridae
+VOG05022	sp|P36749|VL2_HPV14 Minor capsid protein L2	Monodnaviria;Shotokuvirae;Cossaviricota;Papovaviricetes;Zurhausenvirales;Papillomaviridae
+VOG05053	sp|Q6GZV5|020R_FRG3G Uncharacterized protein 020R	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Pimascovirales;Iridoviridae
+VOG05063	sp|Q6GZV4|021L_FRG3G Uncharacterized protein 021L	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG05069	sp|Q65111|NCAP_ARV Nucleoprotein	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Rhabdoviridae
+VOG05071	sp|Q85213|GLYCO_PIRYV Glycoprotein	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Rhabdoviridae
+VOG05148	sp|P21053|F12_VACCC Protein F12	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05150	sp|P0DOR8|F15_VARV Protein F15	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05151	sp|P07396|F17_VACCW Phosphoprotein F17	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05156	sp|Q08FE1|PAP1_DPV84 Poly(A) polymerase catalytic subunit	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05157	sp|P0DSY7|E8_VAR67 Protein E8	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05158	sp|P0DST9|E11_VAR67 Protein E11	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05159	sp|P16714|I1_VACCW Telomere-binding protein I1	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05160	sp|P0DOR3|I2_VAR67 Protein I2	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05161	sp|P0DOP3|I3_VAR67 Protein I3	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05162	sp|P0DOL9|I6_VAR67 Telomere-binding protein I6	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05163	sp|P12924|I5_VACCW Protein I5	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05164	sp|O72903|I7_FOWPN Core protease I7 homolog	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05165	sp|P0DOP7|G2_VAR67 Late transcription elongation factor G2	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05166	sp|P03295|VP8_VACCW Core protein VP8	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05167	sp|P19746|J1_SHEVK Protein J1 homolog	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05168	sp|P21027|G6_VACCC Uncharacterized protein G6	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05169	sp|O57198|VLTF1_VACCA Late transcription factor 1	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05170	sp|P21031|L3_VACCC Protein L3	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05171	sp|P07618|J5_VACCW Protein J5	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05173	sp|P04300|D2_VACCW Core protein D2	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05174	sp|P68547|RP22_MYXVU DNA-directed RNA polymerase 21 kDa subunit	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05175	sp|O57205|H2_VACCA Late protein H2	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05176	sp|P68438|RAP94_VACCW RNA polymerase-associated transcription-specificity factor RAP94	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05178	sp|Q9JFA9|H7_VACCT Late protein H7	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05179	sp|P04310|RP18_VACCW DNA-directed RNA polymerase 18 kDa subunit	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05181	sp|P0DSQ6|MCES_VARV mRNA-capping enzyme regulatory subunit	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05182	sp|P0DOT5|VLTF3_VAR67 Viral late gene transcription factor 3	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05183	sp|Q775T6|D3_CAMPS 27 kDa core protein	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05184	sp|P33813|RP19_VAR67 DNA-directed RNA polymerase 19 kDa subunit	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05185	sp|P0DSR1|A6_VAR67 Protein A6	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05186	sp|P20636|ETF2_VACCW Early transcription factor 82 kDa subunit	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05187	sp|P0DSP9|VTF3S_VAR67 Intermediate transcription factor 3 small subunit	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05188	sp|O57224|A12_VACCA 25 kDa core protein A12L	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05189	sp|P0DOQ8|A11_VARV Protein A11	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05190	sp|P0CK27|A145_VAR67 Virion membrane protein A14.5	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05191	sp|P33842|A19_VAR67 Protein A19	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05192	sp|P0DOR5|A17_VAR67 Virion membrane protein A17 precursor	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05193	sp|P0DTP6|A20_VAR67 DNA polymerase processivity factor component A20	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05194	sp|Q77TH8|VTF3L_VACCT Intermediate transcription factor 3 large subunit	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05195	sp|P16710|A16_VACCW Virion membrane protein A16	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05196	sp|Q9DHJ5|A28_YLDV Envelope protein A28 homolog	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05197	sp|Q6RZF4|RP35_RABPU DNA-directed RNA polymerase 35 kDa subunit	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05199	sp|P0DON1|A33_VAR67 Protein A33	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05200	sp|P0DOT9|A30_VAR67 Protein A30	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05201	sp|P11258|A27_VACCW Protein A27	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05204	sp|P21060|A37_VACCC Protein A37	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05211	sp|P21058|A35_VACCC Protein A35	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Pokkesviricetes;Chitovirales;Poxviridae
+VOG05374	sp|O36362|GB_ALHV1 Envelope glycoprotein B	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG05379	sp|P28934|HELI_EHV1B DNA replication helicase	Duplodnaviria;Heunggongvirae;NA;NA;NA;NA
+VOG05380	sp|Q01029|PORTL_SHV21 Portal protein	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG05383	sp|P0CK53|CEP2_EBVB9 Cytoplasmic envelopment protein 2	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG05384	sp|P28921|TRX2_EHV1B Triplex capsid protein 2	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG05386	sp|P28948|GM_EHV1B Envelope glycoprotein M	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG05387	sp|P12835|TRM1_HHV1A Tripartite terminase subunit 1	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG05388	sp|P09287|CVC2_VZVD Capsid vertex component 2	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG05389	sp|P28936|SCAF_EHV1B Capsid scaffolding protein	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG05390	sp|P28920|MCP_EHV1B Major capsid protein	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG05393	sp|P28953|TRM2_EHV1B Tripartite terminase subunit 2	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG05395	sp|P03227|DNBI_EBVB9 Major DNA-binding protein	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG05396	sp|P28951|NEC1_EHV1B Nuclear egress protein 1	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG05399	sp|P09282|UL32_VZVD Packaging protein UL32	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG05408	sp|P84401|PRIM_EHV1V DNA primase	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Herpesviridae
+VOG05419	REFSEQ capsid protein	Monodnaviria;Shotokuvirae;Cressdnaviricota;Repensiviricetes;Geplafuvirales;Genomoviridae
+VOG05476	sp|Q9QAZ8|RDRP_SJNNV RNA-directed RNA polymerase	Riboviria;Orthornavirae;NA;NA;NA;NA
+VOG05492	sp|Q00113|VG27_ICHVA Uncharacterized protein ORF27	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Alloherpesviridae
+VOG05500	sp|Q00160|VG37_ICHVA Uncharacterized protein ORF37	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Alloherpesviridae
+VOG05505	sp|Q00156|VG64_ICHVA Uncharacterized protein ORF64	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Alloherpesviridae
+VOG05510	sp|P03160|DPOL_WHV1 Protein P	Riboviria;Pararnavirae;Artverviricota;Revtraviricetes;NA;NA
+VOG05517	sp|Q5UNW1|YR707_MIMIV Uncharacterized protein R707	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;NA
+VOG05552	sp|P09514|MCAPS_TYYVF Minor capsid protein P3-RTD	Riboviria;Orthornavirae;NA;NA;NA;NA
+VOG05779	sp|P48311|DPOL_ADE40 DNA polymerase	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Rowavirales;Adenoviridae
+VOG05788	sp|P48313|TERM_ADE40 Preterminal protein	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Rowavirales;Adenoviridae
+VOG05789	sp|Q84176|CAPSP_ADEP3 Penton protein	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Rowavirales;Adenoviridae
+VOG05790	sp|P11824|SHUT_ADE41 Shutoff protein	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Rowavirales;Adenoviridae
+VOG05791	sp|P36715|PKG3_ADE12 Packaging protein 3	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Rowavirales;Adenoviridae
+VOG05792	sp|Q96624|NP_ADEB2 Pre-histone-like nucleoprotein	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Rowavirales;Adenoviridae
+VOG05794	sp|P35988|CAP6_ADE12 Pre-protein VI	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Rowavirales;Adenoviridae
+VOG05795	sp|O39619|CAPSH_ADECR Hexon protein	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Rowavirales;Adenoviridae
+VOG05796	sp|P11806|DNB2_ADE40 DNA-binding protein	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Rowavirales;Adenoviridae
+VOG05799	sp|P11822|CAP8_ADE41 Pre-hexon-linking protein VIII	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Rowavirales;Adenoviridae
+VOG05803	sp|P36711|SPIKE_ADE12 Fiber protein	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Rowavirales;Adenoviridae
+VOG05805	sp|P04010|VP1_POVLY Major capsid protein VP1	Monodnaviria;Shotokuvirae;Cossaviricota;Papovaviricetes;Sepolyvirales;Polyomaviridae
+VOG05821	sp|Q01681|POLG_PPVEA Genome polyprotein (Fragment)	Riboviria;Orthornavirae;Pisuviricota;Stelpaviricetes;Patatavirales;Potyviridae
+VOG05825	sp|P11897|POLG_PVYYO Genome polyprotein (Fragment)	Riboviria;Orthornavirae;Pisuviricota;Stelpaviricetes;Patatavirales;Potyviridae
+VOG05834	sp|P19416|SF33K_ADE41 Protein 33K	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Rowavirales;Adenoviridae
+VOG05848	sp|Q5UP80|YL007_MIMIV Uncharacterized protein L7	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05849	sp|Q5UP94|YL016_MIMIV Uncharacterized protein L16	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05850	sp|Q5UPJ8|YL123_MIMIV Uncharacterized protein L123	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05851	sp|Q5UP50|YR588_MIMIV Uncharacterized protein R588	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05852	sp|Q5UPD0|YL052_MIMIV Uncharacterized protein L52	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05853	sp|Q5URB0|YR874_MIMIV Uncharacterized protein R874	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05854	sp|Q5UQY0|YR890_MIMIV Uncharacterized protein R890	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05855	sp|Q5UQ91|YL531_MIMIV Uncharacterized protein L531	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG05858	sp|Q5UPU8|YL274_MIMIV Uncharacterized protein L274	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05859	sp|Q5UPJ1|YR118_MIMIV Uncharacterized protein R118	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05861	sp|Q5UPM0|YR150_MIMIV Uncharacterized protein R150	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05863	sp|Q5UNY0|YL732_MIMIV Uncharacterized protein L732	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05864	sp|Q5UNZ6|YL742_MIMIV Putative BTB/POZ domain-containing protein L742	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05865	sp|Q5UPW2|YL285_MIMIV Uncharacterized protein L285	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05866	sp|Q5UNU0|YL676_MIMIV Uncharacterized protein L676	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05867	sp|Q5UNT8|YL678_MIMIV Putative SET domain-containing protein L678	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05868	sp|Q5UNU7|YL682_MIMIV Uncharacterized protein L682	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05869	sp|Q5UNU5|YL684_MIMIV Uncharacterized protein L684	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05870	sp|Q5UNV2|YL688_MIMIV Uncharacterized protein L688	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05871	sp|Q5UNV1|YR691_MIMIV Uncharacterized protein R691	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05872	sp|Q5UNV0|YR692_MIMIV Uncharacterized protein R692	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05873	sp|Q5UNW0|YR695_MIMIV Uncharacterized protein R695	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05874	sp|Q5UNW6|YL702_MIMIV Uncharacterized protein L702	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05875	sp|Q5UNW5|YR703_MIMIV Uncharacterized protein R703	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05876	sp|Q5UNW4|YR704_MIMIV Uncharacterized protein R704	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05877	sp|Q5UQ52|YR708_MIMIV Uncharacterized phosphoglycerate mutase family protein R708	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05878	sp|Q5UQ56|YR710_MIMIV Uncharacterized protein R710	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05879	sp|Q5UQ55|YL711_MIMIV Uncharacterized protein L711	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05880	sp|Q5UQ54|YL712_MIMIV Uncharacterized protein L712	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05881	sp|Q5UQ53|YR713_MIMIV Uncharacterized protein R713	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05882	sp|Q5UNX3|YR714_MIMIV Uncharacterized protein R714	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05883	sp|Q5UNX1|YL716_MIMIV Putative glutamine amidotransferase-like protein L716	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05884	sp|Q5UNX0|YL717_MIMIV Uncharacterized protein L717	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05885	sp|Q5UNW8|YL719_MIMIV Uncharacterized protein L719	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05886	sp|Q5UNX9|YR721_MIMIV Uncharacterized protein R721	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05887	sp|Q5UNX8|YR722_MIMIV Uncharacterized protein R722	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05888	sp|Q5UNX7|YL723_MIMIV Uncharacterized protein L723	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05889	sp|Q5UNX6|YL724_MIMIV Uncharacterized protein L724	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05890	sp|Q5UNX5|YL725_MIMIV Uncharacterized protein L725	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05891	sp|Q5UNY3|YL729_MIMIV Uncharacterized protein L729	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05892	sp|Q5UQ15|YL202_MIMIV Uncharacterized protein L202	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05893	sp|Q5UQ26|YR203_MIMIV Uncharacterized protein R203	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05894	sp|Q5UQ31|YR210_MIMIV Uncharacterized protein R210	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05895	sp|Q5UQ30|YL211_MIMIV Uncharacterized protein L211	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05896	sp|Q5UQ28|YR213_MIMIV Uncharacterized protein R213	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05897	sp|Q5UQB9|YL222_MIMIV Putative SET domain-containing protein L222	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05898	sp|Q5UQG5|YR495_MIMIV Uncharacterized protein R495	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05899	sp|Q5UQF9|YL487_MIMIV Uncharacterized protein L487	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05901	sp|Q5UQB2|YR217_MIMIV Uncharacterized protein R217	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05903	sp|Q5UQA9|YR220_MIMIV Uncharacterized protein R220	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05905	sp|Q5UQC2|YL231_MIMIV Uncharacterized protein L231	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05907	sp|Q5UPX8|YL234_MIMIV Uncharacterized protein L234	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05908	sp|Q5UPX6|YL236_MIMIV Uncharacterized protein L236	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05909	sp|Q5UQ68|YR505_MIMIV Uncharacterized protein R505	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05910	sp|Q5UPU1|YR253_MIMIV Uncharacterized protein R253	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05911	sp|Q5UPT9|YR255_MIMIV Uncharacterized protein R255	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05912	sp|Q5UPT8|YL256_MIMIV Uncharacterized protein L256	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05913	sp|Q5UPT7|YR257_MIMIV Uncharacterized protein R257	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05915	sp|Q5UP21|YL262_MIMIV Uncharacterized protein L262	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05916	sp|Q5UP20|YL263_MIMIV Uncharacterized protein L263	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05917	sp|Q5UPU6|YL265_MIMIV Uncharacterized protein L265	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05918	sp|Q5UQG1|YL492_MIMIV Uncharacterized protein L492	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05919	sp|Q5UQ67|YR506_MIMIV Uncharacterized protein R506	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05920	sp|Q5UQ69|YL504_MIMIV Uncharacterized protein L504	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05921	sp|Q5UQ66|YR503_MIMIV Uncharacterized protein R503	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05922	sp|Q5UP46|YR500_MIMIV Uncharacterized protein R500	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05924	sp|Q5UQF6|YL490_MIMIV Uncharacterized protein L490	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05925	sp|Q5UQF8|YL488_MIMIV Uncharacterized protein L488	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05927	sp|Q5UQF3|YR481_MIMIV Uncharacterized protein R481	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG05930	sp|Q5UQE2|YR474_MIMIV Uncharacterized protein R474	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05931	sp|Q5UQE3|YR473_MIMIV Uncharacterized protein R473	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05932	sp|Q5UQE4|YR472_MIMIV Uncharacterized protein R472	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05933	sp|Q5UQE5|YL471_MIMIV Uncharacterized protein L471	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05934	sp|Q5UQD4|YR467_MIMIV Uncharacterized protein R467	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05935	sp|Q5UQD5|YR466_MIMIV Uncharacterized protein R466	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05936	sp|Q5UQD8|YR463_MIMIV Uncharacterized protein R463	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05937	sp|Q5UQC7|YL462_MIMIV Uncharacterized protein L462	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05939	sp|Q5UQD0|YR459_MIMIV Uncharacterized protein R459	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05940	sp|Q5UQP8|YL454_MIMIV Uncharacterized protein L454	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG05941	sp|Q5UQQ0|YL452_MIMIV Uncharacterized protein L452	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05942	sp|Q5UQN8|YL438_MIMIV Putative TLC domain-containing protein L438	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05943	sp|Q5UQM4|YR431_MIMIV Putative 3'-5' exonuclease R431	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05945	sp|Q5UQP7|YR455_MIMIV Uncharacterized protein R455	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05946	sp|Q5UQP0|YL448_MIMIV Uncharacterized protein L448	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05947	sp|Q5UQN6|YL442_MIMIV Uncharacterized protein L442	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05948	sp|Q5UQN7|CAPS3_MIMIV Probable capsid protein 3	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05949	sp|Q5UQN1|YR435_MIMIV Uncharacterized protein R435	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG05950	sp|Q5UQN4|YL432_MIMIV Uncharacterized protein L432	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05951	sp|Q5UQX5|YR883_MIMIV Uncharacterized protein R883	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05952	sp|Q5UQM2|ROBIN_MIMIV Robin	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05953	sp|Q944L7|SLP2_ARATH Shewanella-like protein phosphatase 2	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05956	sp|Q5UQL5|YL416_MIMIV Uncharacterized protein L416	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05957	sp|Q5UQK8|YL412_MIMIV Uncharacterized protein L412	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05958	sp|Q5UQK0|YR408_MIMIV Uncharacterized protein R408	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05959	sp|Q5UQK1|YR407_MIMIV Putative RNA methyltransferase R407	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05960	sp|Q5UQK3|YR405_MIMIV Putative RNA methyltransferase R405	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05961	sp|Q5UQK5|YR403_MIMIV Uncharacterized protein R403	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG05962	sp|Q5UQK6|YR402_MIMIV Uncharacterized protein R402	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05963	sp|Q5UQJ5|YR401_MIMIV Uncharacterized protein R401	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05965	sp|Q5UQW6|YR387_MIMIV Uncharacterized protein R387	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05966	sp|Q5UQW9|YL384_MIMIV Uncharacterized protein L384	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05967	sp|Q5UQX2|YL381_MIMIV Uncharacterized protein L381	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05968	sp|Q5UQV8|YR379_MIMIV Uncharacterized protein R379	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05969	sp|Q5UQV9|YR378_MIMIV Uncharacterized protein R378	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG05970	sp|Q5UQW3|YL374_MIMIV Uncharacterized protein L374	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05971	sp|Q5UQV4|YR370_MIMIV Uncharacterized protein R370	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05972	sp|Q5UQV5|YR369_MIMIV Uncharacterized protein R369	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05973	sp|Q5UQV7|YR367_MIMIV Uncharacterized protein R367	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05974	sp|Q5UR23|YL361_MIMIV Uncharacterized protein L361	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05975	sp|Q5UQU5|YL360_MIMIV Uncharacterized protein L360	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05976	sp|Q5UQU8|YL357_MIMIV Uncharacterized protein L357	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05977	sp|Q5UQU9|YL356_MIMIV Uncharacterized protein L356	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05978	sp|Q5UQT9|YR353_MIMIV Uncharacterized protein R353	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05979	sp|Q5UQU0|YL352_MIMIV Uncharacterized protein L352	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05980	sp|Q5UQU3|YR349_MIMIV Uncharacterized protein R349	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05981	sp|Q5UQU4|YR348_MIMIV Uncharacterized protein R348	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05982	sp|Q5UQT3|YR347_MIMIV Uncharacterized protein R347	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05983	sp|Q5UQT5|YR345_MIMIV Uncharacterized protein R345	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05984	sp|Q5UQT8|YR342_MIMIV Uncharacterized protein R342	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05985	sp|Q5UQS9|YR338_MIMIV Uncharacterized protein R338	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05988	sp|Q5UQS2|YR331_MIMIV Putative zinc finger MYND domain-containing protein R331	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05989	sp|Q5UQS3|YL330_MIMIV Uncharacterized protein L330	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05990	sp|Q5UQS4|YR329_MIMIV Uncharacterized protein R329	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05992	sp|Q5UQS5|YR328_MIMIV Uncharacterized protein R328	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05994	sp|Q5UQR1|YR321_MIMIV Uncharacterized protein R321	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05996	sp|Q5UPZ8|YR317_MIMIV Uncharacterized protein R317	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05997	sp|Q5UPZ3|YR311_MIMIV Putative RING finger protein R311	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG05998	sp|Q5UPZ4|YL310_MIMIV Uncharacterized protein L310	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG05999	sp|Q5UPZ5|YL309_MIMIV Uncharacterized protein L309	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06000	sp|Q5UPY8|YR305_MIMIV Uncharacterized protein R305	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06001	sp|Q5UPY9|YR304_MIMIV Uncharacterized protein R304	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06002	sp|Q5UPZ2|YR301_MIMIV Putative serine/threonine-protein kinase R301	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG06004	sp|Q5UPY0|YL294_MIMIV Uncharacterized protein L294	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06005	sp|Q5UPW8|YR292_MIMIV Uncharacterized protein R292	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06006	sp|Q5UQ82|YR513_MIMIV Uncharacterized protein R513	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06007	sp|Q5UQ81|YR514_MIMIV Uncharacterized protein R514	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06009	sp|Q5UQ89|YL520_MIMIV Putative BTB/POZ domain-containing protein L520	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06010	sp|Q5UQ86|RHBDL_MIMIV Putative rhomboid protein L523	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06011	sp|Q5UQ84|YR525_MIMIV Uncharacterized protein R525	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06012	sp|Q5UQA3|YL533_MIMIV Uncharacterized protein L533	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06015	sp|Q5UQA0|YL536_MIMIV Uncharacterized protein L536	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06016	sp|Q5UQ97|YL539_MIMIV Uncharacterized protein L539	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06017	sp|Q5UQA4|YR545_MIMIV HMG box-containing protein R545	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06019	sp|Q5UR28|YR549_MIMIV Uncharacterized protein R549	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06020	sp|Q5UR36|YL552_MIMIV Uncharacterized protein L552	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06021	sp|Q5UR35|YR553_MIMIV Uncharacterized protein R553	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06022	sp|Q5UR34|YR554_MIMIV Uncharacterized protein R554	Varidnaviria;Bamfordvirae;Nucleocytoviricota;NA;NA;NA
+VOG06024	sp|Q5UR38|YR558_MIMIV Uncharacterized protein R558	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06025	sp|Q5UR41|YR561_MIMIV Uncharacterized protein R561	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06026	sp|P00965|GLNA3_PHAVU Glutamine synthetase N-1	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06027	sp|Q5UP48|YL590_MIMIV Uncharacterized protein L590	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06029	sp|Q5UP70|YL606_MIMIV Uncharacterized protein L606	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06030	sp|Q5UP69|YR607_MIMIV Uncharacterized protein R607	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06031	sp|Q5UR43|YR562_MIMIV Uncharacterized protein R562	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06032	sp|Q5UR47|YR570_MIMIV Uncharacterized protein R570	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06033	sp|Q5UR55|YL581_MIMIV Uncharacterized protein L581	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06034	sp|Q5UR54|YL582_MIMIV Uncharacterized protein L582	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06035	sp|Q5UP53|YL585_MIMIV Uncharacterized protein L585	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06037	sp|Q5UP59|YL591_MIMIV Uncharacterized protein L591	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06038	sp|Q5UP56|YL594_MIMIV Uncharacterized protein L594	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06040	sp|Q5UP72|YR604_MIMIV Uncharacterized protein R604	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06042	sp|Q5UP67|YL609_MIMIV Uncharacterized protein L609	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06043	sp|Q7T6X1|YR610_MIMIV Uncharacterized protein R610	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06044	sp|Q5UR69|YL615_MIMIV Putative phosphatidylinositol kinase L615	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06045	sp|Q5UR66|YR618_MIMIV Uncharacterized protein R618	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06046	sp|Q5UR71|YR625_MIMIV Uncharacterized protein R625	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06047	sp|Q5UR70|YR626_MIMIV Uncharacterized protein R626	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06049	sp|Q5UR68|YR616_MIMIV Uncharacterized protein R616	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06050	sp|Q5UR65|YL620_MIMIV Uncharacterized protein L620	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG06051	sp|Q5UR73|YR623_MIMIV Uncharacterized protein R623	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06052	sp|Q5UP00|YR752_MIMIV Uncharacterized protein R752	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06053	sp|Q5UR75|YR627_MIMIV Uncharacterized protein R627	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06054	sp|Q5UR80|CYB5L_MIMIV Cytochrome b5-like protein	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06055	sp|Q5UR79|YL629_MIMIV Uncharacterized protein L629	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06056	sp|Q5UR81|YL633_MIMIV Putative lectin L633	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06057	sp|Q5UR10|YL647_MIMIV Uncharacterized protein L647	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06058	sp|A9CH39|PHRB_AGRFC (6-4) photolyase	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06059	sp|Q5UR07|YR650_MIMIV Uncharacterized protein R650	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06060	sp|Q5UQ64|YR653_MIMIV Uncharacterized protein R653	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06062	sp|Q5UR78|YL630_MIMIV Uncharacterized protein L630	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06063	sp|Q5UR76|YR632_MIMIV Uncharacterized protein R632	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06064	sp|Q5UR19|YR656_MIMIV Uncharacterized protein R656	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06065	sp|Q5UR17|YR658_MIMIV Uncharacterized protein R658	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06069	sp|Q5UPB7|YR044_MIMIV Uncharacterized protein R44	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06070	sp|O17966|TOP1_CAEEL DNA topoisomerase 1	Varidnaviria;Bamfordvirae;Nucleocytoviricota;NA;NA;NA
+VOG06072	sp|Q5UPM6|YR156_MIMIV Uncharacterized protein R156	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06075	sp|Q5UPN1|YL169_MIMIV Uncharacterized protein L169	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06076	sp|Q5UPQ1|YR762_MIMIV Uncharacterized protein R762	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06077	sp|Q5UPJ4|YL115_MIMIV Putative helicase L115	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06078	sp|Q5UNS8|YR665_MIMIV Uncharacterized protein R665	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06079	sp|Q5URB6|YR843_MIMIV Uncharacterized hydrolase R843	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06080	sp|Q5UR60|YR802_MIMIV Uncharacterized protein R802	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06086	sp|Q5UQ65|YR652_MIMIV Uncharacterized protein R652	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06087	sp|Q5UR58|YR804_MIMIV Uncharacterized protein R804	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06088	sp|Q5UQI9|YR836_MIMIV Uncharacterized protein R836	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06089	sp|Q5UPC2|YR050_MIMIV Uncharacterized protein R50	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06090	sp|Q5UP91|YL019_MIMIV Uncharacterized protein L19	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06093	sp|Q5UQ35|YR811_MIMIV Putative ariadne-like RING finger protein R811	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06094	sp|Q5UR57|YL805_MIMIV Uncharacterized protein L805	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06101	sp|Q5UPA8|YR029_MIMIV Uncharacterized protein R29	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
+VOG06111	sp|P36329|POLS_EEVV3 Structural polyprotein	Riboviria;Orthornavirae;Kitrinoviricota;Alsuviricetes;Martellivirales;Togaviridae
+VOG06112	sp|P05674|POLS_EEVV8 Structural polyprotein	Riboviria;Orthornavirae;Kitrinoviricota;Alsuviricetes;Martellivirales;Togaviridae
+VOG06113	sp|P05674|POLS_EEVV8 Structural polyprotein	Riboviria;Orthornavirae;Kitrinoviricota;Alsuviricetes;Martellivirales;Togaviridae
+VOG06145	sp|P27020|MATRX_PI4HB Matrix protein	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Paramyxoviridae
+VOG06150	REFSEQ putative capsid protein	Monodnaviria;Shotokuvirae;Cressdnaviricota;Arfiviricetes;Cremevirales;Smacoviridae
+VOG06183	sp|P03418|NCAP_HRSVA Nucleoprotein	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Pneumoviridae
+VOG06184	sp|P03421|PHOSP_HRSVA Phosphoprotein	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Pneumoviridae
+VOG06185	sp|P0DOE7|MATRX_HRSVA Matrix protein	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Pneumoviridae
+VOG06186	sp|O42050|M21_HRSVB Matrix M2-1	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Pneumoviridae
+VOG06188	sp|O72142|NCAP_EBOZ5 Nucleoprotein	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Filoviridae
+VOG06189	sp|Q05127|VP35_EBOZM Polymerase cofactor VP35	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Filoviridae
+VOG06190	sp|Q05128|VP40_EBOZM Matrix protein VP40	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Filoviridae
+VOG06191	sp|Q05323|VP30_EBOZM Hexameric zinc-finger protein VP30	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Filoviridae
+VOG06192	sp|O11459|VP24_EBOG4 Membrane-associated protein VP24	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Filoviridae
+VOG06197	sp|P13871|RDRP_INBAC RNA-directed RNA polymerase catalytic subunit	Riboviria;Orthornavirae;Negarnaviricota;NA;NA;NA
+VOG06210	sp|O73557|Z_LASSJ RING finger protein Z	Riboviria;Orthornavirae;Negarnaviricota;Ellioviricetes;Bunyavirales;Arenaviridae
+VOG06211	sp|O39830|MVP_FBNY2 Putative movement protein	Monodnaviria;Shotokuvirae;Cressdnaviricota;Arfiviricetes;Mulpavirales;Nanoviridae
+VOG06212	sp|Q08JR8|U4_MDV1 Protein U4	Monodnaviria;Shotokuvirae;Cressdnaviricota;Arfiviricetes;Mulpavirales;Nanoviridae
+VOG06213	sp|O91253|CLINK_FBNY2 Cell cycle link protein	Monodnaviria;Shotokuvirae;Cressdnaviricota;Arfiviricetes;Mulpavirales;Nanoviridae
+VOG06214	sp|Q9Z0C9|U2_MDV1 Protein U2	Monodnaviria;Shotokuvirae;Cressdnaviricota;Arfiviricetes;Mulpavirales;Nanoviridae
+VOG06215	sp|O39831|CAPSD_FBNY2 Capsid protein	Monodnaviria;Shotokuvirae;Cressdnaviricota;Arfiviricetes;Mulpavirales;Nanoviridae
+VOG06216	sp|O91251|NSP_FBNY2 Putative nuclear shuttle protein	Monodnaviria;Shotokuvirae;Cressdnaviricota;Arfiviricetes;Mulpavirales;Nanoviridae
+VOG06229	REFSEQ VP12	Varidnaviria;Helvetiavirae;Dividoviricota;Laserviricetes;Halopanivirales;Sphaerolipoviridae
+VOG06230	REFSEQ VP7	Varidnaviria;Helvetiavirae;Dividoviricota;Laserviricetes;Halopanivirales;Sphaerolipoviridae
+VOG06231	REFSEQ VP4	Varidnaviria;Helvetiavirae;Dividoviricota;Laserviricetes;Halopanivirales;Sphaerolipoviridae
+VOG06233	REFSEQ capsid protein VP13	Varidnaviria;Helvetiavirae;Dividoviricota;Laserviricetes;Halopanivirales;Sphaerolipoviridae
+VOG06234	REFSEQ VP2	Varidnaviria;Helvetiavirae;Dividoviricota;Laserviricetes;Halopanivirales;Sphaerolipoviridae
+VOG06235	REFSEQ VP5	Varidnaviria;Helvetiavirae;Dividoviricota;Laserviricetes;Halopanivirales;Sphaerolipoviridae
+VOG06236	REFSEQ capsid protein VP10	Varidnaviria;Helvetiavirae;Dividoviricota;Laserviricetes;Halopanivirales;Sphaerolipoviridae
+VOG06246	sp|C1JJY1|ORF2_HAPV1 Uncharacterized protein 2	Monodnaviria;Trapavirae;Saleviricota;Huolimaviricetes;Haloruvirales;Pleolipoviridae
+VOG06247	sp|C1JJY2|MATRX_HAPV1 Matrix protein	Monodnaviria;Trapavirae;Saleviricota;Huolimaviricetes;Haloruvirales;Pleolipoviridae
+VOG06248	sp|C1JJY3|ENV_HAPV1 Envelope protein	Monodnaviria;Trapavirae;Saleviricota;Huolimaviricetes;Haloruvirales;Pleolipoviridae
+VOG06249	sp|C1JJY6|ORF7_HAPV1 Uncharacterized protein 7	Monodnaviria;Trapavirae;Saleviricota;Huolimaviricetes;Haloruvirales;Pleolipoviridae
+VOG06250	sp|C1JJY7|VP8_HAPV1 Virion protein 8	Monodnaviria;Trapavirae;Saleviricota;Huolimaviricetes;Haloruvirales;Pleolipoviridae
+VOG06284	sp|P03598|CAPSD_TOBSV Capsid protein	Riboviria;Orthornavirae;Kitrinoviricota;Alsuviricetes;Martellivirales;Bromoviridae
+VOG06818	sp|W6JIC6|CAPSD_CPBDV Capsid protein	Monodnaviria;Shotokuvirae;Cressdnaviricota;Arfiviricetes;Baphyvirales;Bacilladnaviridae
+VOG06834	sp|B4YNE9|V9_SPTNK Uncharacterized protein V9	Varidnaviria;Bamfordvirae;Preplasmiviricota;Maveriviricetes;Priklausovirales;Lavidaviridae
+VOG06848	REFSEQ putative mannosyltransferase OCH1-like protein	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG06874	REFSEQ class 3 lipase	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Pimascovirales;Marseilleviridae
+VOG06877	REFSEQ putative RNA methyltransferase	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Pimascovirales;Marseilleviridae
+VOG06909	REFSEQ putative secreted protein	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Pimascovirales;Marseilleviridae
+VOG06913	REFSEQ ankyrin repeat-containing protein	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Pimascovirales;Marseilleviridae
+VOG06932	REFSEQ histone H3-like protein	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;NA;NA
+VOG06938	REFSEQ galactose binding lectin domain-containing protein	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Pimascovirales;Marseilleviridae
+VOG06971	REFSEQ conserved putative glycosyltransferase	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Pimascovirales;Marseilleviridae
+VOG06981	REFSEQ gp2	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Mymonaviridae
+VOG07035	sp|Q6DN65|VP54_CPSVP Uncharacterized 54 kDa protein	Riboviria;Orthornavirae;Negarnaviricota;Milneviricetes;Serpentovirales;Aspiviridae
+VOG07036	sp|Q6DN64|NCAP_CPSVP Nucleoprotein	Riboviria;Orthornavirae;Negarnaviricota;Milneviricetes;Serpentovirales;Aspiviridae
+VOG07043	sp|P0C794|MATRX_BDV1 Matrix protein	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Bornaviridae
+VOG07057	REFSEQ conserved putative secreted protein	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Pimascovirales;Marseilleviridae
+VOG07125	REFSEQ RNA-dependent RNA polymerase	Riboviria;Orthornavirae;Negarnaviricota;Ellioviricetes;Bunyavirales;NA
+VOG07185	REFSEQ putative coat protein	Riboviria;Orthornavirae;Duplornaviricota;Chrymotiviricetes;Ghabrivirales;NA
+VOG07334	sp|Q6Q304|GLYC_EMARV Envelope glycoprotein	Riboviria;Orthornavirae;Negarnaviricota;Ellioviricetes;Bunyavirales;Fimoviridae
+VOG07335	sp|Q0PI70|NCAP_EMARV Nucleoprotein	Riboviria;Orthornavirae;Negarnaviricota;Ellioviricetes;Bunyavirales;Fimoviridae
+VOG07336	REFSEQ p4	Riboviria;Orthornavirae;Negarnaviricota;Ellioviricetes;Bunyavirales;Fimoviridae
+VOG07475	REFSEQ putative glycoprotein 2	Riboviria;Orthornavirae;Pisuviricota;Pisoniviricetes;Nidovirales;Euroniviridae
+VOG07480	REFSEQ hypothetical protein 2	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Artoviridae
+VOG07491	REFSEQ putative capsid protein	Riboviria;Orthornavirae;Pisuviricota;Pisoniviricetes;Picornavirales;Polycipiviridae
+VOG07496	REFSEQ ORF1p	Riboviria;Orthornavirae;Pisuviricota;Duplopiviricetes;Durnavirales;Amalgaviridae
+VOG07808	sp|Q9XJS8|GPA_BPPM2 Uncharacterized protein Gp-a	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Vinavirales;Corticoviridae
+VOG07809	sp|Q9XJS5|GPD_BPPM2 Uncharacterized protein Gp-d	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Vinavirales;Corticoviridae
+VOG07810	sp|Q9XJS4|GPE_BPPM2 Uncharacterized protein Gp-e	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Vinavirales;Corticoviridae
+VOG07812	sp|Q9XJS2|P13_BPPM2 Transcription factor P13	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Vinavirales;Corticoviridae
+VOG07813	sp|Q9XJS1|P14_BPPM2 Uncharacterized protein P14	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Vinavirales;Corticoviridae
+VOG07814	sp|Q9XJS0|GPH_BPPM2 Uncharacterized protein Gp-h	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Vinavirales;Corticoviridae
+VOG07815	sp|Q9XJR8|EXLYS_BPPM2 Peptidoglycan hydrolase P7	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Vinavirales;Corticoviridae
+VOG07816	sp|P15794|CAPSD_BPPM2 Major capsid protein P2	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Vinavirales;Corticoviridae
+VOG07817	sp|Q9XJR6|P3_BPPM2 Protein P3	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Vinavirales;Corticoviridae
+VOG07818	sp|Q37958|P4_BPPM2 Protein P4	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Vinavirales;Corticoviridae
+VOG07819	sp|Q9XJR5|P8_BPPM2 Protein P8	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Vinavirales;Corticoviridae
+VOG07820	sp|Q9XJR4|GPJ_BPPM2 Uncharacterized protein Gp-j	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Vinavirales;Corticoviridae
+VOG07821	sp|Q9XJR1|P6_BPPM2 Protein P6	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Vinavirales;Corticoviridae
+VOG07822	sp|Q9XJR0|GPK_BPPM2 Uncharacterized protein Gp-k	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Vinavirales;Corticoviridae
+VOG08007	sp|Q6R7I4|Y040_OSHVF Uncharacterized protein ORF40	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08008	sp|Q6R7D8|Y091_OSHVF Uncharacterized protein ORF91	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08009	sp|Q6R7D6|Y093_OSHVF Uncharacterized protein ORF93	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08010	sp|Q6R7D5|Y094_OSHVF Uncharacterized protein ORF94	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08011	sp|Q6R7E7|Y082_OSHVF Uncharacterized protein ORF82	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08012	sp|Q6R7E8|Y081_OSHVF Uncharacterized protein ORF81	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08013	sp|Q6R7H3|Y052_OSHVF Uncharacterized protein ORF52	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08014	sp|Q6R7H2|Y053_OSHVF Uncharacterized protein ORF53	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08015	sp|Q6R7B1|Y115_OSHVF Uncharacterized protein ORF115	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08016	sp|Q6R7G6|Y059_OSHVF Uncharacterized protein ORF59	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08017	sp|Q6R7J5|Y028_OSHVF Uncharacterized protein ORF28	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08018	sp|Q6R7H7|Y047_OSHVF Uncharacterized protein ORF47	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08019	sp|Q6R7H8|Y046_OSHVF Uncharacterized protein ORF46	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08020	sp|Q6R7K1|Y022_OSHVF Uncharacterized protein ORF22	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08023	sp|Q6R7J3|Y030_OSHVF Uncharacterized protein ORF30	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08024	sp|Q6R7F2|Y077_OSHVF Uncharacterized protein ORF77	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08025	sp|Q6R7I1|Y043_OSHVF Uncharacterized protein ORF43	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08026	sp|Q6R7D4|Y095_OSHVF Uncharacterized protein ORF95	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08027	sp|Q6R7F7|Y071_OSHVF Uncharacterized protein ORF71	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08028	sp|Q6R7G4|Y061_OSHVF Uncharacterized protein ORF61	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08029	sp|Q6R7C5|Y104_OSHVF Uncharacterized protein ORF104	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08031	sp|Q6R7L7|Y006_OSHVF Uncharacterized protein ORF6	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08032	sp|Q6R7E0|Y089_OSHVF Uncharacterized protein ORF89	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08033	sp|Q6R7C3|Y107_OSHVF Uncharacterized protein ORF107	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08034	sp|Q6R7B9|Y111_OSHVF Putative transmembrane protein ORF111	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08035	sp|Q6R7B8|Y112_OSHVF Uncharacterized protein ORF112	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08036	sp|Q6R7B7|Y113_OSHVF Uncharacterized protein ORF113	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08037	sp|Q6R7C7|Y102_OSHVF Uncharacterized protein ORF102	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08038	sp|Q6R7C6|Y103_OSHVF Putative transmembrane protein ORF103	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08039	sp|Q6R7G8|Y057_OSHVF Putative transmembrane protein ORF57	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;NA
+VOG08041	sp|Q6R7G7|Y058_OSHVF Uncharacterized protein ORF58	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08043	sp|Q6R7F3|Y076_OSHVF Uncharacterized protein ORF76	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08044	sp|Q6R7J8|Y025_OSHVF Putative transmembrane protein ORF25	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08045	sp|Q6R7J9|Y024_OSHVF Uncharacterized protein ORF24	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08046	sp|Q6R7E4|Y085_OSHVF Uncharacterized protein ORF85	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08047	sp|Q6R7F9|Y069_OSHVF Uncharacterized protein ORF69	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
+VOG08777	REFSEQ RNA-dependent RNA polymerase	Riboviria;Orthornavirae;Negarnaviricota;Yunchangviricetes;Goujianvirales;Yueviridae
+VOG09082	REFSEQ coat protein	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Belfryvirales;Turriviridae
+VOG09528	sp|Q05219|VG13_BPML5 Gene 13 protein	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;Caudovirales;NA
+VOG09862	sp|O55247|G1P_BPPHL Gene 1 protein	Monodnaviria;Loebvirae;Hofneiviricota;Faserviricetes;Tubulavirales;Inoviridae
+VOG10818	sp|P20324|SCAF_BPT3 Capsid assembly scaffolding protein	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;Caudovirales;Autographiviridae
+VOG10819	sp|P03747|TUBE2_BPT7 Tail tubular protein gp12	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;Caudovirales;Autographiviridae
+VOG11404	sp|P19195|Y9KD_BPBF2 Uncharacterized 9.2 kDa protein	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;Caudovirales;Demerecviridae
+VOG11820	sp|P15893|ORF2_SPV1R Uncharacterized protein ORF2	Monodnaviria;Loebvirae;Hofneiviricota;Faserviricetes;Tubulavirales;Plectroviridae
+VOG11821	sp|Q88416|ORF5_SPV1C Uncharacterized protein ORF5	Monodnaviria;Loebvirae;Hofneiviricota;Faserviricetes;Tubulavirales;Plectroviridae
+VOG11822	sp|P15900|CAPSD_SPV1R Putative capsid protein ORF9	Monodnaviria;Loebvirae;Hofneiviricota;Faserviricetes;Tubulavirales;Plectroviridae
+VOG11823	sp|P15892|ORF1_SPV1R Uncharacterized protein ORF1	Monodnaviria;Loebvirae;Hofneiviricota;Faserviricetes;Tubulavirales;Plectroviridae
+VOG11825	sp|P15898|ORF7_SPV1R Uncharacterized protein ORF7	Monodnaviria;Loebvirae;Hofneiviricota;Faserviricetes;Tubulavirales;Plectroviridae
+VOG11828	sp|P15895|ORF4_SPV1R Uncharacterized protein ORF4	Monodnaviria;Loebvirae;Hofneiviricota;Faserviricetes;Tubulavirales;Plectroviridae
+VOG11829	sp|Q88425|ORF11_SPV1C Uncharacterized protein ORF11	Monodnaviria;Loebvirae;Hofneiviricota;Faserviricetes;Tubulavirales;Plectroviridae
+VOG11830	sp|P15901|ORF10_SPV1R Uncharacterized protein ORF10	Monodnaviria;Loebvirae;Hofneiviricota;Faserviricetes;Tubulavirales;Plectroviridae
+VOG11837	sp|P11124|RDRP_BPPH6 RNA-directed RNA polymerase	Riboviria;Orthornavirae;Duplornaviricota;Vidaverviricetes;Mindivirales;Cystoviridae
+VOG11849	sp|P11126|P1_BPPH6 Major inner protein P1	Riboviria;Orthornavirae;Duplornaviricota;Vidaverviricetes;Mindivirales;Cystoviridae
+VOG11854	sp|P11125|P4_BPPH6 Packaging enzyme P4	Riboviria;Orthornavirae;Duplornaviricota;Vidaverviricetes;Mindivirales;Cystoviridae
+VOG11858	sp|P11123|P7_BPPH6 Assembly protein P7	Riboviria;Orthornavirae;Duplornaviricota;Vidaverviricetes;Mindivirales;Cystoviridae
+VOG18856	REFSEQ DNA packaging protein	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Kalamavirales;Tectiviridae
+VOG18858	REFSEQ DNA delivery protein	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Kalamavirales;Tectiviridae
+VOG18859	REFSEQ DNA delivery protein	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Kalamavirales;Tectiviridae
