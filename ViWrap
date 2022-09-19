@@ -1,0 +1,147 @@
+#!/usr/bin/env python
+
+try:
+    import warnings
+    import argparse    
+    import sys
+    import os
+    import re
+    import scripts
+    from scripts import (
+        master_run,
+        master_downloader,
+        master_set_up_env,
+        master_cleaner
+    )    
+    warnings.filterwarnings("ignore")
+except Exception as e:
+    sys.stderr.write(str(e) + "\n\n")
+    exit(1)
+
+
+def cli():
+    root_dir = os.path.dirname(os.path.abspath(__file__)) # The dir that contains the ViWrap script
+    current_dir = os.getcwd() # The current dir
+    db_path_default = os.path.join(current_dir, "ViWrap_db") # Set the default ViWrap_db dir under the current directory 
+    
+    parser = argparse.ArgumentParser(usage = argparse.SUPPRESS, formatter_class=argparse.RawDescriptionHelpFormatter,
+        description = f"""ViWrap v1.1.0: Analyzing wrapper for virus from metagenome 
+
+Usage: ViWrap <task> [options]
+
+Task:
+	run          Run the full wrapper for identifying, classifying, charaterizing virus genomes from metagenomes
+	download     Download and setup the ViWrap database
+	set_up_env   Set up the conda environments for all scripts   
+	clean        Clean redundant information in each result directory""",
+	)
+
+    subparsers = parser.add_subparsers(help=argparse.SUPPRESS)
+
+    run_parser = subparsers.add_parser(
+        "run",
+        usage=argparse.SUPPRESS,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description="""
+        Run the full wrapper for identifying, classifying, charaterizing virus genomes from metagenomes.
+        
+        Usage: ViWrap run --input_metagenome <input metagenome assemblies> --input_reads <input metagenomic reads> --out_dir <output directory> [options]
+
+        Example 1: ViWrap run --input_metageome /path/to/Lake_01_assemblies.fasta \\
+                              --input_reads /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq \\
+                              --out_dir ./ViWrap_Lake_01_outdir \\
+                              --conda miniconda3
+                    
+        Example 2: ViWrap run --input_metageome /path/to/Lake_01_assemblies.fasta \\
+                              --input_reads /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq \\
+                              --out_dir ./ViWrap_Lake_01_outdir \\
+                              --conda miniconda3 \\
+                              --threads 30 \\
+                              --virome \\
+                              --input_length_limit 2000 \\
+                              --db_dir /path/to/ViWrap_db \\
+                              --custom_MAGs_dir /path/to/custom_MAGs_dir                   
+                    
+        """,
+    )
+    master_run.fetch_arguments(run_parser,root_dir,db_path_default)
+
+    
+    download_parser = subparsers.add_parser(
+        "download",
+        usage=argparse.SUPPRESS,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description="""
+        To download and set up all ViWrap dependent database files\n
+		
+        Note: requires wget, tar, and gzip to be installed
+		
+        Usage:
+        ViWrap download --db_dir <output directory for the database>  --conda <conda software name>
+
+        Example:
+        ViWrap download --db_dir /path/to/ViWrap_db  --conda miniconda3
+		""",
+    )
+    master_downloader.fetch_arguments(download_parser,root_dir,db_path_default)
+    
+
+    set_up_env_parser = subparsers.add_parser(
+        "set_up_env",
+        usage=argparse.SUPPRESS,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description="""
+        To set up the conda environments for ViWrap
+        
+        Usage: ViWrap set_up_env --conda miniconda3
+        """,
+    )
+    master_set_up_env.fetch_arguments(set_up_env_parser,root_dir,db_path_default)
+
+
+    clean_parser = subparsers.add_parser(
+        "clean",
+        usage=argparse.SUPPRESS,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description="""
+        Clean redundant information in each result directory
+		
+        Usage:
+		ViWrap clean --out_dir ./ViWrap_Lake_01_outdir
+        
+        if you have set the "custom_MAGs_dir" option, you can do like this:
+        ViWrap clean --out_dir ./ViWrap_Lake_01_outdir --custom_MAGs_dir /path/to/custom_MAGs_dir       
+		""",
+    )
+    master_cleaner.fetch_arguments(clean_parser,root_dir,db_path_default)
+
+
+    if len(sys.argv) == 1:
+        parser.print_help()
+        sys.exit(0)
+    elif len(sys.argv) == 2:
+        if sys.argv[1] == "run":
+            run_parser.print_help()
+            sys.exit(0)
+        elif sys.argv[1] == "download":
+            download_parser.print_help()
+            sys.exit(0)
+        elif sys.argv[1] == "set_up_env":
+            set_up_env_parser.print_help()
+            sys.exit(0)
+        elif sys.argv[1] == "clean":
+            clean_parser.print_help()
+            sys.exit(0)
+        else:
+            parser.print_help()
+            sys.exit(0)
+
+    args = vars(parser.parse_args())
+    args["version"] = 'ViWrap v1.1.0'
+    args["func"](args)
+
+
+
+
+if __name__ == "__main__":
+    output = cli()
