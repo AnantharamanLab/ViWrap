@@ -137,7 +137,6 @@ Task:
             sys.exit(0)
 
     args = vars(parser.parse_args())
-    args["version"] = 'ViWrap v1.1.0'
     args["func"](args)
 
 
