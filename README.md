@@ -36,7 +36,7 @@ ______
 10.  [Contact](#contact)
 
 ______
-## Updates for v1.1.0 (March 2022): <a name="updates"></a>
+## Updates for v1.1.0 (Sep 2022): <a name="updates"></a>
 * Add two additional bypasses for identifying viruses from metagenomes: vs - VirSorter2 and CheckV; dvf - DeepVirFinder besides the default pass of vb - VIBRANT
 * set up the VirSorter2, CheckV, and VIBRANT virus identification, curation, and annotation bypass mainly according to the SOP provided by Matthew Sullivan's group (OSU); the 'manual check' step changed to be 'automatic' with stringent criteria
 * Provide flowchart, complete GitHub README
