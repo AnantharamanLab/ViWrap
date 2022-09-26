@@ -55,7 +55,7 @@ ViWrap is a wrapper to identify, bin, classify, and predict host-viral relations
 
 *Note*: ViWrap is built for studying viruses identified and reconstructed from metagenomes. It is suggested to be only used for viruses with hosts as bacteria, archaea, and microeukaryotes.
 
-ViWrap is an integrated wrapper/pipeline, the main contributors of each virus identifying, binning, classifying, viral host predicting software within it should be acknowledged (Citations and links are provided):
+ViWrap is an integrated wrapper/pipeline, the main contributors of each virus identifying, binning, classifying, and viral host predicting software within it should be acknowledged (Citations and links are provided):
 
 [VIBRANT](https://github.com/AnantharamanLab/VIBRANT): https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-020-00867-0
 
@@ -72,8 +72,8 @@ ViWrap is an integrated wrapper/pipeline, the main contributors of each virus id
 
 #### **ViWrap Features**
 * Identify and annotate viruses by VIBRANT, VirSorter2, or DeepVirFinder
-* Mapping reads onto all input metagenome assemblies to get scaffold depth
-* Binning vMAGs using vRhyme
+* Map reads onto all input metagenome assemblies to get scaffold depth
+* Bin vMAGs using vRhyme
 * Classify vMAGs into genus using vContact2, into species using dRep
 * Get virus quality using CheckV
 * Get virus taxonomy using three approaches
@@ -132,7 +132,7 @@ This will take several minutes depending on your current internet speed. The fol
 ViWrap download --db_dir /path/to/ViWrap_db  --conda_env_dir /path/to/conda_environments
 ```
 
-`/path/to/ViWrap_db` is the place you store ViWrap database. Please make sure there is enough space to store the database (~280G at least). It will take ~3-4 hours to set up well depending on your current internet speed. This is kind of tedious, however, you will only need to do this one time.
+`/path/to/ViWrap_db` is the place you store the ViWrap database. Please make sure there is enough space to store the database (~280G at least). It will take ~3-4 hours to set up well depending on your current internet speed. This is kind of tedious, however, you will only need to do this one time.
 
 It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the directory of "ViWrap_db"): 
 
@@ -269,17 +269,17 @@ ______
 ```
 
 ______
-#### Notes <a name="notes"></a>
+#### Notes
 
-- **Default setting for each software**
+- **The default setting for each software**
 
-  Generally, we all use the default settings for identifying, binning, classifying, and predicting viruses, due to that the default settings are mostly suggested by the inventors and we want to make ViWrap to be intuitive and easy to use.
+  Generally, we all use the default settings for identifying, binning, classifying, and predicting viruses, due to that the default settings are mostly suggested by the inventors and we want to make ViWrap be intuitive and easy to use.
 
-- **Lytic and lysogenic viruses can bin together** (copied from vRhyme github page)
+- **Lytic and lysogenic viruses can bin together** (copied from vRhyme GitHub page)
 
   * Lytic cycle: productive infection that leads to release of viral particles; strictly lytic viruses do not integrate
   * Lysogenic cycle: non-productive infection where viral particles are not released; lysogenic viruses integrate and are dormant until entering the lytic cycle (some exceptions); often encode an integrase
-  * When viewing binned sequences that have "lysogenic/lytic" labels from another software (e.g., VIBRANT, VirSorter) it may seem concerning to see a lytic virus bin with a lysogenic virus. Although this may be reason to be skeptical of contamination, here are some explanations of what may be occurring:
+  * When viewing binned sequences that have "lysogenic/lytic" labels from another software (e.g., VIBRANT, VirSorter) it may seem concerning to see a lytic virus bin with a lysogenic virus. Although this may be a reason to be skeptical of contamination, here are some explanations of what may be occurring:
     * software tools that label lysogenic/lytic can make mistakes or be misled. For example, if a sequence does not encode an integrase or other lysogenic features then VIBRANT will label it as "lytic". If this is a virus genome fragment and another fragment of the same genome (different sequence) contains an integrase then that other fragment will be labeled as "lysogenic". When binning, those two sequence can be place into the same bin by vRhyme to produce an accurate bin with a lytic and lysogenic member.
     * A bin with one or more lytic members and one lysogenic member should not cause concern.
     * A bin with one or more lytic members and one integrated prophage should be examined.
