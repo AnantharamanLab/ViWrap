@@ -52,14 +52,14 @@ clean        Clean redundant information in each result directory
                               --input_reads /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq \\
                               --out_dir ./ViWrap_Lake_01_outdir \\
                               --identify_method vb \\
-                              --conda miniconda3
+                              --conda_env_dir /path/to/all_conda_environments
                     
         Example 2: ViWrap run --input_metageome /path/to/Lake_01_assemblies.fasta \\
                               --input_reads /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq \\
                               --out_dir ./ViWrap_Lake_01_outdir \\
                               --db_dir /path/to/ViWrap_db \\
                               --identify_method vs \\
-                              --conda miniconda3 \\
+                              --conda_env_dir /path/to/all_conda_environments \\
                               --threads 30 \\
                               --virome \\
                               --input_length_limit 2000 \\

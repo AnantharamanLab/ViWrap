@@ -169,7 +169,7 @@ ______
              --out_dir ./ViWrap_Lake_01_outdir \
              --db_dir /path/to/ViWrap_db \
              --identify_method vb \
-             --conda miniconda3
+             --conda_env_dir /path/to/all_conda_environments
                   
   # Example 2 (with custom MAGs from the same metagenome provided for further host prediction)
   ViWrap run --input_metageome /path/to/Lake_01_assemblies.fasta \
@@ -177,7 +177,7 @@ ______
              --out_dir ./ViWrap_Lake_01_outdir \
              --db_dir /path/to/ViWrap_db \
              --identify_method vs \
-             --conda miniconda3 \
+             --conda_env_dir /path/to/all_conda_environments \
              --threads 30 \
              --virome \
              --input_length_limit 2000 \
