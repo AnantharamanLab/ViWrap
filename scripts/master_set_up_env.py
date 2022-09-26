@@ -102,57 +102,57 @@ def main(args):
             env = line.rsplit('/', 1)[1]
             ViWrap_env_map[env] = line
             
-    if os.path.exists(ViWrap_env_map['ViWrap-VIBRANT']):
+    if os.path.exists(os.path.join(ViWrap_env_map['ViWrap-VIBRANT'],'bin')):
         logger.info("ViWrap-VIBRANT conda env path has been checked")
     else:
         logger.info("ViWrap-VIBRANT conda env path is not present!")
         
-    if os.path.exists(ViWrap_env_map['ViWrap-vRhyme']):
+    if os.path.exists(os.path.join(ViWrap_env_map['ViWrap-vRhyme'],'bin')):
         logger.info("ViWrap-vRhyme conda env path has been checked")
     else:
         logger.info("ViWrap-vRhyme conda env path is not present!")
 
-    if os.path.exists(ViWrap_env_map['ViWrap-vContact2']):
+    if os.path.exists(os.path.join(ViWrap_env_map['ViWrap-vContact2'],'bin')):
         logger.info("ViWrap-vContact2 conda env path has been checked")
     else:
         logger.info("ViWrap-vContact2 conda env path is not present!")
 
-    if os.path.exists(ViWrap_env_map['ViWrap-CheckV']):
+    if os.path.exists(os.path.join(ViWrap_env_map['ViWrap-CheckV'],'bin')):
         logger.info("ViWrap-CheckV conda env path has been checked")
     else:
         logger.info("ViWrap-CheckV conda env path is not present!")
 
-    if os.path.exists(ViWrap_env_map['ViWrap-dRep']):
+    if os.path.exists(os.path.join(ViWrap_env_map['ViWrap-dRep'],'bin')):
         logger.info("ViWrap-dRep conda env path has been checked")
     else:
         logger.info("ViWrap-dRep conda env path is not present!")
 
-    if os.path.exists(ViWrap_env_map['ViWrap-Tax']):
+    if os.path.exists(os.path.join(ViWrap_env_map['ViWrap-Tax'],'bin')):
         logger.info("ViWrap-Tax conda env path has been checked")
     else:
         logger.info("ViWrap-Tax conda env path is not present!")
 
-    if os.path.exists(ViWrap_env_map['ViWrap-iPHoP']):
+    if os.path.exists(os.path.join(ViWrap_env_map['ViWrap-iPHoP'],'bin')):
         logger.info("ViWrap-iPHoP conda env path has been checked")
     else:
         logger.info("ViWrap-iPHoP conda env path is not present!")
 
-    if os.path.exists(ViWrap_env_map['ViWrap-GTDBTk']):
+    if os.path.exists(os.path.join(ViWrap_env_map['ViWrap-GTDBTk'],'bin')):
         logger.info("ViWrap-GTDBTk conda env path has been checked")
     else:
         logger.info("ViWrap-GTDBTk conda env path is not present!")
 
-    if os.path.exists(ViWrap_env_map['ViWrap-vs2']):
+    if os.path.exists(os.path.join(ViWrap_env_map['ViWrap-vs2'],'bin')):
         logger.info("ViWrap-vs2 conda env path has been checked")
     else:
         logger.info("ViWrap-vs2 conda env path is not present!")  
 
-    if os.path.exists(ViWrap_env_map['ViWrap-DVF']):
+    if os.path.exists(os.path.join(ViWrap_env_map['ViWrap-DVF'],'bin')):
         logger.info("ViWrap-DVF conda env path has been checked")
     else:
         logger.info("ViWrap-DVF conda env path is not present!")  
         
-    if os.path.exists(ViWrap_env_map['ViWrap-Mapping']):
+    if os.path.exists(os.path.join(ViWrap_env_map['ViWrap-Mapping'],'bin')):
         logger.info("ViWrap-Mapping conda env path has been checked")
     else:
         logger.info("ViWrap-Mapping conda env path is not present!")          
