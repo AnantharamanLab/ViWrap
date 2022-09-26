@@ -116,12 +116,12 @@ This will take several minutes depending on your current internet speed. The fol
 121M	./ViWrap-VIBRANT
 265M	./ViWrap-vContact2
 100M	./ViWrap-dRep
-75M     ./ViWrap-Tax
+75M   ./ViWrap-Tax
 205M	./ViWrap-iPHoP
 1.9G	./ViWrap-vs2
 272M	./ViWrap-vRhyme
-76M	    ./ViWrap-CheckV
-83M	    ./ViWrap-GTDBTk
+76M   ./ViWrap-CheckV
+83M   ./ViWrap-GTDBTk
 155M	./ViWrap-Mapping
 2.1G	./ViWrap-DVF
 ```
@@ -137,13 +137,13 @@ ViWrap download --db_dir /path/to/ViWrap_db  --conda_env_dir /path/to/conda_envi
 It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the directory of "ViWrap_db"): 
 
 ```
-11G	    ./VIBRANT_db
+11G   ./VIBRANT_db
 6.4G	./CheckV_db
 114M	./DVF_db
 581M	./Tax_classification_db
 199G	./iPHoP_db
-11G	    ./VirSorter2_db
-49G	    ./GTDB_db
+11G   ./VirSorter2_db
+49G   ./GTDB_db
 ```
 
 #### Test ViWrap
