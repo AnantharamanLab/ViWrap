@@ -89,7 +89,7 @@ ______
 Since ViWrap has many dependencies to be installed, it would be much easier to set up a conda environment instead of installing all dependencies in the global environment (make sure you have upfront conda installed on your server, i.e., [miniconda3](https://docs.conda.io/en/latest/miniconda.html) or anaconda3; we only suggest to run in version 3.0+ conda). Since ViWrap will use multiple conda environments with considerably large sizes, we strongly suggest placing them elsewhere instead of the home address ( `$HOME` ) as normally done.
 
 ```shell
-1. conda create -c bioconda -p /path/to/conda_environments/ViWrap python=3.8 biopython mamba numpy pandas pyfastx
+1. conda create -c bioconda -p /path/to/ViWrap_conda_environments/ViWrap python=3.8 biopython mamba numpy pandas pyfastx
 2. conda activate /path/to/conda_environments/ViWrap
 ```
 
@@ -107,10 +107,21 @@ Note: `/path/to/conda_environments` indicates the directory that you will need t
 #### Set up the other conda environments required by ViWrap
 
 ```shell
-ViWrap set_up_env --conda_env_dir /path/to/conda_environments 
+ViWrap set_up_env --conda_env_dir /path/to/ViWrap_conda_environments 
 ```
 
-This will take several minutes depending on your current internet speed. The following 11 conda environments will be set up:
+This will take several minutes depending on your current internet speed. 
+
+**Note**: `/path/to/ViWrap_conda_environments` can be set anywhere on your server to contain ViWrap conda environments, it does not necessarily have to be "miniconda3/envs" or "anaconda3/envs"; on contrary, we suggest avoiding these two addresses, it is better to be set to elsewhere that is not within `$HOME`.
+
+ViWrap will use the "-p" or "--prefix" option to specify where to write the environment files:
+
+(Details in https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#specifying-a-location-for-an-environment)
+
+For example,`conda create --prefix /tmp/test-env python=3.8`
+will create the environment named `/tmp/test-env` which resides in `/tmp/` instead of the default `.conda`.
+
+The following 11 conda environments will be set up:
 
 ```
 121M	./ViWrap-VIBRANT
@@ -129,7 +140,7 @@ This will take several minutes depending on your current internet speed. The fol
 #### Set up ViWrap database
 
 ```shell
-ViWrap download --db_dir /path/to/ViWrap_db  --conda_env_dir /path/to/conda_environments
+ViWrap download --db_dir /path/to/ViWrap_db  --conda_env_dir /path/to/ViWrap_conda_environments
 ```
 
 `/path/to/ViWrap_db` is the place you store the ViWrap database. Please make sure there is enough space to store the database (~280G at least). It will take ~3-4 hours to set up well depending on your current internet speed. This is kind of tedious, however, you will only need to do this one time.
@@ -169,7 +180,7 @@ ______
              --out_dir ./ViWrap_Lake_01_outdir \
              --db_dir /path/to/ViWrap_db \
              --identify_method vb \
-             --conda_env_dir /path/to/all_conda_environments
+             --conda_env_dir /path/to/ViWrap_conda_environments
                   
   # Example 2 (with custom MAGs from the same metagenome provided for further host prediction)
   ViWrap run --input_metageome /path/to/Lake_01_assemblies.fasta \
@@ -177,7 +188,7 @@ ______
              --out_dir ./ViWrap_Lake_01_outdir \
              --db_dir /path/to/ViWrap_db \
              --identify_method vs \
-             --conda_env_dir /path/to/all_conda_environments \
+             --conda_env_dir /path/to/ViWrap_conda_environments \
              --threads 30 \
              --virome \
              --input_length_limit 2000 \
