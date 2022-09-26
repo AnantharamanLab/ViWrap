@@ -9,11 +9,12 @@ from datetime import datetime
 from pathlib import Path
 from glob import glob
 
+
 def fetch_arguments(parser,root_dir,db_path_default):
     parser.set_defaults(func=main)
     parser.set_defaults(program="download")
     parser.add_argument('--db_dir','-d', dest='db_dir', required=False, default=db_path_default, help=f'database directory; default = {db_path_default}')
-    parser.add_argument('--conda', dest='conda', required=True, default='none', help='conda software: miniconda3 or anaconda3')
+    parser.add_argument('--conda_env_dir', dest='conda_env_dir', required=True, default='none', help=r'(required) the directory where you put your conda environment files. It is the parent directory that contains all the conda environment folders')
     parser.add_argument('--threads','-t', dest='threads', required=False, default=10, help='number of threads (default = 10)')
     parser.add_argument('--root_dir', dest='root_dir', required=False, default=root_dir,help=argparse.SUPPRESS)
 
@@ -29,6 +30,7 @@ def set_defaults(args):
     args['Tax_classification_db'] = os.path.join(args['db_dir'],'Tax_classification_db')
     args['VIBRANT_db'] = os.path.join(args['db_dir'],'VIBRANT_db')
     args['VirSorter2_db'] = os.path.join(args['db_dir'],'VirSorter2_db')
+    args['DVF_db'] = os.path.join(args['db_dir'],'DVF_db')    
 
 
 def main(args):
@@ -48,11 +50,9 @@ def main(args):
     # Step 1 Pre-check inputs
     start_time = datetime.now().replace(microsecond=0)
 
-    if not args['conda']:
-        sys.exit(f"Could not find the input of conda software, for example: miniconda3 or anaconda3")
-    elif not os.path.exists(os.path.join(os.path.expanduser('~'), args['conda'], 'envs')):
-        sys.exit(f"Could not find the conda envs folder of {args['conda']}") 
-        
+    if not os.path.exists(args['conda_env_dir']):
+        sys.exit(f"Could not find conda env dirs within {args['conda_env_dir']}") 
+   
     if os.path.exists(args['db_dir']):
         sys.exit(f"The db dir of {args['db_dir']} has also ready been set up")
     else:
@@ -64,21 +64,13 @@ def main(args):
     set_defaults(args)
 
     # Step 2  Make VIBRANT db
-    vibrant_db_dir = os.path.join(args['db_dir'], 'databases')
-    os.mkdir(vibrant_db_dir)
-    current_dir = os.getcwd()
-    os.system(f"cp -r {os.path.join(os.path.expanduser('~'), args['conda'], 'envs/ViWrap-VIBRANT/share/vibrant-1.2.1/db/databases')} {vibrant_db_dir}")
-    
-    os.chdir(vibrant_db_dir)
-    os.system(f'conda run -n ViWrap-VIBRANT python3 VIBRANT_setup.py >/dev/null 2>&1')
-    os.chdir(current_dir)
-    os.system(f"mv {vibrant_db_dir} {args['VIBRANT_db']}")
-    os.system(f"cp -r {os.path.join(os.path.expanduser('~'), args['conda'], 'envs/ViWrap-VIBRANT/share/vibrant-1.2.1/db/files')} {args['VIBRANT_db']}")
+    vibrant_db_dir_absolute_path = os.path.abspath(args['VIBRANT_db'])
+    os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} bash {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT/bin/download-db.sh')} {vibrant_db_dir_absolute_path}")
     
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | VIBRANT db has been set up")  
     
-
+    
     # Step 3  Make Tax classification db
     os.mkdir(args['Tax_classification_db'])
 
@@ -112,6 +104,7 @@ def main(args):
     ##########################
     ## Step 3.7 Parse to get VOG marker list
     vog_marker_table = os.path.join(args['root_dir'], 'database/VOG_marker_table.txt')
+    os.system(f"cp {os.path.join(args['root_dir'], 'database/VOG_marker_table.txt')} {os.path.join(args['Tax_classification_db'], 'VOG_marker_table.txt')}")
     vog_marker_list = scripts.downloadDB.get_vog_marker_table(vog_marker_table)
 
     ## Step 3.8 Download the latest VOG db and pick VOG markers
@@ -132,7 +125,7 @@ def main(args):
     
 
     # Step 4 Make CheckV db
-    os.system(f"conda run -n ViWrap-CheckV checkv download_database {args['db_dir']} >/dev/null 2>&1")
+    os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} checkv download_database {args['db_dir']} >/dev/null 2>&1")
     os.system(f"mv {os.path.join(args['db_dir'], 'checkv-db-v*')} {args['CheckV_db']}")
 
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
@@ -156,24 +149,26 @@ def main(args):
     os.system(f"tar xzf {os.path.join(args['db_dir'], 'gtdbtk_r202_data.tar.gz')} --directory {args['GTDB_db']}")
     os.system(f"mv {os.path.join(args['GTDB_db'], 'release202')} {os.path.join(args['GTDB_db'], 'GTDB_db')}")  
     os.system(f"rm {os.path.join(args['db_dir'], 'gtdbtk_r202_data.tar.gz')}")
-    os.system(f"echo \"export GTDBTK_DATA_PATH={os.path.join(args['GTDB_db'], 'GTDB_db')}\" > {os.path.join(os.path.expanduser('~'), args['conda'], 'envs/ViWrap-GTDBTk/etc/conda/activate.d/gtdbtk.sh')}")
-
+    os.system(f"echo \"export GTDBTK_DATA_PATH={os.path.join(args['GTDB_db'], 'GTDB_db')}\" > {os.path.join(args['conda_env_dir'], 'ViWrap-GTDBTk/etc/conda/activate.d/gtdbtk.sh')}")
+    
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | GTDB-Tk db has been set up") 
     
 
     # Step 7 Download VirSorter2 db
-    os.system(f"conda run -n ViWrap-vs2 virsorter setup -d {args['VirSorter2_db']} -j {args['threads']} >/dev/null 2>&1")
+    os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} virsorter setup -d {args['VirSorter2_db']} -j {args['threads']} >/dev/null 2>&1")
     
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | VirSorter2 db has been set up")     
-
-
-    # Step 8 Download DRAM db
-    os.system(f"conda run -n ViWrap-DRAM DRAM-setup.py prepare_databases --skip_uniref --output_dir {args['DRAM_db']} --threads {args['threads']} >/dev/null 2>&1")
+    
+    # Step 8 Download DVF db
+    os.system(f"git clone https://github.com/jessieren/DeepVirFinder.git {os.path.join(args['db_dir'], 'DVF_db_tmp')}")
+    os.system(f"mv {os.path.join(args['db_dir'], 'DVF_db_tmp/models')} {args['DVF_db']}")
+    os.system(f"rm -rf {os.path.join(args['db_dir'], 'DVF_db_tmp')}")
     
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-    logger.info(f"{time_current} | DRAM db has been set up")  
+    logger.info(f"{time_current} | DVF db has been set up")     
+    
 
     end_time = datetime.now().replace(microsecond=0)
     duration = end_time - start_time

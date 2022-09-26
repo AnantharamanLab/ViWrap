@@ -25,15 +25,16 @@ def cli():
     db_path_default = os.path.join(current_dir, "ViWrap_db") # Set the default ViWrap_db dir under the current directory 
     
     parser = argparse.ArgumentParser(usage = argparse.SUPPRESS, formatter_class=argparse.RawDescriptionHelpFormatter,
-        description = f"""ViWrap v1.1.0: Analyzing wrapper for virus from metagenome 
+        description = """ViWrap v1.1.0: Analyzing wrapper for virus from metagenome 
 
 Usage: ViWrap <task> [options]
 
 Task:
-	run          Run the full wrapper for identifying, classifying, charaterizing virus genomes from metagenomes
-	download     Download and setup the ViWrap database
-	set_up_env   Set up the conda environments for all scripts   
-	clean        Clean redundant information in each result directory""",
+run          Run the full wrapper for identifying, classifying, and characterizing virus genomes from metagenomes
+download     Download and setup the ViWrap database
+set_up_env   Set up the conda environments for all scripts   
+clean        Clean redundant information in each result directory
+        """,   
 	)
 
     subparsers = parser.add_subparsers(help=argparse.SUPPRESS)
@@ -43,23 +44,25 @@ Task:
         usage=argparse.SUPPRESS,
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description="""
-        Run the full wrapper for identifying, classifying, charaterizing virus genomes from metagenomes.
+        Run the full wrapper for identifying, classifying, and characterizing virus genomes from metagenomes
         
         Usage: ViWrap run --input_metagenome <input metagenome assemblies> --input_reads <input metagenomic reads> --out_dir <output directory> [options]
 
         Example 1: ViWrap run --input_metageome /path/to/Lake_01_assemblies.fasta \\
                               --input_reads /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq \\
                               --out_dir ./ViWrap_Lake_01_outdir \\
+                              --identify_method vb \\
                               --conda miniconda3
                     
         Example 2: ViWrap run --input_metageome /path/to/Lake_01_assemblies.fasta \\
                               --input_reads /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq \\
                               --out_dir ./ViWrap_Lake_01_outdir \\
+                              --db_dir /path/to/ViWrap_db \\
+                              --identify_method vs \\
                               --conda miniconda3 \\
                               --threads 30 \\
                               --virome \\
                               --input_length_limit 2000 \\
-                              --db_dir /path/to/ViWrap_db \\
                               --custom_MAGs_dir /path/to/custom_MAGs_dir                   
                     
         """,
@@ -77,10 +80,10 @@ Task:
         Note: requires wget, tar, and gzip to be installed
 		
         Usage:
-        ViWrap download --db_dir <output directory for the database>  --conda <conda software name>
+        ViWrap download --db_dir <output directory for the database>  --conda_env_dir <conda env dir>
 
         Example:
-        ViWrap download --db_dir /path/to/ViWrap_db  --conda miniconda3
+        ViWrap download --db_dir /path/to/ViWrap_db  --conda_env_dir /path/to/conda_environments
 		""",
     )
     master_downloader.fetch_arguments(download_parser,root_dir,db_path_default)
@@ -93,7 +96,7 @@ Task:
         description="""
         To set up the conda environments for ViWrap
         
-        Usage: ViWrap set_up_env --conda miniconda3
+        Usage: ViWrap set_up_env --conda_env_dir /path/to/conda_environments
         """,
     )
     master_set_up_env.fetch_arguments(set_up_env_parser,root_dir,db_path_default)

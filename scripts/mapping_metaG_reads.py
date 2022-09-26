@@ -38,7 +38,34 @@ def run_bowtie2(fasta, input_read_pair, working_dir, sam_name, num_threads):
     
     # Mapping 
     mapping_cmd = f'bowtie2 -x {working_dir}/{index_name} -1 {input_read_pair.split(",")[0]} -2 {input_read_pair.split(",")[1]} -S {working_dir}/{sam_name}.sam -p {num_threads} --no-unal --quiet --mm 1> /dev/null'
-    os.system(mapping_cmd)    
+    os.system(mapping_cmd) 
+
+def store_seq(input_seq_file): # The input sequence file should be a file with full path
+    head = "" # Store the header line
+    seq_dict = {} # Store the sequence dict
+    
+    with open(input_seq_file, "r") as seq_lines:
+        for line in seq_lines:
+            line = line.rstrip("\n") # Remove "\n" in the end
+            if ">" in line:
+                if (" " or "\t") in line: # Break at the first " " or "\t"
+                    spliter = ""
+                    for i in range(len(line)):
+                        if line[i] == " " or line[i] == "\t":
+                            spliter = line[i]
+                            break 
+                           
+                    head = line.split(f'{spliter}', 1)[0]
+                    seq_dict[head] = ""
+                else:
+                    head = line
+                    seq_dict[head] = ""
+            else:
+                seq_dict[head] += line
+            
+    seq_lines.close()
+    
+    return seq_dict    
         
 class FilterCoverage: 
 # This chunk of scripts were copied from 'filter_coverage_file.py' (within our custom python scripts collection) 
@@ -210,7 +237,7 @@ class FilterCoverage:
         bamfile.close()
         self.outfile.close()        
         
-def mapping_metaG_reads(metagenomic_scaffold, metaG_reads, mapping_result_dir, threads):
+def mapping_metaG_reads(viral_scaffold, metagenomic_scaffold, metaG_reads, mapping_result_dir, threads):
     threads = int(threads)
     # Step 1 Run Bowtie2
     os.mkdir(mapping_result_dir)
@@ -264,11 +291,26 @@ def mapping_metaG_reads(metagenomic_scaffold, metaG_reads, mapping_result_dir, t
     # Step 4 Parse all_coverm_raw_result.txt
     coverm_raw_table = pd.read_csv(f'{mapping_result_dir}/all_coverm_raw_result.txt', sep = '\t')
     coverm_raw_table_subset = coverm_raw_table.drop(['contigLen', 'totalAvgDepth'], axis = 1)
+    
+    dict_virus_rename = {} # old_name => new_name
+    viral_seq = store_seq(viral_scaffold)
+    for header in viral_seq:
+        new_name = header.replace('>', '', 1)
+        old_name = ''
+        if '||' in new_name:
+            old_name = new_name.rsplit('||', 1)[0]
+        elif '_fragment_' in new_name:
+            old_name = new_name.rsplit('_fragment_', 1)[0]
+        else:
+            old_name = new_name
+        dict_virus_rename[old_name] = new_name   
+    
+    coverm_raw_table_subset.replace({"contigName": dict_virus_rename},inplace = True)
     coverm_raw_table_subset.to_csv(f'{mapping_result_dir}/vRhyme_input_coverage.txt', sep='\t', index=False)
     
     
-metagenomic_scaffold, metaG_reads, mapping_result_dir, threads = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
-mapping_metaG_reads(metagenomic_scaffold, metaG_reads, mapping_result_dir, threads)       
+viral_scaffold, metagenomic_scaffold, metaG_reads, mapping_result_dir, threads = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5]
+mapping_metaG_reads(viral_scaffold, metagenomic_scaffold, metaG_reads, mapping_result_dir, threads)       
     
     
     

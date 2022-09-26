@@ -16,8 +16,6 @@ try:
     from pathlib import Path
     from glob import glob
     import pyfastx # For fastq and fasta reading and parsing
-    import subprocess
-    from subprocess import DEVNULL, STDOUT, check_call
 except Exception as e:
     sys.stderr.write(str(e) + "\n\n")
     exit(1)
@@ -564,6 +562,8 @@ def get_virus_raw_abundance(mapping_result_dir, vRhyme_best_bin_dir, vRhyme_unbi
             for scaffold in scaffolds:
                 if '_fragment_' in scaffold:
                     scaffold = scaffold.rsplit('_fragment_', 1)[0]
+                if '||' in scaffold:
+                    scaffold = scaffold.rsplit('||', 1)[0]
                 coverage = coverm_raw_dict[bam][scaffold]
                 coverages.append(coverage)
             gn_coverage = mean(coverages)
@@ -721,7 +721,7 @@ def get_viral_gn_size_and_scf_no_and_pro_count(viral_gn_dir):
         gn2size_and_scf_no_and_pro_count[gn] = [size, scf_no, pro_count]
     return gn2size_and_scf_no_and_pro_count    
     
-def get_amg_info(vibrant_outdir, metagenomic_scaffold_stem_name, viral_gn_dir):
+def get_amg_info_for_vb(vibrant_outdir, metagenomic_scaffold_stem_name, viral_gn_dir):
     gn2long_scf2kos = defaultdict(dict) # gn => long_scf => [kos]
     
     # Step 1 Get gn2long_scfs dict
@@ -750,7 +750,43 @@ def get_amg_info(vibrant_outdir, metagenomic_scaffold_stem_name, viral_gn_dir):
             kos = scf2kos[scf]
             gn2long_scf2kos[gn][long_scf] = kos
             
-    return gn2long_scf2kos        
+    return gn2long_scf2kos  
+
+def get_amg_info_for_vs_and_dvf(args, viral_gn_dir):
+    gn2long_scf2kos = defaultdict(dict) # gn => long_scf => [kos]
+    
+    # Step 1 Get gn2long_scfs dict
+    gn2long_scfs = {} # gn => [long_scfs]
+    all_gn_addrs = glob(f'{viral_gn_dir}/*.fasta')
+    for gn_addr in all_gn_addrs:
+        gn = Path(gn_addr).stem
+        gn_seq = store_seq(gn_addr)
+        long_scfs = [x.replace('>', '', 1) for x in gn_seq]
+        gn2long_scfs[gn] = long_scfs 
+        
+    # Step 2 Get scf2kos dict
+    scf2kos = defaultdict(list) # scf => [kos]
+    annotation_file = ''
+    if args['identify_method'] == 'vs':
+        annotation_file = os.path.join(args['virsorter_outdir'], 'final_vs2_virus.annotation.txt')
+    elif args['identify_method'] == 'dvf':
+        annotation_file = os.path.join(args['dvf_outdir'], 'final_dvf_virus.annotation.txt')
+    with open(annotation_file ,'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            if not line.startswith('protein\t'):
+                tmp = line.split('\t')
+                scf, ko = tmp[1], tmp[2]
+                scf2kos[scf].append(ko)
+                
+    # Step 3 Get gn2long_scf2kos dict
+    for gn in gn2long_scfs:
+        for long_scf in gn2long_scfs[gn]:
+            scf = long_scf.split('__', 1)[1]
+            kos = scf2kos[scf]
+            gn2long_scf2kos[gn][long_scf] = kos
+            
+    return gn2long_scf2kos     
             
 def get_amg_statics(gn2long_scf2kos):
     gn2amg_statics = {} # gn => amg_statics; for example, K00018(3);K01953(4)
@@ -775,7 +811,7 @@ def get_virus_summary_info(checkv_dict, gn2lyso_lytic_result, gn2size_and_scf_no
     virus_summary_info_dict.update(checkv_dict)
     
     for gn in gns:
-        lytic_state = gn2lyso_lytic_result[gn]
+        lytic_state = gn2lyso_lytic_result.get(gn, '')
         virus_summary_info_dict['lytic_state'][gn] = lytic_state
         virus_summary_info_dict['genome_size'][gn] = gn2size_and_scf_no_and_pro_count[gn][0]
         virus_summary_info_dict['scaffold_num'][gn] = gn2size_and_scf_no_and_pro_count[gn][1]
@@ -794,7 +830,8 @@ def get_run_input_arguments(args):
     if args['input_reads'] != 'none': argu_items.append('--input_reads' + ' ' + args['input_reads'])  
     argu_items.append('--out_dir' + ' ' + args['out_dir'])
     argu_items.append('--db_dir' + ' ' + args['db_dir'])
-    if args['conda'] != 'none': argu_items.append('--conda' + ' ' + args['conda'])
+    argu_items.append('--identify_method' + ' ' + args['identify_method'])
+    if args['conda_env_dir'] != 'none': argu_items.append('--conda_env_dir' + ' ' + args['conda_env_dir'])
     argu_items.append('--threads' + ' ' + args['threads'])
     if args['virome']: argu_items.append('--virome')
     argu_items.append('--input_length_limit' + ' ' + args['input_length_limit'])
@@ -829,7 +866,7 @@ def combine_iphop_results(args, combined_host_pred_to_genome_result, combined_ho
                 host_pred_to_genus_m90_result.append(line)
     lines.close()                
 
-    if args['iphop_custom_outdir'] != 'none':
+    if args['custom_MAGs_dir'] != 'none':
         host_pred_to_genome_m90_custom = os.path.join(args['iphop_custom_outdir'], "Host_prediction_to_genome_m90.csv")
         host_pred_to_genus_m90_custom = os.path.join(args['iphop_custom_outdir'], "Host_prediction_to_genus_m90.csv")
         
@@ -859,9 +896,372 @@ def combine_iphop_results(args, combined_host_pred_to_genome_result, combined_ho
     f.write(host_pred_to_genus_header + '\n')
     for line in host_pred_to_genus_m90_result:
         f.write(line + '\n')
-    f.close()    
-  
+    f.close()  
+
+def get_virus_genome_annotation_result(args):
+    if args['identify_method'] == 'vb':
+        # Step 1 Store annotation result
+        vibrant_annotation_result_file = os.path.join(args['vibrant_outdir'],f"VIBRANT_results_{Path(args['input_metagenome']).stem}",f"VIBRANT_annotations_{Path(args['input_metagenome']).stem}.tsv")
+        
+        vibrant_annotation_result = {} # protein => [items in each line]
+        vibrant_annotation_result_header = ''
+        with open (vibrant_annotation_result_file, 'r') as lines:
+            for line in lines:
+                line = line.rstrip('\n')
+                if line.startswith('protein\t'):
+                    vibrant_annotation_result_header = line
+                else:
+                    tmp = line.split('\t')
+                    protein = tmp[0]
+                    vibrant_annotation_result[protein] = tmp
+        lines.close()            
+                    
+        # Step 2 Store gn2long_proteins and long_protein2gn dict
+        gn2long_proteins = {} # gn => [long_proteins]
+        long_protein2gn = {} # long_protein => gn
+        
+        all_faa_addrs = glob(os.path.join(args['viwrap_summary_outdir'],'Virus_genomes_files/*.faa'))
+        for faa_addr in all_faa_addrs:
+            gn = Path(faa_addr).stem
+            faa_seqs = store_seq(faa_addr)
+            long_proteins = [x.replace('>', '', 1) for x in faa_seqs]
+            gn2long_proteins[gn] = long_proteins
+            
+            for long_protein in long_proteins:
+                long_protein2gn[long_protein] = gn
+                
+        # Step 3 Get new VIBRANT annotation result
+        vibrant_annotation_result_new = {} # long_protein => [items in each line]
+        for long_protein in long_protein2gn:
+            protein = long_protein.split('__', 1)[1]
+            items = vibrant_annotation_result[protein]
+            items[0] = long_protein
+            items[1] = long_protein.rsplit('_', 1)[0]
+            items.insert(0, long_protein2gn[long_protein])
+            vibrant_annotation_result_new[long_protein] = items
+            
+        # Step 4 Write down the result
+        result = os.path.join(args['viwrap_summary_outdir'],'Virus_annotation_results.txt')
+        f = open(result, 'w')
+        f.write('viral genome\t' + vibrant_annotation_result_header + '\n')
+        for long_protein in vibrant_annotation_result_new:
+            line = '\t'.join(vibrant_annotation_result_new[long_protein])
+            f.write(line + '\n')
+        f.close() 
+    elif args['identify_method'] == 'vs' or args['identify_method'] == 'dvf':
+        # Step 1 Store annotation result
+        annotation_result_file = ''
+        if args['identify_method'] == 'vs':
+            annotation_result_file = os.path.join(args['virsorter_outdir'], 'final_vs2_virus.annotation.txt')
+        elif args['identify_method'] == 'dvf': 
+            annotation_result_file = os.path.join(args['dvf_outdir'], 'final_dvf_virus.annotation.txt')
+        
+        annotation_result = {} # protein => [items in each line]
+        annotation_result_header = ''
+        with open (annotation_result_file, 'r') as lines:
+            for line in lines:
+                line = line.rstrip('\n')
+                if line.startswith('protein\t'):
+                    annotation_result_header = line
+                else:
+                    tmp = line.split('\t')
+                    protein = tmp[0]
+                    annotation_result[protein] = tmp
+        lines.close() 
+
+        # Step 2 Store gn2long_proteins and long_protein2gn dict
+        gn2long_proteins = {} # gn => [long_proteins]
+        long_protein2gn = {} # long_protein => gn
+        
+        all_faa_addrs = glob(os.path.join(args['viwrap_summary_outdir'],'Virus_genomes_files/*.faa'))
+        for faa_addr in all_faa_addrs:
+            gn = Path(faa_addr).stem
+            faa_seqs = store_seq(faa_addr)
+            long_proteins = [x.replace('>', '', 1) for x in faa_seqs]
+            gn2long_proteins[gn] = long_proteins
+            
+            for long_protein in long_proteins:
+                long_protein2gn[long_protein] = gn 
+
+        # Step 3 Get new VIBRANT annotation result
+        annotation_result_new = {} # long_protein => [items in each line]
+        for long_protein in long_protein2gn:
+            protein = long_protein.split('__', 1)[1]
+            items = annotation_result[protein]
+            items[0] = long_protein
+            items[1] = long_protein.rsplit('_', 1)[0]
+            items.insert(0, long_protein2gn[long_protein])
+            annotation_result_new[long_protein] = items
+            
+        # Step 4 Write down the result
+        result = os.path.join(args['viwrap_summary_outdir'],'Virus_annotation_results.txt')
+        f = open(result, 'w')
+        f.write('viral genome\t' + annotation_result_header + '\n')
+        for long_protein in annotation_result_new:
+            line = '\t'.join(annotation_result_new[long_protein])
+            f.write(line + '\n')
+        f.close()                      
+
+def screen_virsorter2_result(args, keep1_list_file, keep2_list_file, discard_list_file, manual_check_list_file):
+    seq2info = defaultdict(list) # seq => [length, score, hallmark, viral_gene, host_gene]
+    # Step 1 Parse final_viral_score file from VirSorter2 pass2 folder
+    final_viral_score = os.path.join(args['virsorter_outdir'], 'pass2/final-viral-score.tsv')
+    with open(final_viral_score, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            if not line.startswith('seqname\t'):
+                tmp = line.split('\t')
+                seq, length, score, hallmark = tmp[0], float(tmp[5]), float(tmp[3]), float(tmp[6])
+                seq2info[seq].append(length)
+                seq2info[seq].append(score)
+                seq2info[seq].append(hallmark)
+    lines.close()
+
+    # Step 2 Parse quality_summary file from VirSorter2 CheckV_result_2nd folder
+    quality_summary = os.path.join(args['virsorter_outdir'], 'CheckV_result_2nd/quality_summary.tsv')
+    with open(quality_summary, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            if not line.startswith('contig_id\t'):
+                tmp = line.split('\t')
+                seq, viral_gene, host_gene = tmp[0], float(tmp[5]), float(tmp[6])
+                seq2info[seq].append(viral_gene)
+                seq2info[seq].append(host_gene)
+    lines.close() 
+
+    # Step 3 Make keep_list_file, discard_list_file, manual_check_list_file
+    keep1_list = {} # seq => [length, score, hallmark, viral_gene, host_gene]
+    keep2_list = {} # seq => [length, score, hallmark, viral_gene, host_gene]
+    discard_list = {} # seq => [length, score, hallmark, viral_gene, host_gene]
+    manual_check_list = {} # seq => [length, score, hallmark, viral_gene, host_gene]
     
+    for seq in seq2info:
+        length, score, hallmark, viral_gene, host_gene = seq2info[seq][0], seq2info[seq][1], seq2info[seq][2], seq2info[seq][3], seq2info[seq][4] 
+        if viral_gene > 0:
+            keep1_list[seq] = [length, score, hallmark, viral_gene, host_gene]
+        elif viral_gene == 0 and (score >= 0.95 or hallmark > 2 or host_gene == 0):
+            keep2_list[seq] = [length, score, hallmark, viral_gene, host_gene]
+        elif viral_gene == 0 and host_gene == 1 and length >= 10000:
+            manual_check_list[seq] = [length, score, hallmark, viral_gene, host_gene]
+            
+    for seq in manual_check_list:
+        if seq in keep1_list:
+            del keep1_list[seq]
+        if seq in keep2_list:
+            del keep2_list[seq]    
+            
+    for seq in seq2info:
+        if seq not in keep1_list and seq not in keep2_list and seq not in manual_check_list:
+            discard_list[seq] = seq2info[seq]
+        
+            
+    f = open(keep1_list_file, 'w')
+    f.write('#seq\tlength\tscore\thallmark\tviral_gene\thost_gene' + '\n')
+    for seq in keep1_list:
+        f.write(seq + '\t' + '\t'.join(str(item) for item in keep1_list[seq]) + '\n')
+    f.close()  
+    
+    f = open(keep2_list_file, 'w')
+    f.write('#seq\tlength\tscore\thallmark\tviral_gene\thost_gene' + '\n')
+    for seq in keep2_list:
+        f.write(seq + '\t' + '\t'.join(str(item) for item in keep2_list[seq]) + '\n')
+    f.close()      
+
+    f = open(discard_list_file, 'w')
+    f.write('#seq\tlength\tscore\thallmark\tviral_gene\thost_gene' + '\n')
+    for seq in discard_list:
+        f.write(seq + '\t' + '\t'.join(str(item) for item in discard_list[seq]) + '\n')
+    f.close() 
+
+    f = open(manual_check_list_file, 'w')
+    f.write('#seq\tlength\tscore\thallmark\tviral_gene\thost_gene' + '\n')
+    for seq in manual_check_list:
+        f.write(seq + '\t' + '\t'.join(str(item) for item in manual_check_list[seq]) + '\n')
+    f.close()     
+    
+def get_keep2_mc_seq(args, keep2_list_file, manual_check_list_file, keep2_fasta, manual_check_fasta):
+    # Step 1 Store keep2_list, manual_check_list
+    keep2_list = {} # seq => [length, score, hallmark, viral_gene, host_gene]
+    with open(keep2_list_file, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            if not line.startswith('#seq\t'):
+                tmp = line.split('\t')
+                seq, length, score, hallmark, viral_gene, host_gene = tmp[0], float(tmp[1]), float(tmp[2]), float(tmp[3]), float(tmp[4]), float(tmp[5])
+                keep2_list[seq] = [length, score, hallmark, viral_gene, host_gene]
+    lines.close()
+
+    manual_check_list = {} # seq => [length, score, hallmark, viral_gene, host_gene] 
+    with open(manual_check_list_file, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            if not line.startswith('#seq\t'):
+                tmp = line.split('\t')
+                seq, length, score, hallmark, viral_gene, host_gene = tmp[0], float(tmp[1]), float(tmp[2]), float(tmp[3]), float(tmp[4]), float(tmp[5])
+                manual_check_list[seq] = [length, score, hallmark, viral_gene, host_gene]
+    lines.close()  
+
+    # Step 2 Make keep2_fasta, manual_check_fasta
+    all_seq = store_seq(os.path.join(args['virsorter_outdir'], 'pass2/final-viral-combined.fa'))
+    
+    all_seq_keep2 = {}
+    for header in all_seq:
+        header_wo_array = header.replace('>', '', 1)
+        if header_wo_array in keep2_list:
+            all_seq_keep2[header] = all_seq[header]
+            
+    all_seq_manual_check = {}
+    for header in all_seq:
+        header_wo_array = header.replace('>', '', 1)
+        if header_wo_array in manual_check_list:
+            all_seq_manual_check[header] = all_seq[header] 
+            
+    write_down_seq(all_seq_keep2, keep2_fasta) 
+    write_down_seq(all_seq_manual_check, manual_check_fasta) 
+
+def get_keep2_vb_passed_list(args, keep2_vb_result, keep2_list_vb_passed_file):
+    # Step 1 Store keep2_list
+    keep2_list_file = os.path.join(args['virsorter_outdir'], 'keep2_list.txt')
+    
+    keep2_list = {} # seq => [length, score, hallmark, viral_gene, host_gene]
+    with open(keep2_list_file, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            if not line.startswith('#seq\t'):
+                tmp = line.split('\t')
+                seq, length, score, hallmark, viral_gene, host_gene = tmp[0], float(tmp[1]), float(tmp[2]), float(tmp[3]), float(tmp[4]), float(tmp[5])
+                keep2_list[seq] = [length, score, hallmark, viral_gene, host_gene]
+    lines.close()
+  
+    keep2_list_vb_passed = {} # seq => [length, score, hallmark, viral_gene, host_gene]
+    keep2_vb_result_seq = store_seq(keep2_vb_result)
+    for header in keep2_vb_result_seq:
+        header_wo_array = header.replace('>', '', 1)
+        if '_fragment' in header_wo_array:
+            header_wo_array = header_wo_array.rsplit('_fragment', 1)[0]
+        keep2_list_vb_passed[header_wo_array] = keep2_list[header_wo_array]
+        
+    f = open(keep2_list_vb_passed_file, 'w')
+    f.write('#seq\tlength\tscore\thallmark\tviral_gene\thost_gene' + '\n')
+    for seq in keep2_list_vb_passed:
+        f.write(seq + '\t' + '\t'.join(str(item) for item in keep2_list_vb_passed[seq]) + '\n')
+    f.close()  
+
+def get_manual_check_vb_passed_list(args, manual_check_vb_result, manual_check_list_vb_passed_file):
+    # Step 1 Store manual_check_list
+    manual_check_list_file = os.path.join(args['virsorter_outdir'], 'manual_check_list.txt')
+    
+    manual_check_list = {} # seq => [length, score, hallmark, viral_gene, host_gene]
+    with open(manual_check_list_file, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            if not line.startswith('#seq\t'):
+                tmp = line.split('\t')
+                seq, length, score, hallmark, viral_gene, host_gene = tmp[0], float(tmp[1]), float(tmp[2]), float(tmp[3]), float(tmp[4]), float(tmp[5])
+                manual_check_list[seq] = [length, score, hallmark, viral_gene, host_gene]
+    lines.close()
+  
+    manual_check_list_vb_passed = {} # seq => [length, score, hallmark, viral_gene, host_gene]
+    manual_check_vb_result_seq = store_seq(manual_check_vb_result)
+    for header in manual_check_vb_result_seq:
+        header_wo_array = header.replace('>', '', 1)
+        if '_fragment' in header_wo_array:
+            header_wo_array = header_wo_array.rsplit('_fragment', 1)[0]
+        manual_check_list_vb_passed[header_wo_array] = manual_check_list[header_wo_array]
+        
+    f = open(manual_check_list_vb_passed_file, 'w')
+    f.write('#seq\tlength\tscore\thallmark\tviral_gene\thost_gene' + '\n')
+    for seq in manual_check_list_vb_passed:
+        f.write(seq + '\t' + '\t'.join(str(item) for item in manual_check_list_vb_passed[seq]) + '\n')
+    f.close()     
+    
+def get_final_vs2_virus(args, keep1_list_file, keep2_list_vb_passed_file, manual_check_list_vb_passed_file, final_vs2_virus_fasta_file):
+    # Step 1 Store keep1_list,  keep2_list_vb_passed, manual_check_list_vb_passed
+    keep1_list = {} # seq => [length, score, hallmark, viral_gene, host_gene]
+    with open(keep1_list_file, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            if not line.startswith('#seq\t'):
+                tmp = line.split('\t')
+                seq, length, score, hallmark, viral_gene, host_gene = tmp[0], float(tmp[1]), float(tmp[2]), float(tmp[3]), float(tmp[4]), float(tmp[5])
+                keep1_list[seq] = [length, score, hallmark, viral_gene, host_gene]
+    lines.close()     
+    
+    keep2_list_vb_passed = {} # seq => [length, score, hallmark, viral_gene, host_gene]
+    if os.path.exists(keep2_list_vb_passed_file):
+        with open(keep2_list_vb_passed_file, 'r') as lines:
+            for line in lines:
+                line = line.rstrip('\n')
+                if not line.startswith('#seq\t'):
+                    tmp = line.split('\t')
+                    seq, length, score, hallmark, viral_gene, host_gene = tmp[0], float(tmp[1]), float(tmp[2]), float(tmp[3]), float(tmp[4]), float(tmp[5])
+                    keep2_list_vb_passed[seq] = [length, score, hallmark, viral_gene, host_gene]
+        lines.close() 
+
+    manual_check_list_vb_passed = {} # seq => [length, score, hallmark, viral_gene, host_gene]
+    if os.path.exists(manual_check_list_vb_passed_file):    
+        with open(manual_check_list_vb_passed_file, 'r') as lines:
+            for line in lines:
+                line = line.rstrip('\n')
+                if not line.startswith('#seq\t'):
+                    tmp = line.split('\t')
+                    seq, length, score, hallmark, viral_gene, host_gene = tmp[0], float(tmp[1]), float(tmp[2]), float(tmp[3]), float(tmp[4]), float(tmp[5])
+                    manual_check_list_vb_passed[seq] = [length, score, hallmark, viral_gene, host_gene]
+        lines.close()  
+
+    # Step 2 Make final_vs2_virus.fasta
+    all_seq = store_seq(os.path.join(args['virsorter_outdir'], 'pass2/final-viral-combined.fa'))
+    
+    all_seq_final = {}
+    for header in all_seq:
+        header_wo_array = header.replace('>', '', 1)
+        if header_wo_array in keep1_list or header_wo_array in keep2_list_vb_passed or header_wo_array in manual_check_list_vb_passed:
+            all_seq_final[header] = all_seq[header] 
+            
+    write_down_seq(all_seq_final, final_vs2_virus_fasta_file)    
+    
+def get_dvf_result_seq(args, final_dvf_virus_fasta_file):
+    # Step 1 Store and filter dvfpred.txt
+    dvf_passed_seq = [] 
+    with open(os.path.join(args['dvf_outdir'], f"{Path(args['input_metagenome']).stem}.fasta_gt{args['input_length_limit']}bp_dvfpred.txt"),'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            if not line.startswith('name\t'):
+                tmp = line.split('\t')
+                seq = tmp[0]
+                score = tmp[2]
+                pvalue = tmp[3]
+                if float(score) >= 0.95 and float(pvalue) < 0.05: 
+                    dvf_passed_seq.append(seq)
+                else:
+                    continue
+             
+    # Step 2 get the final_dvf_virus_fasta_file
+    all_seq = store_seq(args['input_metagenome'])
+    
+    all_seq_final = {}
+    for header in all_seq:
+        header_wo_array = header.replace('>', '', 1)
+        if header_wo_array in dvf_passed_seq:
+            all_seq_final[header] = all_seq[header] 
+            
+    write_down_seq(all_seq_final, final_dvf_virus_fasta_file)  
+                 
+    
+    
+            
+    
+    
+                
+    
+    
+                
+    
+    
+    
+    
+    
+            
                     
                     
         
