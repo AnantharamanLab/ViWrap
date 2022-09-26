@@ -90,7 +90,7 @@ Since ViWrap has many dependencies to be installed, it would be much easier to s
 
 ```shell
 1. conda create -c bioconda -p /path/to/ViWrap_conda_environments/ViWrap python=3.8 biopython mamba numpy pandas pyfastx
-2. conda activate /path/to/conda_environments/ViWrap
+2. conda activate /path/to/ViWrap_conda_environments/ViWrap
 ```
 
 Note: `/path/to/conda_environments` indicates the directory that you will need to use to store all conda environments for ViWrap
@@ -205,14 +205,14 @@ ______
   ViWrap download --db_dir <output directory for the database>  --conda_env_dir <conda env dir>
   
   # Example:
-  ViWrap download --db_dir /path/to/ViWrap_db  --conda_env_dir /path/to/conda_environments
+  ViWrap download --db_dir /path/to/ViWrap_db  --conda_env_dir /path/to/ViWrap_conda_environments
   ```
 
 - `set_up_env`: Set up the conda environments for all scripts 
 
   ```python
   # Usage: 
-  ViWrap set_up_env --conda_env_dir /path/to/conda_environments  
+  ViWrap set_up_env --conda_env_dir /path/to/ViWrap_conda_environments  
   ```
 
 - `clean`: Clean redundant information in each result directory
