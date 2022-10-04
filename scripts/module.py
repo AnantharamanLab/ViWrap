@@ -464,27 +464,39 @@ def parse_dRep(viwrap_outdir, dRep_outdir, species_cluster_info, genus_cluster_i
                 dir_name_with_path = os.path.join(path, dir_name)
                 Cdb = dir_name_with_path + "/data_tables/Cdb.csv"
                 Wdb = dir_name_with_path + "/data_tables/Wdb.csv"
+                Bdb = dir_name_with_path + "/data_tables/Bdb.csv"
                 
                 cluster2species_rep = {} # cluster => species_rep (within this genus)
                 gn2cluster = {}
-
-                with open(Wdb, "r") as Wdb_file:
-                    for line in Wdb_file:
-                        line = line.rstrip("/n")
-                        if line.split(",", 1)[0] != 'genome':
-                            species_rep = line.split(",", 1)[0].split(".", 1)[0]
-                            cluster = line.split(",")[1]
-                            cluster2species_rep[cluster] = species_rep
-                Wdb_file.close()            
-                            
-                with open(Cdb, "r") as Cdb_file:
-                    for line in Cdb_file:
-                        line = line.rstrip("/n")
-                        if line.split(",", 1)[0] != 'genome':
-                            gn = line.split(",", 1)[0].split(".", 1)[0]
-                            cluster = line.split(",")[1]
-                            gn2cluster[gn] = cluster
-                Cdb_file.close()             
+                
+                if os.path.exists(Cdb) and os.path.exists(Wdb):
+                    with open(Wdb, "r") as Wdb_file:
+                        for line in Wdb_file:
+                            line = line.rstrip("/n")
+                            if line.split(",", 1)[0] != 'genome':
+                                species_rep = line.split(",", 1)[0].split(".", 1)[0]
+                                cluster = line.split(",")[1]
+                                cluster2species_rep[cluster] = species_rep
+                    Wdb_file.close()            
+                                
+                    with open(Cdb, "r") as Cdb_file:
+                        for line in Cdb_file:
+                            line = line.rstrip("/n")
+                            if line.split(",", 1)[0] != 'genome':
+                                gn = line.split(",", 1)[0].split(".", 1)[0]
+                                cluster = line.split(",")[1]
+                                gn2cluster[gn] = cluster
+                    Cdb_file.close()  
+                else:
+                    with open(Bdb, "r") as Bdb_file:
+                        for line in Bdb_file:
+                            line = line.rstrip("/n")
+                            if line.split(",", 1)[0] != 'genome':
+                                species_rep = line.split(",", 1)[0].split(".", 1)[0]
+                                cluster = line.split(",")[1]
+                                cluster2species_rep[cluster] = species_rep
+                                gn2cluster[species_rep] = cluster
+                    Bdb_file.close()                      
                     
                 for cluster in cluster2species_rep:
                     species_rep = cluster2species_rep[cluster]
@@ -924,7 +936,7 @@ def get_virus_genome_annotation_result(args):
         for faa_addr in all_faa_addrs:
             gn = Path(faa_addr).stem
             faa_seqs = store_seq(faa_addr)
-            long_proteins = [x.replace('>', '', 1) for x in faa_seqs]
+            long_proteins = [x.replace('>', '', 1).split('\t', 1)[0] for x in faa_seqs]
             gn2long_proteins[gn] = long_proteins
             
             for long_protein in long_proteins:

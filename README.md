@@ -36,7 +36,15 @@ ______
 10.  [Contact](#contact)
 
 ______
+## Updates for v1.2.0 (Oct 2022): <a name="updates"></a>
+
+* Modify "parse_dRep" function (module.py) so that it can also process the result even though dRep running is not successful
+* Correct the faa protein ID issue in the "get_virus_genome_annotation_result" function (module.py)
+
+
+
 ## Updates for v1.1.0 (Sep 2022): <a name="updates"></a>
+
 * Add two additional bypasses for identifying viruses from metagenomes: vs - VirSorter2 and CheckV; dvf - DeepVirFinder besides the default pass of vb - VIBRANT
 * set up the VirSorter2, CheckV, and VIBRANT virus identification, curation, and annotation bypass mainly according to the SOP provided by Matthew Sullivan's group (OSU); the 'manual check' step changed to be 'automatic' with stringent criteria
 * Provide flowchart, complete GitHub README
