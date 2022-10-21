@@ -46,7 +46,7 @@ ______
 * Correct the faa protein ID issue in the "get_virus_genome_annotation_result" function (module.py).
 * Add "-red 5" (the maximum number of redundant proteins per bin should be less than 5) to the "run_vRhyme.py" script.
 * Correct AMG KO statistic mistake in "master_run.py"; now only AMG KOs will be included in the final "Virus_summary_info.txt" file.
-* Add "run_wo_reads" option to allow directly identify viral scaffolds from metagenomes/genomes without the usage of metagenomic/genomic reads.
+* Add "run_wo_reads" option to allow directly identifying viral scaffolds from metagenomes/genomes without the usage of metagenomic/genomic reads.
 * Introduce "vb-vs" and "vb-vs-dvf" to the "identify_method" option to allow using the overlapped virus identification results for downstream analysis.
 * Provide flowchart.
 
