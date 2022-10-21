@@ -270,6 +270,74 @@ def get_pro2viral_gn_map(vRhyme_best_bin_dir, vRhyme_unbinned_viral_gn_dir, pro2
         # print(pro2viral_gn_dict[pro])
         file.write(f'{pro},{pro2viral_gn_dict[pro]},None\n')
     file.close()
+    
+def get_pro2viral_gn_map_for_wo_reads(args, pro2viral_gn_map):
+    pro2viral_gn_dict = {}
+
+    final_virus_faa_file = os.path.join(args['viwrap_summary_outdir'], 'final_virus.faa')
+    final_virus_faa_seq = store_seq(final_virus_faa_file)
+    for header in final_virus_faa_seq:
+        pro = header.replace('>', '' ,1)
+        viral_gn = pro.rsplit('_', 1)[0]
+        pro2viral_gn_dict[pro] = viral_gn
+                                     
+    file = open(pro2viral_gn_map,"w")
+    file.write('protein_id,contig_id,keywords\n')
+    for pro in pro2viral_gn_dict:
+        file.write(f'{pro},{pro2viral_gn_dict[pro]},None\n')
+    file.close()  
+
+def move_virus_genome_files_and_annotation_file(args):
+    final_virus_fasta_file = os.path.join(args['viwrap_summary_outdir'], 'final_virus.fasta')
+    final_virus_ffn_file = os.path.join(args['viwrap_summary_outdir'], 'final_virus.ffn')
+    final_virus_faa_file = os.path.join(args['viwrap_summary_outdir'], 'final_virus.faa')
+    final_virus_annotation_file = os.path.join(args['viwrap_summary_outdir'], 'final_virus.annotation.txt')    
+
+    if args['identify_method'] == 'vb':
+        final_vb_virus_fasta_file = os.path.join(args['vibrant_outdir'], 'final_vb_virus.fasta')
+        final_vb_virus_ffn_file = os.path.join(args['vibrant_outdir'], 'final_vb_virus.ffn')
+        final_vb_virus_faa_file = os.path.join(args['vibrant_outdir'], 'final_vb_virus.faa')
+        final_vb_virus_annotation_file = os.path.join(args['vibrant_outdir'], 'final_vb_virus.annotation.txt')
+        os.system(f"cp {final_vb_virus_fasta_file} {final_virus_fasta_file}")
+        os.system(f"cp {final_vb_virus_ffn_file} {final_virus_ffn_file}")
+        os.system(f"cp {final_vb_virus_faa_file} {final_virus_faa_file}")
+        os.system(f"cp {final_vb_virus_annotation_file} {final_virus_annotation_file}")
+    elif args['identify_method'] == 'vs':       
+        final_vs_virus_fasta_file = os.path.join(args['virsorter_outdir'], 'final_vs2_virus.fasta')
+        final_vs_virus_ffn_file = os.path.join(args['virsorter_outdir'], 'final_vs2_virus.ffn')
+        final_vs_virus_faa_file = os.path.join(args['virsorter_outdir'], 'final_vs2_virus.faa')
+        final_vs_virus_annotation_file = os.path.join(args['virsorter_outdir'], 'final_vs2_virus.annotation.txt')
+        os.system(f"cp {final_vs_virus_fasta_file} {final_virus_fasta_file}")
+        os.system(f"cp {final_vs_virus_ffn_file} {final_virus_ffn_file}")
+        os.system(f"cp {final_vs_virus_faa_file} {final_virus_faa_file}")
+        os.system(f"cp {final_vs_virus_annotation_file} {final_virus_annotation_file}")
+    elif args['identify_method'] == 'dvf':       
+        final_dvf_virus_fasta_file = os.path.join(args['dvf_outdir'], 'final_dvf_virus.fasta')
+        final_dvf_virus_ffn_file = os.path.join(args['dvf_outdir'], 'final_dvf_virus.ffn')
+        final_dvf_virus_faa_file = os.path.join(args['dvf_outdir'], 'final_dvf_virus.faa')
+        final_dvf_virus_annotation_file = os.path.join(args['dvf_outdir'], 'final_dvf_virus.annotation.txt')
+        os.system(f"cp {final_dvf_virus_fasta_file} {final_virus_fasta_file}")
+        os.system(f"cp {final_dvf_virus_ffn_file} {final_virus_ffn_file}")
+        os.system(f"cp {final_dvf_virus_faa_file} {final_virus_faa_file}")
+        os.system(f"cp {final_dvf_virus_annotation_file} {final_virus_annotation_file}")
+    elif args['identify_method'] == 'vb-vs-dvf':        
+        final_overlapped_virus_fasta_file = os.path.join(args['vb_vs_dvf_outdir'], f"Overlap_{Path(args['input_metagenome']).stem}", "final_overlapped_virus.fasta")
+        final_overlapped_virus_ffn_file = os.path.join(args['vb_vs_dvf_outdir'], f"Overlap_{Path(args['input_metagenome']).stem}", "final_overlapped_virus.ffn")
+        final_overlapped_virus_faa_file = os.path.join(args['vb_vs_dvf_outdir'], f"Overlap_{Path(args['input_metagenome']).stem}", "final_overlapped_virus.faa")
+        final_overlapped_virus_annotation_file = os.path.join(args['vb_vs_dvf_outdir'], f"Overlap_{Path(args['input_metagenome']).stem}", "final_overlapped_virus.annotation.txt")
+        os.system(f"cp {final_overlapped_virus_fasta_file} {final_virus_fasta_file}")
+        os.system(f"cp {final_overlapped_virus_ffn_file} {final_virus_ffn_file}")
+        os.system(f"cp {final_overlapped_virus_faa_file} {final_virus_faa_file}")
+        os.system(f"cp {final_overlapped_virus_annotation_file} {final_virus_annotation_file}")         
+    elif args['identify_method'] == 'vb-vs':        
+        final_overlapped_virus_fasta_file = os.path.join(args['vb_vs_outdir'], f"Overlap_{Path(args['input_metagenome']).stem}", "final_overlapped_virus.fasta")
+        final_overlapped_virus_ffn_file = os.path.join(args['vb_vs_outdir'], f"Overlap_{Path(args['input_metagenome']).stem}", "final_overlapped_virus.ffn")
+        final_overlapped_virus_faa_file = os.path.join(args['vb_vs_outdir'], f"Overlap_{Path(args['input_metagenome']).stem}", "final_overlapped_virus.faa")
+        final_overlapped_virus_annotation_file = os.path.join(args['vb_vs_outdir'], f"Overlap_{Path(args['input_metagenome']).stem}", "final_overlapped_virus.annotation.txt")
+        os.system(f"cp {final_overlapped_virus_fasta_file} {final_virus_fasta_file}")
+        os.system(f"cp {final_overlapped_virus_ffn_file} {final_virus_ffn_file}")
+        os.system(f"cp {final_overlapped_virus_faa_file} {final_virus_faa_file}")
+        os.system(f"cp {final_overlapped_virus_annotation_file} {final_virus_annotation_file}")      
    
 def combine_all_vRhyme_faa(vRhyme_best_bin_dir, vRhyme_unbinned_viral_gn_dir, all_vRhyme_faa):
     walk = os.walk(vRhyme_best_bin_dir)
@@ -316,17 +384,27 @@ def combine_all_vRhyme_fasta(vRhyme_best_bin_dir, vRhyme_unbinned_viral_gn_dir, 
                 
     write_down_seq(all_vRhyme_fasta_dict, all_vRhyme_fasta)     
    
-def get_genus_cluster_info(genome_by_genome_file, genus_cluster_info):
+def get_genus_cluster_info(genome_by_genome_file, genus_cluster_info, ref_pro2viral_gn_map):
     genus_cluster_dict = {} # VC => VC, all gn
     all_gns = set()
     clustered_gn = set()
     
+    # Step 1 Store the ref viral gn set
+    ref_viral_gn_set = set()
+    with open(ref_pro2viral_gn_map,"r") as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            ref_viral_gn = line.split(',')[1]
+            ref_viral_gn_set.add(ref_viral_gn)
+    lines.close()        
+    
+    # Step 2 Get genus cluster info
     with open(genome_by_genome_file,"r") as file_lines:
         for line in file_lines:
             line = line.rstrip('\n')
             if not line.startswith('Genome,'):
                 gn = line.split(",")[0]
-                if 'vRhyme' in gn:
+                if gn not in ref_viral_gn_set:
                     all_gns.add(gn)
                     genus_confidence_score = line.split(",")[9]
                     VC = line.split(",")[3]
@@ -346,13 +424,13 @@ def get_genus_cluster_info(genome_by_genome_file, genus_cluster_info):
             genus_cluster_dict[VC] = [VC, gn]
             i += 1
     
-    # Write down genus cluster info result
+    # Step 3 Write down genus cluster info result
     file = open(genus_cluster_info, "w")
     file.write('#VC,genomes\n') 
     for VC in genus_cluster_dict:
         gns = genus_cluster_dict[VC][1]
         file.write(f'{VC},{gns}\n')           
-    file.close()
+    file.close()  
     
 def Nlinker(infolder, outdir, extension, n):
 # Copied from vRhyme auxiliary scripts by Kristopher Kieft, UW-Madison
@@ -441,7 +519,37 @@ def get_gn_list_for_genus(genus_cluster_info, dRep_outdir, vRhyme_best_bin_dir, 
         for gn in gns:
             gn_w_full_path = gn_address[gn]
             f.write(gn_w_full_path + "\n")
-        f.close()              
+        f.close()      
+
+def get_gn_list_for_genus_for_wo_reads(genus_cluster_info, dRep_outdir, split_viral_gn_dir):
+    genus_dict = {} # VC => gns
+    with open(genus_cluster_info, "r") as genus_cluster:
+        for line in genus_cluster:
+            line = line.rstrip("\n")
+            if 'VC' in line.split(",", 1)[0] and line[0] != '#':
+                VC = line.split(",", 1)[0]
+                genus_dict[VC] = line.split(",", 1)[1]
+    genus_cluster.close()            
+
+    gn_address = {} # gn stem name => the full path to each genome
+    walk = os.walk(split_viral_gn_dir)
+    for path, dir_list, file_list in walk:
+        for file_name in file_list:
+            if "fasta" in file_name:
+                file_name_with_path = os.path.join(path, file_name)
+                file_name_stem = Path(file_name).stem
+                gn_address[file_name_stem] = file_name_with_path
+   
+    os.mkdir(dRep_outdir)   
+    os.mkdir(f'{dRep_outdir}/viral_genus_genome_list')      
+    
+    for VC in genus_dict:
+        f = open(f'{dRep_outdir}/viral_genus_genome_list/viral_genus_genome_list.{VC}.txt', "w")
+        gns = genus_dict[VC].split(";")
+        for gn in gns:
+            gn_w_full_path = gn_address[gn]
+            f.write(gn_w_full_path + "\n")
+        f.close()          
     
 def parse_dRep(viwrap_outdir, dRep_outdir, species_cluster_info, genus_cluster_info, viral_genus_genome_list_dir):
     gn2VC = {} # gn => VC or UnclusteredGenus
@@ -474,7 +582,7 @@ def parse_dRep(viwrap_outdir, dRep_outdir, species_cluster_info, genus_cluster_i
                         for line in Wdb_file:
                             line = line.rstrip("/n")
                             if line.split(",", 1)[0] != 'genome':
-                                species_rep = line.split(",", 1)[0].split(".", 1)[0]
+                                species_rep = line.split(",", 1)[0].rsplit(".", 1)[0]
                                 cluster = line.split(",")[1]
                                 cluster2species_rep[cluster] = species_rep
                     Wdb_file.close()            
@@ -483,7 +591,7 @@ def parse_dRep(viwrap_outdir, dRep_outdir, species_cluster_info, genus_cluster_i
                         for line in Cdb_file:
                             line = line.rstrip("/n")
                             if line.split(",", 1)[0] != 'genome':
-                                gn = line.split(",", 1)[0].split(".", 1)[0]
+                                gn = line.split(",", 1)[0].rsplit(".", 1)[0]
                                 cluster = line.split(",")[1]
                                 gn2cluster[gn] = cluster
                     Cdb_file.close()  
@@ -492,7 +600,7 @@ def parse_dRep(viwrap_outdir, dRep_outdir, species_cluster_info, genus_cluster_i
                         for line in Bdb_file:
                             line = line.rstrip("/n")
                             if line.split(",", 1)[0] != 'genome':
-                                species_rep = line.split(",", 1)[0].split(".", 1)[0]
+                                species_rep = line.split(",", 1)[0].rsplit(".", 1)[0]
                                 cluster = line.split(",")[1]
                                 cluster2species_rep[cluster] = species_rep
                                 gn2cluster[species_rep] = cluster
@@ -523,7 +631,7 @@ def parse_dRep(viwrap_outdir, dRep_outdir, species_cluster_info, genus_cluster_i
         with open(viral_genus_genome_list, 'r') as lines:
             for line in lines:
                 line = line.rstrip('\n')
-                singeton_gn = Path(line).stem.split('.')[0]
+                singeton_gn = Path(line).stem
                 species_cluster_dict[singeton_gn] = [singeton_gn, singeton_gn, gn2VC[singeton_gn]]              
               
     # Store UnclusteredGenus
@@ -705,7 +813,22 @@ def parse_vibrant_lytic_and_lysogenic_info(vibrant_outdir, metagenomic_scaffold_
                 sys.exit('Scaffold {scf} was not parsed correctly')
         gn2lyso_lytic_result[gn] = result        
                 
-    return gn2lyso_lytic_result            
+    return gn2lyso_lytic_result  
+
+def parse_vibrant_lytic_and_lysogenic_info_for_wo_reads(vibrant_outdir, metagenomic_scaffold_stem_name):
+    # Step 1 Get scf 2 lytic or lysogenic dict
+    lysogenic_fasta_addr = f'{vibrant_outdir}/VIBRANT_phages_{metagenomic_scaffold_stem_name}/{metagenomic_scaffold_stem_name}.phages_lysogenic.fna'
+    lytic_fasta_addr = f'{vibrant_outdir}/VIBRANT_phages_{metagenomic_scaffold_stem_name}/{metagenomic_scaffold_stem_name}.phages_lytic.fna'
+    
+    scf2lytic_or_lyso = {} # scf => 'lytic' or 'lysogenic'
+    lysogenic_fasta_seq = store_seq(lysogenic_fasta_addr)
+    lysogenic_scf2lyso = {x.replace('>', '', 1):'lysogenic' for x in lysogenic_fasta_seq}
+    lytic_fasta_seq = store_seq(lytic_fasta_addr)
+    lytic_scf2lytic = {x.replace('>', '', 1):'lytic' for x in lytic_fasta_seq}
+    scf2lytic_or_lyso.update(lysogenic_scf2lyso)
+    scf2lytic_or_lyso.update(lytic_scf2lytic)
+    
+    return scf2lytic_or_lyso      
             
 def get_checkv_useful_info(CheckV_quality_summary):
     checkv_table = pd.read_csv(CheckV_quality_summary, sep = '\t', index_col = 0)
@@ -731,7 +854,25 @@ def get_viral_gn_size_and_scf_no_and_pro_count(viral_gn_dir):
         pro_count = len(gn_faa_seq)
         
         gn2size_and_scf_no_and_pro_count[gn] = [size, scf_no, pro_count]
-    return gn2size_and_scf_no_and_pro_count    
+    return gn2size_and_scf_no_and_pro_count 
+
+def get_viral_gn_size_and_scf_no_and_pro_count_for_wo_reads(final_virus_fasta_file):
+    gn2size_and_scf_no_and_pro_count = {} # gn => [size, scf_no, pro_count]
+    final_virus_faa_file = final_virus_fasta_file.replace('.fasta', '.faa', 1)
+    final_virus_fasta_file_seq = store_seq(final_virus_fasta_file)
+    final_virus_faa_file_seq = store_seq(final_virus_faa_file)
+    for header in final_virus_fasta_file_seq:
+        header_wo_array = header.replace('>', '', 1)
+        gn = header_wo_array
+        size = len(final_virus_fasta_file_seq[header])
+        scf_no = 1
+        pro_count = 0
+        for pro_header in final_virus_faa_file_seq:
+            gn_from_pro_header = pro_header.replace('>', '', 1).rsplit('_', 1)[0]
+            if gn_from_pro_header == gn:
+                pro_count = pro_count + 1
+        gn2size_and_scf_no_and_pro_count[gn] = [size, scf_no, pro_count]       
+    return gn2size_and_scf_no_and_pro_count     
     
 def get_amg_info_for_vb(vibrant_outdir, metagenomic_scaffold_stem_name, viral_gn_dir):
     gn2long_scf2kos = defaultdict(dict) # gn => long_scf => [kos]
@@ -753,7 +894,8 @@ def get_amg_info_for_vb(vibrant_outdir, metagenomic_scaffold_stem_name, viral_gn
             if not line.startswith('protein\t'):
                 tmp = line.split('\t')
                 scf, ko = tmp[1], tmp[2]
-                scf2kos[scf].append(ko)
+                if tmp[3] == 'AMG':
+                    scf2kos[scf].append(ko)
                 
     # Step 3 Get gn2long_scf2kos dict
     for gn in gn2long_scfs:
@@ -783,13 +925,18 @@ def get_amg_info_for_vs_and_dvf(args, viral_gn_dir):
         annotation_file = os.path.join(args['virsorter_outdir'], 'final_vs2_virus.annotation.txt')
     elif args['identify_method'] == 'dvf':
         annotation_file = os.path.join(args['dvf_outdir'], 'final_dvf_virus.annotation.txt')
+    elif args['identify_method'] == 'vb-vs-dvf':
+        annotation_file = os.path.join(args['vb_vs_dvf_outdir'], f"Overlap_{Path(args['input_metagenome']).stem}", 'final_overlapped_virus.annotation.txt')
+    elif args['identify_method'] == 'vb-vs':
+        annotation_file = os.path.join(args['vb_vs_outdir'], f"Overlap_{Path(args['input_metagenome']).stem}", 'final_overlapped_virus.annotation.txt')
     with open(annotation_file ,'r') as lines:
         for line in lines:
             line = line.rstrip('\n')
             if not line.startswith('protein\t'):
                 tmp = line.split('\t')
                 scf, ko = tmp[1], tmp[2]
-                scf2kos[scf].append(ko)
+                if tmp[3] == 'AMG':
+                    scf2kos[scf].append(ko)
                 
     # Step 3 Get gn2long_scf2kos dict
     for gn in gn2long_scfs:
@@ -814,7 +961,34 @@ def get_amg_statics(gn2long_scf2kos):
             amg_statics_list.append(f'{ko}({hit_num})')
         gn2amg_statics[gn] = ';'.join(amg_statics_list)  
         
-    return gn2amg_statics    
+    return gn2amg_statics 
+
+def get_amg_statics_for_wo_reads(final_virus_annotation_file):
+    gn2amg_statics = {} # gn => amg_statics; for example, K00018(3);K01953(4)
+    # Step 1 Parse final_virus_annotation_file to get gn2kos dict (only AMG KO will be counted)
+    gn2kos = defaultdict(list) # gn => [kos]
+    with open(final_virus_annotation_file,'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            if not line.startswith('protein\t'):
+                tmp = line.split('\t')
+                gn, ko = tmp[1], tmp[2]
+                if tmp[3] == 'AMG':
+                    gn2kos[gn].append(ko)    
+    
+    # Step 2 Parse to get gn2amg_statics
+    for gn in gn2kos:
+        amg_statics_list = []
+        ko2hit_num = {} # ko => hit_num
+        kos = gn2kos[gn]
+        for ko in kos:
+            ko2hit_num[ko] = ko2hit_num.get(ko, 0) + 1
+        for ko in ko2hit_num:
+            hit_num = ko2hit_num[ko]
+            amg_statics_list.append(f'{ko}({hit_num})')
+        gn2amg_statics[gn] = ';'.join(amg_statics_list)    
+        
+    return gn2amg_statics       
     
 def get_virus_summary_info(checkv_dict, gn2lyso_lytic_result, gn2size_and_scf_no_and_pro_count, gn2amg_statics, virus_summary_info):
     gns = list(gn2size_and_scf_no_and_pro_count.keys())
@@ -828,7 +1002,7 @@ def get_virus_summary_info(checkv_dict, gn2lyso_lytic_result, gn2size_and_scf_no
         virus_summary_info_dict['genome_size'][gn] = gn2size_and_scf_no_and_pro_count[gn][0]
         virus_summary_info_dict['scaffold_num'][gn] = gn2size_and_scf_no_and_pro_count[gn][1]
         virus_summary_info_dict['protein_count'][gn] = gn2size_and_scf_no_and_pro_count[gn][2]
-        virus_summary_info_dict['AMG_KOs'][gn] = gn2amg_statics[gn]
+        virus_summary_info_dict['AMG_KOs'][gn] = gn2amg_statics.get(gn, '')
         
     virus_summary_info_df = pd.DataFrame(virus_summary_info_dict) 
 
@@ -851,6 +1025,22 @@ def get_run_input_arguments(args):
     
     command += " ".join(argu_items)
     return command
+    
+def get_run_input_arguments_wo_reads(args):
+    command = f"{os.path.join(args['root_dir'], 'ViWrap')} run_wo_reads "
+    argu_items = []
+    if args['input_metagenome'] != 'none': argu_items.append('--input_metagenome' + ' ' + args['input_metagenome'])
+    argu_items.append('--out_dir' + ' ' + args['out_dir'])
+    argu_items.append('--db_dir' + ' ' + args['db_dir'])
+    argu_items.append('--identify_method' + ' ' + args['identify_method'])
+    if args['conda_env_dir'] != 'none': argu_items.append('--conda_env_dir' + ' ' + args['conda_env_dir'])
+    argu_items.append('--threads' + ' ' + args['threads'])
+    if args['virome']: argu_items.append('--virome')
+    argu_items.append('--input_length_limit' + ' ' + args['input_length_limit'])
+    if args['custom_MAGs_dir'] != 'none': argu_items.append('--custom_MAGs_dir' + ' ' + args['custom_MAGs_dir'])
+    
+    command += " ".join(argu_items)
+    return command    
     
 def combine_iphop_results(args, combined_host_pred_to_genome_result, combined_host_pred_to_genus_result):
     host_pred_to_genome_m90 = os.path.join(args['iphop_outdir'], "Host_prediction_to_genome_m90.csv")
@@ -967,7 +1157,11 @@ def get_virus_genome_annotation_result(args):
             annotation_result_file = os.path.join(args['virsorter_outdir'], 'final_vs2_virus.annotation.txt')
         elif args['identify_method'] == 'dvf': 
             annotation_result_file = os.path.join(args['dvf_outdir'], 'final_dvf_virus.annotation.txt')
-        
+        elif args['identify_method'] == 'vb-vs':
+            annotation_result_file = os.path.join(args['vb_vs_outdir'], f"Overlap_{Path(args['input_metagenome']).stem}", 'final_overlapped_virus.annotation.txt')
+        elif args['identify_method'] == 'vb-vs-dvf':
+            annotation_result_file = os.path.join(args['vb_vs_dvf_outdir'], f"Overlap_{Path(args['input_metagenome']).stem}", 'final_overlapped_virus.annotation.txt')
+            
         annotation_result = {} # protein => [items in each line]
         annotation_result_header = ''
         with open (annotation_result_file, 'r') as lines:
@@ -1014,10 +1208,10 @@ def get_virus_genome_annotation_result(args):
             f.write(line + '\n')
         f.close()                      
 
-def screen_virsorter2_result(args, keep1_list_file, keep2_list_file, discard_list_file, manual_check_list_file):
+def screen_virsorter2_result(virsorter_outdir, keep1_list_file, keep2_list_file, discard_list_file, manual_check_list_file):
     seq2info = defaultdict(list) # seq => [length, score, hallmark, viral_gene, host_gene]
     # Step 1 Parse final_viral_score file from VirSorter2 pass2 folder
-    final_viral_score = os.path.join(args['virsorter_outdir'], 'pass2/final-viral-score.tsv')
+    final_viral_score = os.path.join(virsorter_outdir, 'pass2/final-viral-score.tsv')
     with open(final_viral_score, 'r') as lines:
         for line in lines:
             line = line.rstrip('\n')
@@ -1030,7 +1224,7 @@ def screen_virsorter2_result(args, keep1_list_file, keep2_list_file, discard_lis
     lines.close()
 
     # Step 2 Parse quality_summary file from VirSorter2 CheckV_result_2nd folder
-    quality_summary = os.path.join(args['virsorter_outdir'], 'CheckV_result_2nd/quality_summary.tsv')
+    quality_summary = os.path.join(virsorter_outdir, 'CheckV_result_2nd/quality_summary.tsv')
     with open(quality_summary, 'r') as lines:
         for line in lines:
             line = line.rstrip('\n')
@@ -1091,7 +1285,7 @@ def screen_virsorter2_result(args, keep1_list_file, keep2_list_file, discard_lis
         f.write(seq + '\t' + '\t'.join(str(item) for item in manual_check_list[seq]) + '\n')
     f.close()     
     
-def get_keep2_mc_seq(args, keep2_list_file, manual_check_list_file, keep2_fasta, manual_check_fasta):
+def get_keep2_mc_seq(virsorter_outdir, keep2_list_file, manual_check_list_file, keep2_fasta, manual_check_fasta):
     # Step 1 Store keep2_list, manual_check_list
     keep2_list = {} # seq => [length, score, hallmark, viral_gene, host_gene]
     with open(keep2_list_file, 'r') as lines:
@@ -1114,7 +1308,7 @@ def get_keep2_mc_seq(args, keep2_list_file, manual_check_list_file, keep2_fasta,
     lines.close()  
 
     # Step 2 Make keep2_fasta, manual_check_fasta
-    all_seq = store_seq(os.path.join(args['virsorter_outdir'], 'pass2/final-viral-combined.fa'))
+    all_seq = store_seq(os.path.join(virsorter_outdir, 'pass2/final-viral-combined.fa'))
     
     all_seq_keep2 = {}
     for header in all_seq:
@@ -1131,9 +1325,9 @@ def get_keep2_mc_seq(args, keep2_list_file, manual_check_list_file, keep2_fasta,
     write_down_seq(all_seq_keep2, keep2_fasta) 
     write_down_seq(all_seq_manual_check, manual_check_fasta) 
 
-def get_keep2_vb_passed_list(args, keep2_vb_result, keep2_list_vb_passed_file):
+def get_keep2_vb_passed_list(virsorter_outdir, keep2_vb_result, keep2_list_vb_passed_file):
     # Step 1 Store keep2_list
-    keep2_list_file = os.path.join(args['virsorter_outdir'], 'keep2_list.txt')
+    keep2_list_file = os.path.join(virsorter_outdir, 'keep2_list.txt')
     
     keep2_list = {} # seq => [length, score, hallmark, viral_gene, host_gene]
     with open(keep2_list_file, 'r') as lines:
@@ -1159,9 +1353,9 @@ def get_keep2_vb_passed_list(args, keep2_vb_result, keep2_list_vb_passed_file):
         f.write(seq + '\t' + '\t'.join(str(item) for item in keep2_list_vb_passed[seq]) + '\n')
     f.close()  
 
-def get_manual_check_vb_passed_list(args, manual_check_vb_result, manual_check_list_vb_passed_file):
+def get_manual_check_vb_passed_list(virsorter_outdir, manual_check_vb_result, manual_check_list_vb_passed_file):
     # Step 1 Store manual_check_list
-    manual_check_list_file = os.path.join(args['virsorter_outdir'], 'manual_check_list.txt')
+    manual_check_list_file = os.path.join(virsorter_outdir, 'manual_check_list.txt')
     
     manual_check_list = {} # seq => [length, score, hallmark, viral_gene, host_gene]
     with open(manual_check_list_file, 'r') as lines:
@@ -1187,7 +1381,7 @@ def get_manual_check_vb_passed_list(args, manual_check_vb_result, manual_check_l
         f.write(seq + '\t' + '\t'.join(str(item) for item in manual_check_list_vb_passed[seq]) + '\n')
     f.close()     
     
-def get_final_vs2_virus(args, keep1_list_file, keep2_list_vb_passed_file, manual_check_list_vb_passed_file, final_vs2_virus_fasta_file):
+def get_final_vs2_virus(virsorter_outdir, keep1_list_file, keep2_list_vb_passed_file, manual_check_list_vb_passed_file, final_vs2_virus_fasta_file):
     # Step 1 Store keep1_list,  keep2_list_vb_passed, manual_check_list_vb_passed
     keep1_list = {} # seq => [length, score, hallmark, viral_gene, host_gene]
     with open(keep1_list_file, 'r') as lines:
@@ -1222,7 +1416,7 @@ def get_final_vs2_virus(args, keep1_list_file, keep2_list_vb_passed_file, manual
         lines.close()  
 
     # Step 2 Make final_vs2_virus.fasta
-    all_seq = store_seq(os.path.join(args['virsorter_outdir'], 'pass2/final-viral-combined.fa'))
+    all_seq = store_seq(os.path.join(virsorter_outdir, 'pass2/final-viral-combined.fa'))
     
     all_seq_final = {}
     for header in all_seq:
@@ -1232,10 +1426,10 @@ def get_final_vs2_virus(args, keep1_list_file, keep2_list_vb_passed_file, manual
             
     write_down_seq(all_seq_final, final_vs2_virus_fasta_file)    
     
-def get_dvf_result_seq(args, final_dvf_virus_fasta_file):
+def get_dvf_result_seq(args, inner_dvf_outdir, final_dvf_virus_fasta_file):
     # Step 1 Store and filter dvfpred.txt
     dvf_passed_seq = [] 
-    with open(os.path.join(args['dvf_outdir'], f"{Path(args['input_metagenome']).stem}.fasta_gt{args['input_length_limit']}bp_dvfpred.txt"),'r') as lines:
+    with open(os.path.join(inner_dvf_outdir, f"{Path(args['input_metagenome']).stem}.fasta_gt{args['input_length_limit']}bp_dvfpred.txt"),'r') as lines:
         for line in lines:
             line = line.rstrip('\n')
             if not line.startswith('name\t'):
@@ -1258,7 +1452,116 @@ def get_dvf_result_seq(args, final_dvf_virus_fasta_file):
             all_seq_final[header] = all_seq[header] 
             
     write_down_seq(all_seq_final, final_dvf_virus_fasta_file)  
+    
+def get_vb_result_seq(args, final_vb_virus_fasta_file, final_vb_virus_ffn_file, final_vb_virus_faa_file, final_vb_virus_annotation_file): 
+    # Step 1 get final_vb_virus_fasta 
+    final_vb_virus_fasta_seq = store_seq(os.path.join(args['vibrant_outdir'], f"VIBRANT_phages_{Path(args['input_metagenome']).stem}", f"{Path(args['input_metagenome']).stem}.phages_combined.fna"))
+    write_down_seq(final_vb_virus_fasta_seq, final_vb_virus_fasta_file)  
+    # Step 2 get final_vb_virus_ffn
+    final_vb_virus_ffn_seq = store_seq(os.path.join(args['vibrant_outdir'], f"VIBRANT_phages_{Path(args['input_metagenome']).stem}", f"{Path(args['input_metagenome']).stem}.phages_combined.ffn"))
+    write_down_seq(final_vb_virus_ffn_seq, final_vb_virus_ffn_file)  
+    # Step 3 get final_vb_virus_faa
+    final_vb_virus_faa_seq = store_seq(os.path.join(args['vibrant_outdir'], f"VIBRANT_phages_{Path(args['input_metagenome']).stem}", f"{Path(args['input_metagenome']).stem}.phages_combined.faa"))
+    write_down_seq(final_vb_virus_faa_seq, final_vb_virus_faa_file)    
+    # Step 4 get final_vb_virus_annotation
+    final_vb_virus_annotation_file_old_addr = os.path.join(args['vibrant_outdir'], f"VIBRANT_results_{Path(args['input_metagenome']).stem}", f"VIBRANT_annotations_{Path(args['input_metagenome']).stem}.tsv")
+    os.system(f"cp {final_vb_virus_annotation_file_old_addr} {final_vb_virus_annotation_file}")
                  
+def get_overlapped_viral_scaffolds(final_vb_virus_fasta_file, final_vs2_virus_fasta_file, final_dvf_virus_fasta_file, final_vb_virus_annotation_file, overlap_outdir):    
+    # Step 1 Store vb_viral_scaffold_ids (both include and exclude 'fragment')
+    vb_viral_scaffold_ids_include_fragment = set()
+    vb_viral_scaffold_ids = set()
+    final_vb_virus_fasta_file_seqs = store_seq(final_vb_virus_fasta_file)
+    vb_viral_scaffold_ids_include_fragment = set([x.replace('>', '', 1) for x in final_vb_virus_fasta_file_seqs])
+    for scaffold_id in vb_viral_scaffold_ids_include_fragment:
+        if '_fragment' not in scaffold_id:
+            vb_viral_scaffold_ids.add(scaffold_id)
+        else:
+            vb_viral_scaffold_ids.add(scaffold_id.split('_fragment', 1)[0])
+        
+    # Step 2 Store vs_viral_scaffold_ids (exclude info after '||')
+    vs_viral_scaffold_ids = set()
+    final_vs_virus_fasta_file_seqs = store_seq(final_vs2_virus_fasta_file)
+    vs_viral_scaffold_ids = set([x.replace('>', '', 1).split('||', 1)[0] for x in final_vs_virus_fasta_file_seqs])
+    
+    # Step 3 Store dvf_viral_scaffold_ids
+    dvf_viral_scaffold_ids = set()
+    if final_dvf_virus_fasta_file:
+        final_dvf_virus_fasta_file_seqs = store_seq(final_dvf_virus_fasta_file)
+        dvf_viral_scaffold_ids = set([x.replace('>', '', 1) for x in final_dvf_virus_fasta_file_seqs])
+    
+    # Step 4 Get the final overlapped viral scaffold ids (mainly based on vb viral scaffold ids, include 'fragment')
+    overlapped_viral_scaffold_ids = set()
+    if dvf_viral_scaffold_ids:
+        overlapped_viral_scaffold_ids = vb_viral_scaffold_ids & vs_viral_scaffold_ids & dvf_viral_scaffold_ids
+    else:
+        overlapped_viral_scaffold_ids = vb_viral_scaffold_ids & vs_viral_scaffold_ids
+    overlapped_viral_scaffold_ids_include_fragment = set()
+    for scaffold_id in vb_viral_scaffold_ids_include_fragment:
+        if scaffold_id.split('_fragment', 1)[0] in overlapped_viral_scaffold_ids:
+            overlapped_viral_scaffold_ids_include_fragment.add(scaffold_id)
+    
+    # Step 5 Get related files: ffn, faa, and annotation file
+    ## Step 5.1 Make fasta file
+    os.mkdir(overlap_outdir) 
+    final_overlapped_virus_fasta_file_seqs = {}
+    for scaffold_id in overlapped_viral_scaffold_ids_include_fragment:
+        scaffold_id_w_array = '>' + scaffold_id
+        final_overlapped_virus_fasta_file_seqs[scaffold_id_w_array] = final_vb_virus_fasta_file_seqs[scaffold_id_w_array]
+    write_down_seq(final_overlapped_virus_fasta_file_seqs, os.path.join(overlap_outdir, 'final_overlapped_virus.fasta'))
+
+    ## Step 5.2 Make ffn file      
+    final_vb_virus_ffn_file_seqs = store_seq(final_vb_virus_fasta_file.replace('.fna', '.ffn', 1))
+    final_overlapped_virus_ffn_file_seqs = {}
+    for scaffold_id_w_array in final_vb_virus_ffn_file_seqs:
+        if scaffold_id_w_array.replace('>', '', 1).rsplit('_', 1)[0] in overlapped_viral_scaffold_ids_include_fragment:
+            final_overlapped_virus_ffn_file_seqs[scaffold_id_w_array] = final_vb_virus_ffn_file_seqs[scaffold_id_w_array]
+    write_down_seq(final_overlapped_virus_ffn_file_seqs, os.path.join(overlap_outdir, 'final_overlapped_virus.ffn')) 
+
+    ## Step 5.3 Make faa file      
+    final_vb_virus_faa_file_seqs = store_seq(final_vb_virus_fasta_file.replace('.fna', '.faa', 1))
+    final_overlapped_virus_faa_file_seqs = {}
+    for scaffold_id_w_array in final_vb_virus_faa_file_seqs:
+        if scaffold_id_w_array.replace('>', '', 1).rsplit('_', 1)[0] in overlapped_viral_scaffold_ids_include_fragment:
+            final_overlapped_virus_faa_file_seqs[scaffold_id_w_array] = final_vb_virus_faa_file_seqs[scaffold_id_w_array]
+    write_down_seq(final_overlapped_virus_faa_file_seqs, os.path.join(overlap_outdir, 'final_overlapped_virus.faa'))      
+        
+    ## Step 5.4 Make annotation file
+    final_vb_virus_annotation = pd.read_csv(final_vb_virus_annotation_file, sep = '\t')
+    final_overlapped_virus_faa_ids = [x.replace('>', '', 1) for x in final_overlapped_virus_faa_file_seqs]
+    final_overlapped_virus_annotation = final_vb_virus_annotation[final_vb_virus_annotation['protein'].isin(final_overlapped_virus_faa_ids)]
+    final_overlapped_virus_annotation.to_csv(os.path.join(overlap_outdir, 'final_overlapped_virus.annotation.txt'), sep='\t', index=False)
+    
+def get_split_viral_gn(final_virus_fasta_file, split_viral_gn_dir):
+    # Step 1 Store final_virus_fasta seq and final_virus_faa seq
+    final_virus_fasta_seq = store_seq(final_virus_fasta_file)
+    final_virus_faa_file = final_virus_fasta_file.replace('.fasta', '.faa', 1)
+    final_virus_faa_seq = store_seq(final_virus_faa_file)
+    
+    # Step 2 Make split_viral_gn_dir and write down individual fasta and faa files
+    os.mkdir(split_viral_gn_dir)
+    for header in final_virus_fasta_seq:
+        header_wo_array = header.replace('>', '', 1)
+        seq = final_virus_fasta_seq[header]
+        
+        each_fasta_seq_dict = {}
+        each_fasta_seq_dict[header] = seq
+        each_fasta_seq_file = os.path.join(split_viral_gn_dir, f"{header_wo_array}.fasta")
+        write_down_seq(each_fasta_seq_dict, each_fasta_seq_file)
+        
+        each_faa_seq_dict = {}
+        for pro_header in final_virus_faa_seq:
+            header_wo_array_from_pro_header = pro_header.replace('>', '', 1).rsplit('_', 1)[0]
+            if header_wo_array_from_pro_header == header_wo_array:
+                each_faa_seq_dict[pro_header] = final_virus_faa_seq[pro_header]
+                each_faa_seq_file = os.path.join(split_viral_gn_dir, f"{header_wo_array}.faa")
+                write_down_seq(each_faa_seq_dict, each_faa_seq_file)
+
+        
+    
+        
+    
+    
     
     
             
