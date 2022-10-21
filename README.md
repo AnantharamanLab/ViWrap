@@ -1,4 +1,4 @@
-![](https://github.com/AnantharamanLab/ViWrap/blob/main/images/ViWrap.jpg)
+![](https://github.com/AnantharamanLab/ViWrap/blob/main/images/ViWrap2.jpg)
 
 # **ViWrap**
 ### A wrapper to identify, bin, classify, and predict host-viral relationship for viruses from Metagenomes
@@ -13,7 +13,9 @@ University of Wisconsin-Madison
 ```
 
 ## Current Version
-ViWrap v1.1.0  
+ViWrap v1.2.0 
+
+![](https://github.com/AnantharamanLab/ViWrap/blob/main/images/ViWrap-Flowchart.jpg)
 
 ## Citation
 If you find ViWrap useful please consider citing our manuscript on XXX (still in draft):  
@@ -38,21 +40,26 @@ ______
 ______
 ## Updates for v1.2.0 (Oct 2022): <a name="updates"></a>
 
-* Modify "parse_dRep" function (module.py) so that it can also process the result even though dRep running is not successful
-* Correct the faa protein ID issue in the "get_virus_genome_annotation_result" function (module.py)
+* Modify "parse_dRep" function (module.py) so that it can also process the result even though dRep running is not successful.
+* Correct the faa protein ID issue in the "get_virus_genome_annotation_result" function (module.py).
+* Add "-red 5" (the maximum number of redundant proteins per bin should be less than 5) to the "run_vRhyme.py" script.
+* Correct AMG KO statistic mistake in "master_run.py"; now only AMG KOs will be included in the final "Virus_summary_info.txt" file.
+* Add "run_wo_reads" option to allow directly identify viral scaffolds from metagenomes/genomes without the usage of metagenomic/genomic reads.
+* Introduce "vb-vs" and "vb-vs-dvf" to the "identify_method" option to allow using the overlapped virus identification results for downstream analysis.
+* Provide flowchart.
 
 
 
 ## Updates for v1.1.0 (Sep 2022): <a name="updates"></a>
 
-* Add two additional bypasses for identifying viruses from metagenomes: vs - VirSorter2 and CheckV; dvf - DeepVirFinder besides the default pass of vb - VIBRANT
-* set up the VirSorter2, CheckV, and VIBRANT virus identification, curation, and annotation bypass mainly according to the SOP provided by Matthew Sullivan's group (OSU); the 'manual check' step changed to be 'automatic' with stringent criteria
-* Provide flowchart, complete GitHub README
+* Add two additional bypasses for identifying viruses from metagenomes: vs - VirSorter2 and CheckV; dvf - DeepVirFinder besides the default pass of vb - VIBRANT.
+* set up the VirSorter2, CheckV, and VIBRANT virus identification, curation, and annotation bypass mainly according to the SOP provided by Matthew Sullivan's group (OSU); the 'manual check' step changed to be 'automatic' with stringent criteria.
+* Complete GitHub README.
 
 
 ## Updates for v1.0.0 (Sep 2022): <a name="updates"></a>
-* Change the construction of scripts
-* Change the methods to feed arguments and run scripts in individual conda environments
+* Change the construction of scripts.
+* Change the methods to feed arguments and run scripts in individual conda environments.
 
 ______
 ## Program Description <a name="program"></a>
@@ -237,25 +244,25 @@ ______
 
 #### Flag explanations
 
-* `--input_metagenome/-i`: (required) input metagenome assembly. It can be a metagenome or entire virome assembly. The extension of the input nucleotide sequence should be ".fasta"
-* `--input_reads/-r`: (required) input metagenomic reads. The input paired reads should be  "forward_1.fastq or forward_R1.fastq" and "reverse_2.fastq or reverse_R2.fastq" connected by ",". Multiple paired reads can be provided at the same time for one metagenome assembly, connected by ",".  For example: `-r /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq`  Note that the extension of the input reads should be ".fastq" or ".fastq.gz"
+* `--input_metagenome/-i`: (required) input metagenome assembly. It can be a metagenome or entire virome assembly. The extension of the input nucleotide sequence should be ".fasta".
+* `--input_reads/-r`: (required) input metagenomic reads. The input paired reads should be  "forward_1.fastq or forward_R1.fastq" and "reverse_2.fastq or reverse_R2.fastq" connected by ",". Multiple paired reads can be provided at the same time for one metagenome assembly, connected by ",".  For example: `-r /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq`  Note that the extension of the input reads should be ".fastq" or ".fastq.gz".
 
-* `--out_dir/-o`: (required) output directory to deposit all results (default = ./ViWrap_outdir) output folder to deposit all results. ViWrap will exit if the folder already exists
-* `--db_dir/-d`: (required) database directory (default = $current_dir/ViWrap_db)
-* `--identify_method`: (required) the virus identifying method to choose: vb (default) - VIBRANT; vs - VirSorter2 and CheckV; in - INHERIT
+* `--out_dir/-o`: (required) output directory to deposit all results (default = ./ViWrap_outdir) output folder to deposit all results. ViWrap will exit if the folder already exists.
+* `--db_dir/-d`: (required) database directory (default = $current_dir/ViWrap_db).
+* `--identify_method`: (required) the virus identifying method to choose: vb - VIBRANT; vs - VirSorter2 and CheckV; dvf - DeepVirFinder; vb-vs - Use VIBRANT and VirSorter2 to get the overlapped viruses (default); vb-vs-dvf - Use all these three methods and get the overlapped viruses. "vb-vs" is recommended by us since overlapped virus identification will provide more confident results. "vb-vs-dvf" would be too stringent to provide comprehensive virus identification results.
 
-* `--conda_env_dir`: (required) the directory where you put your conda environment files. It is the parent directory that contains all the conda environment folders
-* `--threads/-t`: number of threads (default = 10)
-* `--virome/-v`: edit VIBRANT's sensitivity if the input dataset is a virome. It is suggested to use it if you know that the input assembly is virome or metagenome 
+* `--conda_env_dir`: (required) the directory where you put your conda environment files. It is the parent directory that contains all the conda environment folders.
+* `--threads/-t`: number of threads (default = 10).
+* `--virome/-v`: edit VIBRANT's sensitivity if the input dataset is a virome. It is suggested to use it if you know that the input assembly is virome or metagenome. 
 
-* `--input_length_limit`: length in basepairs to limit input sequences (default=2000, can increase but not decrease); 2000 at least suggested for VIBRANT (vb)-based and INHERIT (in)-based pipeline, 5000 at least suggested for VirSorter2 (vs)-based pipeline
-* `--custom_MAGs_dir`: custom MAGs dir that contains only *.fasta files for MAGs reconstructed from the same metagenome, this will be used in iPHoP for further host prediction; note that it should be the absolute address path
+* `--input_length_limit`: length in basepairs to limit input sequences (default=2000, can increase but not decrease); 2000 at least suggested for VIBRANT (vb)-based and INHERIT (in)-based pipeline, 5000 at least suggested for VirSorter2 (vs)-based pipeline.
+* `--custom_MAGs_dir`: custom MAGs dir that contains only *.fasta files for MAGs reconstructed from the same metagenome, this will be used in iPHoP for further host prediction; note that it should be the absolute address path.
 
 ______
 ## Output Explanations <a name="out"></a>
 
 #### **All result folders**
-- `00_VIBRANT_input_metageome_stem_name`: the virus identification result (would be "VirSorter_input_metageome_stem_name" or "DeepVirFinder_input_metageome_stem_name")
+- `00_VIBRANT_input_metageome_stem_name`: the virus identification result (would be "00_VirSorter_input_metageome_stem_name", "00_DeepVirFinder_input_metageome_stem_name", "00_VIBRANT_VirSorter_input_metageome_stem_name", or "00_VIBRANT_VirSorter_DeepVirFinder_input_metageome_stem_name")
 - `01_Mapping_result_outdir`: the reads mapping result
 - `02_vRhyme_outdir`: vRhyme binning result
 - `03_vContact2_outdir`: vContact2 classifying result
@@ -293,6 +300,16 @@ ______
 - **The default setting for each software**
 
   Generally, we all use the default settings for identifying, binning, classifying, and predicting viruses, due to that the default settings are mostly suggested by the inventors and we want to make ViWrap be intuitive and easy to use.
+
+- **Using VIBRANT or VirSorter2 to get prophage information**
+
+  If you want to have prophage information in your final results, we will avoid solely using DVF to identify viruses. You can use "vb", ''vs", "vb-vs" (default), or "vb-vs-dvf" identification methods to get final results that will include prophage information.
+
+- **Using "run_wo_reads" will only provide viral scaffold results**
+
+  - Since vRhyme needs scaffold coverage information for virus binning. Using "run_wo_reads" will not give viral binning results; each viral scaffold will be treated as a viral genome in the downstream analysis after viral binning. In the end, it will generate viral abundance results neither. 
+  - It will only generate five result folders: `00_VIBRANT_input_metageome_stem_name`, `01_vContact2_outdir`, `02_CheckV_outdir`, `03_dRep_outdir`, `04_iPHoP_outdir`, and `05_ViWrap_summary_outdir`
+  - This method will facilitate identify viruses from both metagenomes and genomes without the usage of metagenomic/genomic reads.
 
 - **Lytic and lysogenic viruses can bin together** (copied from vRhyme GitHub page)
 
