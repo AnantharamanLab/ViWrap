@@ -1,4 +1,4 @@
-![](https://github.com/AnantharamanLab/ViWrap/blob/main/images/ViWrap2.jpg =200X )
+<img src="https://github.com/AnantharamanLab/ViWrap/blob/main/images/ViWrap2.jpg" width="400">
 
 # **ViWrap**
 ### A wrapper to identify, bin, classify, and predict host-viral relationship for viruses from Metagenomes
@@ -15,7 +15,7 @@ University of Wisconsin-Madison
 ## Current Version
 ViWrap v1.2.0 
 
-<img src="https://github.com/AnantharamanLab/ViWrap/blob/main/images/ViWrap-Flowchart.jpg" width="150">
+<img src="https://github.com/AnantharamanLab/ViWrap/blob/main/images/ViWrap-Flowchart.jpg">
 
 ## Citation
 If you find ViWrap useful please consider citing our manuscript on XXX (still in draft):  
