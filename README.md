@@ -15,7 +15,7 @@ University of Wisconsin-Madison
 ## Current Version
 ViWrap v1.2.0 
 
-![](https://github.com/AnantharamanLab/ViWrap/blob/main/images/ViWrap-Flowchart.jpg)
+<img src="https://github.com/AnantharamanLab/ViWrap/blob/main/images/ViWrap-Flowchart.jpg" width="150">
 
 ## Citation
 If you find ViWrap useful please consider citing our manuscript on XXX (still in draft):  
