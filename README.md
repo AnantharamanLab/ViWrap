@@ -330,7 +330,7 @@ ______
     
     
     
-    Based on the above description. Here, we provided formulas for automatically assigning the virus bins:
+    Based on the above description, here, we provided formulas for automatically assigning the virus bins:
     
     ```bash
     # Formulas:
