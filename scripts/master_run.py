@@ -385,9 +385,12 @@ def main(args):
     # Step 4 Run vRhyme
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Run vRhyme to bin viral scaffolds. In processing...")        
-        
+    
+    ## Step 4.1 Run vRhyme to get the original vRhyme_best_bins    
     os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vRhyme')} python {os.path.join(args['root_dir'],'scripts/run_vRhyme.py')} {viral_scaffold} {args['vrhyme_outdir']} {args['mapping_outdir']} {args['threads']} >/dev/null 2>&1")
     vRhyme_best_bin_dir = os.path.join(args['vrhyme_outdir'], 'vRhyme_best_bins_fasta')
+    
+    ## Step 4.2 Get the lytic and lysogenic information for vRhyme_best_bins 
     scf2lytic_or_lyso_summary = ''
     if args['identify_method'] == 'vb':
         scf2lytic_or_lyso_summary = os.path.join(args['vibrant_outdir'], 'scf2lytic_or_lyso.summary.txt')
@@ -398,6 +401,7 @@ def main(args):
     scripts.module.get_vRhyme_best_bin_lytic_and_lysogenic_info(vRhyme_best_bin_dir, args['vrhyme_outdir'], scf2lytic_or_lyso_summary)
     vRhyme_best_bin_lytic_and_lysogenic_info = os.path.join(args['vrhyme_outdir'], 'vRhyme_best_bin_lytic_and_lysogenic_info.txt')
     
+    ## Step 4.3 Get the scaffold complete information for vRhyme_best_bins
     vRhyme_best_bin_CheckV_result = os.path.join(args['vrhyme_outdir'], 'vRhyme_best_bins_fasta_CheckV_result')
     os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python {os.path.join(args['root_dir'],'scripts/run_CheckV.py')} {vRhyme_best_bin_dir} {vRhyme_best_bin_CheckV_result} {args['threads']} {args['CheckV_db']} >/dev/null 2>&1")
     CheckV_quality_summary = os.path.join(vRhyme_best_bin_CheckV_result, 'CheckV_quality_summary.txt')
@@ -405,6 +409,8 @@ def main(args):
     vRhyme_best_bin_scaffold_complete_info = os.path.join(args['vrhyme_outdir'], 'vRhyme_best_bin_scaffold_complete_info.txt')  
     scripts.module.get_vRhyme_best_bin_scaffold_complete_info(CheckV_quality_summary, vRhyme_best_bin_scaffold_complete_info)
     os.system(f"rm -rf {vRhyme_best_bin_CheckV_result}")
+    
+    ## Step 4.4 Get modified vRhyme_best_bins acccording to both lytic and lysogenic and scaffold complete information
     vRhyme_best_bin_dir_modified = os.path.join(args['vrhyme_outdir'], 'vRhyme_best_bins_fasta_modified')
     scripts.module.make_vRhyme_best_bins_fasta_modified(vRhyme_best_bin_dir, vRhyme_best_bin_dir_modified, vRhyme_best_bin_lytic_and_lysogenic_info, vRhyme_best_bin_scaffold_complete_info)    
 
