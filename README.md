@@ -49,6 +49,8 @@ ______
 * Add "run_wo_reads" option to allow directly identifying viral scaffolds from metagenomes/genomes without the usage of metagenomic/genomic reads.
 * Introduce "vb-vs" and "vb-vs-dvf" to the "identify_method" option to allow using the overlapped virus identification results for downstream analysis.
 * Provide flowchart.
+* Provide "scf2lytic_or_lyso.summary.txt" for the VIBRANT result, "vRhyme_best_bin_lytic_and_lysogenic_info.txt" and 
+  "vRhyme_best_bin_scaffold_complete_info.txt" for vRhyme generated vRhyme_best_bins. Then, based on the formulas of "Lytic and lysogenic viruses/scaffolds" (See "Notes - Lytic and lysogenic viruses can bin together" in "Output Explanations"), make modified vRhyme_best_bins (some bins are split into scaffolds). The corresponding downstream analysis has also been changed accordingly.
 
 
 
@@ -316,13 +318,30 @@ ______
 - **Lytic and lysogenic viruses can bin together** (copied from vRhyme GitHub page)
 
   * Lytic cycle: productive infection that leads to release of viral particles; strictly lytic viruses do not integrate
+  
   * Lysogenic cycle: non-productive infection where viral particles are not released; lysogenic viruses integrate and are dormant until entering the lytic cycle (some exceptions); often encode an integrase
+  
   * When viewing binned sequences that have "lysogenic/lytic" labels from another software (e.g., VIBRANT, VirSorter) it may seem concerning to see a lytic virus bin with a lysogenic virus. Although this may be a reason to be skeptical of contamination, here are some explanations of what may be occurring:
     * software tools that label lysogenic/lytic can make mistakes or be misled. For example, if a sequence does not encode an integrase or other lysogenic features then VIBRANT will label it as "lytic". If this is a virus genome fragment and another fragment of the same genome (different sequence) contains an integrase then that other fragment will be labeled as "lysogenic". When binning, those two sequence can be place into the same bin by vRhyme to produce an accurate bin with a lytic and lysogenic member.
     * A bin with one or more lytic members and one lysogenic member should not cause concern.
     * A bin with one or more lytic members and one integrated prophage should be examined.
     * A bin with two or more lysogenic members, each encoding an integrase, is likely contamination.
     * A bin with two or more integrated prophages, regardless of integrases, from multiple parent sequences is likely contamination.
+    
+    
+    
+    Based on the above description. Here, we provided formulas for automatically assigning the virus bins:
+    
+    ```bash
+    # Formulas:
+    # Case 1: 1 lysogenic_scaffold + N lytic_scaffold => lysogenic_virus
+    # Case 2: 1 integrated_prophage + N lytic_scaffold => split into scaffolds
+    # Case 3: N (N >= 2) of lysogenic_scaffold or integrated_prophage + N lytic_scaffold => split into scaffolds
+    # Case 4: N lytic_scaffold => lytic_virus
+    ```
+    
+    
+    
 
 ______
 ## Contact <a name="contact"></a>

@@ -776,45 +776,194 @@ def get_virus_normalized_abundance(mapping_result_dir, virus_raw_abundance, viru
         f.write(f'{sample}\t{sample2read_info[sample][0]}\t{sample2read_info[sample][1]}\n')
     f.close()    
         
-def parse_vibrant_lytic_and_lysogenic_info(vibrant_outdir, metagenomic_scaffold_stem_name, viral_gn_dir):
+def parse_vibrant_lytic_and_lysogenic_info(vibrant_outdir, metagenomic_scaffold_stem_name):
     # Step 1 Get scf 2 lytic or lysogenic dict
     lysogenic_fasta_addr = f'{vibrant_outdir}/VIBRANT_phages_{metagenomic_scaffold_stem_name}/{metagenomic_scaffold_stem_name}.phages_lysogenic.fna'
     lytic_fasta_addr = f'{vibrant_outdir}/VIBRANT_phages_{metagenomic_scaffold_stem_name}/{metagenomic_scaffold_stem_name}.phages_lytic.fna'
+    vibrant_annotation = f'{vibrant_outdir}/VIBRANT_results_{metagenomic_scaffold_stem_name}/VIBRANT_annotations_{metagenomic_scaffold_stem_name}.tsv'
     
-    scf2lytic_or_lyso = {} # scf => 'lytic' or 'lysogenic'
-    lysogenic_fasta_seq = store_seq(lysogenic_fasta_addr)
-    lysogenic_scf2lyso = {x.replace('>', '', 1):'lysogenic' for x in lysogenic_fasta_seq}
+    scf2lytic_or_lyso = {} # scf => [lytic_or_lyso_or_integrated_prophage, integrase_presence_or_absence]
+    # lytic_or_lyso_or_integrated_prophage can contain: lytic_scaffold, integrated_prophage (parent scaffold), and lysogenic_scaffold
+    # integrase_presence_or_absence can contain: integrase_present and integrase_absent
     lytic_fasta_seq = store_seq(lytic_fasta_addr)
-    lytic_scf2lytic = {x.replace('>', '', 1):'lytic' for x in lytic_fasta_seq}
-    scf2lytic_or_lyso.update(lysogenic_scf2lyso)
-    scf2lytic_or_lyso.update(lytic_scf2lytic)
-    
-    # Step 2 Get gn2long_scfs dict
-    gn2long_scfs = {} # gn => [long_scfs]
-    all_gn_addrs = glob(f'{viral_gn_dir}/*.fasta')
-    for gn_addr in all_gn_addrs:
-        gn = Path(gn_addr).stem
-        gn_seq = store_seq(gn_addr)
-        long_scfs = [x.replace('>', '', 1) for x in gn_seq]
-        gn2long_scfs[gn] = long_scfs
-        
-    # Step 3 Get gn 2 lyso and lytic result
-    gn2lyso_lytic_result = {} # gn => 'lytic' or 'lysogenic'
-    for gn in gn2long_scfs:
-        result = 'lytic' # Default is 'lytic'
-        long_scfs = gn2long_scfs[gn]
-        for long_scf in long_scfs:
-            scf = long_scf.split('__', 1)[1]
-            if scf2lytic_or_lyso[scf] == 'lysogenic':
-                result = 'lysogenic'
-            elif scf2lytic_or_lyso[scf] == 'lytic': 
-                continue
-            elif scf not in scf2lytic_or_lyso:
-                sys.exit('Scaffold {scf} was not parsed correctly')
-        gn2lyso_lytic_result[gn] = result        
-                
-    return gn2lyso_lytic_result  
+    lytic_scf2lytic = {x.replace('>', '', 1):'lytic_scaffold' for x in lytic_fasta_seq}
 
+    lysogenic_fasta_seq = store_seq(lysogenic_fasta_addr)
+    lysogenic_scf2lyso = {} # scf => lyso
+    for header in lysogenic_fasta_seq:
+        header_wo_array = header.replace('>', '', 1)
+        if '_fragment_' in header_wo_array:
+            parent_scaffold = header_wo_array.split('_fragment_', 1)[0]
+            lysogenic_scf2lyso[header_wo_array] = f"integrated_prophage ({parent_scaffold})"
+        else:
+            lysogenic_scf2lyso[header_wo_array] = "lysogenic_scaffold"
+    
+    scf2integrase_presence = {} # scf => integrase_presence_or_absence
+    integrase = ['VOG00041', 'VOG15133', 'VOG20969', 'VOG02658', 'VOG04024', 'VOG01778', 'VOG02371']
+    with open(vibrant_annotation, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            tmp = line.split('\t')
+            if tmp[0] != 'protein':
+                scf, VOG = tmp[1], tmp[13]
+                scf2integrase_presence[scf] = 'integrase_absent'
+                if VOG in integrase:
+                    scf2integrase_presence[scf] = 'integrase_present'    
+    
+    for scf in scf2integrase_presence:
+        lytic_or_lyso_or_integrated_prophage = ''
+        integrase_presence_or_absence = ''
+        if scf in lytic_scf2lytic:
+            lytic_or_lyso_or_integrated_prophage = lytic_scf2lytic[scf]
+        elif scf in lysogenic_scf2lyso:
+            lytic_or_lyso_or_integrated_prophage = lysogenic_scf2lyso[scf]            
+        integrase_presence_or_absence = scf2integrase_presence[scf]     
+        scf2lytic_or_lyso[scf] = [lytic_or_lyso_or_integrated_prophage, integrase_presence_or_absence]
+    
+    # Step 2 Write down scf2lytic_or_lyso result
+    f = open(os.path.join(vibrant_outdir, 'scf2lytic_or_lyso.summary.txt'),'w')
+    f.write('scaffold\tlytic_or_lyso_or_integrated_prophage\tintegrase_presence_or_absence\n')
+    for scf in scf2lytic_or_lyso:
+        line = scf + '\t' + '\t'.join(scf2lytic_or_lyso[scf]) + '\n'
+        f.write(line)
+    f.close()     
+
+def get_vRhyme_best_bin_lytic_and_lysogenic_info(vRhyme_best_bin_dir, vrhyme_outdir, scf2lytic_or_lyso_summary):
+    # Step 1 Get vRhyme_bin2scf dict
+    vRhyme_bin2scf = {} # vRhyme_bin => [scfs]; scf here is the short scf name
+    vRhyme_bin_addrs = glob(os.path.join(vRhyme_best_bin_dir, '*.fasta'))
+    for vRhyme_bin_addr in vRhyme_bin_addrs:
+        vRhyme_bin = Path(vRhyme_bin_addr).stem
+        vRhyme_bin_seq = store_seq(vRhyme_bin_addr)
+        scfs = []
+        for header in vRhyme_bin_seq:
+            scf = header.replace('>', '', 1).split('__', 1)[1]
+            scfs.append(scf)
+        vRhyme_bin2scf[vRhyme_bin] = scfs
+
+    # Step 2 Store scf2lytic_or_lyso dict
+    scf2lytic_or_lyso = {} # scf => [lytic_or_lyso_or_integrated_prophage, integrase_presence_or_absence]
+    if scf2lytic_or_lyso_summary:
+        with open(scf2lytic_or_lyso_summary, 'r') as lines:
+            for line in lines:
+                line = line.rstrip('\n')
+                tmp = line.split('\t')
+                if tmp[0] != 'scaffold':
+                    scf, lytic_or_lyso_or_integrated_prophage, integrase_presence_or_absence = tmp[0], tmp[1], tmp[2]
+                    if ' (' in lytic_or_lyso_or_integrated_prophage:
+                        lytic_or_lyso_or_integrated_prophage = lytic_or_lyso_or_integrated_prophage.split(' (', 1)[0]
+                    scf2lytic_or_lyso[scf] = [lytic_or_lyso_or_integrated_prophage, integrase_presence_or_absence]  
+    
+    # Step 3 Get vRhyme_bin2lytic_and_lyso_info dict
+    vRhyme_bin2lytic_and_lyso_info = {} # vRhyme_bin => lytic_and_lyso_info ([pattern, assignment], for example, ['1 lysogenic_scaffold + N lytic_scaffold', 'lysogenic_virus'])
+    
+    # Rules
+    # A bin with one or more lytic members and one lysogenic member should not cause concern.
+    # A bin with one or more lytic members and one integrated prophage should be examined. 
+    # A bin with two or more lysogenic members, each encoding an integrase, is likely contamination.
+    # A bin with two or more integrated prophages, regardless of integrases, from multiple parent sequences is likely contamination.
+    
+    # Formulas:
+    # Case 1: 1 lysogenic_scaffold + N lytic_scaffold => lysogenic_virus
+    # Case 2: 1 integrated_prophage + N lytic_scaffold => split into scaffolds
+    # Case 3: N (N >= 2) of lysogenic_scaffold or integrated_prophage + N lytic_scaffold => split into scaffolds
+    # Case 4: N lytic_scaffold => lytic_virus
+    for vRhyme_bin in vRhyme_bin2scf:
+        scfs = vRhyme_bin2scf[vRhyme_bin]
+        no_of_lysogenic_scaffold = 0
+        no_of_integrated_prophage = 0
+        no_of_lytic_scaffold = 0
+        for scf in scfs:
+            if scf2lytic_or_lyso:
+                if scf2lytic_or_lyso[scf][0] == 'lysogenic_scaffold':
+                    no_of_lysogenic_scaffold = no_of_lysogenic_scaffold + 1
+                elif scf2lytic_or_lyso[scf][0] == 'integrated_prophage': 
+                    no_of_integrated_prophage = no_of_integrated_prophage + 1
+                elif scf2lytic_or_lyso[scf][0] == 'lytic_scaffold':     
+                    no_of_lytic_scaffold = no_of_lytic_scaffold + 1
+        
+        if no_of_lysogenic_scaffold == 1 and no_of_integrated_prophage == 0 and no_of_lytic_scaffold >= 1:
+            vRhyme_bin2lytic_and_lyso_info[vRhyme_bin] = ['1 lysogenic_scaffold + N lytic_scaffold', 'lysogenic_virus']
+        elif no_of_integrated_prophage == 1 and no_of_lysogenic_scaffold == 0 and no_of_lytic_scaffold >= 1:
+            vRhyme_bin2lytic_and_lyso_info[vRhyme_bin] = ['1 integrated_prophage + N lytic_scaffold', 'split into scaffolds']
+        elif (no_of_lysogenic_scaffold + no_of_integrated_prophage) >= 2 and no_of_lytic_scaffold >= 0:
+            vRhyme_bin2lytic_and_lyso_info[vRhyme_bin] = ['N (N > 1) of lysogenic_scaffold or integrated_prophage + N lytic_scaffold', 'split into scaffolds']
+        elif no_of_lysogenic_scaffold == 0 and no_of_integrated_prophage == 0 and  no_of_lytic_scaffold >= 2:
+            vRhyme_bin2lytic_and_lyso_info[vRhyme_bin] = ['N lytic_scaffold', 'lytic_virus']
+    
+    # Step 4 Write down vRhyme_best_bin_lytic_and_lysogenic_info
+    f = open(os.path.join(vrhyme_outdir, 'vRhyme_best_bin_lytic_and_lysogenic_info.txt'),'w')
+    f.write("vRhyme_bin\tpattern\tassignment\n")
+    if vRhyme_bin2lytic_and_lyso_info:
+        for vRhyme_bin in vRhyme_bin2lytic_and_lyso_info:
+            line = vRhyme_bin + '\t' + '\t'.join(vRhyme_bin2lytic_and_lyso_info[vRhyme_bin]) + '\n'
+            f.write(line)
+    f.close()  
+
+def get_vRhyme_best_bin_scaffold_complete_info(CheckV_quality_summary, vRhyme_best_bin_scaffold_complete_info):
+    vRhyme_best_bin_scaffold_complete_info_dict = {} # scf => [vRhyme_bin, Complete or Not-complete]
+    with open(CheckV_quality_summary,'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            tmp = line.split('\t')
+            if tmp[0] != 'contig_id':
+                scf, complete_info = tmp[0], tmp[7]
+                scf = scf.split('__', 1)[1]  # scf here is the short scf name
+                vRhyme_bin = scf.split('__', 1)[0].replace('vRhyme_', 'vRhyme_bin_', 1)
+                if complete_info == 'Complete':
+                    vRhyme_best_bin_scaffold_complete_info_dict[scf] = [vRhyme_bin, 'Complete']
+                elif complete_info != 'Complete':
+                    vRhyme_best_bin_scaffold_complete_info_dict[scf] = [vRhyme_bin, 'Not-complete']
+    lines.close()
+
+    f = open(vRhyme_best_bin_scaffold_complete_info, 'w')
+    f.write("scaffold\tcomplete_info\n")
+    for scf in vRhyme_best_bin_scaffold_complete_info_dict:
+        line = scf + '\t' + '\t'.join(vRhyme_best_bin_scaffold_complete_info_dict[scf]) + '\n'
+        f.write(line)
+    f.close()
+
+def make_vRhyme_best_bins_fasta_modified(vRhyme_best_bin_dir, vRhyme_best_bin_dir_modified, vRhyme_best_bin_lytic_and_lysogenic_info, vRhyme_best_bin_scaffold_complete_info):
+    # Step 1 Get vRhyme_bin_to_split list 
+    vRhyme_bin_to_split = []
+    
+    with open(vRhyme_best_bin_lytic_and_lysogenic_info, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            tmp = line.split('\t')
+            if tmp[0] != 'vRhyme_bin':
+                if tmp[2] == 'split into scaffolds':
+                    vRhyme_bin_to_split.append(tmp[0])
+                    
+    with open(vRhyme_best_bin_scaffold_complete_info, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            tmp = line.split('\t')
+            if tmp[0] != 'scaffold':
+                if tmp[2] == 'Complete':
+                    if tmp[1] not in vRhyme_bin_to_split:
+                        vRhyme_bin_to_split.append(tmp[1])
+                        
+    # Step 2 Make vRhyme_best_bin_dir_modified and fill in fasta, faa, ffn files
+    os.mkdir(vRhyme_best_bin_dir_modified)
+    
+    fasta_addrs = glob(os.path.join(vRhyme_best_bin_dir, '*.fasta'))
+    for fasta_addr in fasta_addrs:
+        fasta_stem = Path(fasta_addr).stem
+        fasta_addr_new = os.path.join(vRhyme_best_bin_dir_modified, f"{fasta_stem}.fasta")
+        faa_addr = os.path.join(vRhyme_best_bin_dir, f"{fasta_stem}.faa")
+        faa_addr_new = os.path.join(vRhyme_best_bin_dir_modified, f"{fasta_stem}.faa")
+        ffn_addr = os.path.join(vRhyme_best_bin_dir, f"{fasta_stem}.ffn")
+        ffn_addr_new = os.path.join(vRhyme_best_bin_dir_modified, f"{fasta_stem}.ffn")
+        
+        if fasta_stem not in vRhyme_bin_to_split:
+            # Copy fasta files
+            os.system(f"cp {fasta_addr} {fasta_addr_new}")
+            # Copy faa files
+            os.system(f"cp {faa_addr} {faa_addr_new}")
+            # Copy ffn files
+            os.system(f"cp {ffn_addr} {ffn_addr_new}")
+                      
 def parse_vibrant_lytic_and_lysogenic_info_for_wo_reads(vibrant_outdir, metagenomic_scaffold_stem_name):
     # Step 1 Get scf 2 lytic or lysogenic dict
     lysogenic_fasta_addr = f'{vibrant_outdir}/VIBRANT_phages_{metagenomic_scaffold_stem_name}/{metagenomic_scaffold_stem_name}.phages_lysogenic.fna'
@@ -1556,43 +1705,72 @@ def get_split_viral_gn(final_virus_fasta_file, split_viral_gn_dir):
                 each_faa_seq_dict[pro_header] = final_virus_faa_seq[pro_header]
                 each_faa_seq_file = os.path.join(split_viral_gn_dir, f"{header_wo_array}.faa")
                 write_down_seq(each_faa_seq_dict, each_faa_seq_file)
+                
+def get_gn_lyso_lytic_result(scf2lytic_or_lyso_summary, vRhyme_best_bin_lytic_and_lysogenic_info, viral_gn_dir):
+    gn2lyso_lytic_result = {} # gn => lyso_lytic_property
+   
+    # Step 1 Store scf2lytic_or_lyso dict
+    scf2lytic_or_lyso = {} # scf => [lytic_or_lyso_or_integrated_prophage, integrase_presence_or_absence]; scf here is the short scf name
+    with open(scf2lytic_or_lyso_summary, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            tmp = line.split('\t')
+            if tmp[0] != 'scaffold':
+                scf, lytic_or_lyso_or_integrated_prophage, integrase_presence_or_absence = tmp[0], tmp[1], tmp[2]
+                if ' (' in lytic_or_lyso_or_integrated_prophage:
+                    lytic_or_lyso_or_integrated_prophage = lytic_or_lyso_or_integrated_prophage.split(' (', 1)[0]
+                scf2lytic_or_lyso[scf] = [lytic_or_lyso_or_integrated_prophage, integrase_presence_or_absence]  
+                
+    # Step 2 Store vRhyme_bin2lytic_and_lysogenic_info dict
+    vRhyme_bin2lytic_and_lysogenic_info = {} # vRhyme_bin => lytic_and_lysogenic_info
+    with open(vRhyme_best_bin_lytic_and_lysogenic_info, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            tmp = line.split('\t')
+            if tmp[0] != 'vRhyme_bin':
+                if tmp[2] != 'split into scaffolds':
+                    vRhyme_bin2lytic_and_lysogenic_info[tmp[0]] = tmp[2]
 
+    # Step 3 Store lyso_lytic_result for vRhyme_bin
+    vRhyme_bin_addrs = glob(os.path.join(viral_gn_dir, 'vRhyme_bin_*.fasta'))
+    for vRhyme_bin_addr in vRhyme_bin_addrs:
+        vRhyme_bin = Path(vRhyme_bin_addr).stem
+        gn2lyso_lytic_result[vRhyme_bin] = vRhyme_bin2lytic_and_lysogenic_info[vRhyme_bin]
         
+    # Step 4 Store lyso_lytic_result for vRhyme_unbinned  vRhyme_unbinned_5.fasta        
+    vRhyme_unbinned_addrs = glob(os.path.join(viral_gn_dir, 'vRhyme_unbinned_*.fasta')) 
+    for vRhyme_unbinned_addr in vRhyme_unbinned_addrs:
+        vRhyme_unbinned = Path(vRhyme_unbinned_addr).stem
+        scf = ''
+        vRhyme_unbinned_seq = store_seq(vRhyme_unbinned_addr)
+        for header in vRhyme_unbinned_seq:
+            scf = header.replace('>', '', 1).split('__', 1)[1]
+        gn2lyso_lytic_result[vRhyme_unbinned] = scf2lytic_or_lyso[scf][0] 
+
+    return gn2lyso_lytic_result       
+
+def get_gn_lyso_lytic_result_for_wo_reads(scf2lytic_or_lyso_summary, final_virus_fasta_file): 
+    gn2lyso_lytic_result = {} # gn => lyso_lytic_property
     
+    # Step 1 Store scf2lytic_or_lyso dict
+    scf2lytic_or_lyso = {} # scf => [lytic_or_lyso_or_integrated_prophage, integrase_presence_or_absence]; scf here is the short scf name
+    with open(scf2lytic_or_lyso_summary, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            tmp = line.split('\t')
+            if tmp[0] != 'scaffold':
+                scf, lytic_or_lyso_or_integrated_prophage, integrase_presence_or_absence = tmp[0], tmp[1], tmp[2]
+                if ' (' in lytic_or_lyso_or_integrated_prophage:
+                    lytic_or_lyso_or_integrated_prophage = lytic_or_lyso_or_integrated_prophage.split(' (', 1)[0]
+                scf2lytic_or_lyso[scf] = [lytic_or_lyso_or_integrated_prophage, integrase_presence_or_absence]  
+
+    # Step 2 Store gn list
+    final_virus_fasta_seq = store_seq(final_virus_fasta_file)
+    gn_list = [x.replace('>', '', 1) for x in final_virus_fasta_seq]
+    
+    # Step 3 Store gn2lyso_lytic_result
+    for gn in gn_list:
+        gn2lyso_lytic_result[gn] = scf2lytic_or_lyso[gn][0]
         
-    
-    
-    
-    
-            
-    
-    
-                
-    
-    
-                
-    
-    
-    
-    
-    
-            
-                    
-                    
-        
-        
-    
-    
-    
-        
-        
-        
-        
-    
-            
-    
-            
-    
-    
-    
-    
+    return gn2lyso_lytic_result     
+      

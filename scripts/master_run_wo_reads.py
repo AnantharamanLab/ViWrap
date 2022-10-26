@@ -96,6 +96,9 @@ def main(args):
                 
     if not os.path.exists(args['conda_env_dir']):
         sys.exit(f"Could not find conda env dirs within {args['conda_env_dir']}") 
+        
+    if os.path.exists(args['iPHoP_db_custom']):
+        sys.exit(f"Please make sure that {args['iPHoP_db_custom']} is not present before ViWrap run. If present, please remove the folder")         
 
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Looks like the input metagenome and reads, database, and custom MAGs dir (if option used) are now set up well, start up to run ViWrap pipeline")
@@ -109,6 +112,7 @@ def main(args):
         os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_VIBRANT.py')} {args['input_metagenome']} {args['out_dir']} {args['threads']} {args['virome']} {args['input_length_limit']} {args['db_dir']} >/dev/null 2>&1")
         default_vibrant_outdir = os.path.join(args['out_dir'],f"VIBRANT_{Path(args['input_metagenome']).stem}")
         os.system(f"mv {default_vibrant_outdir} {args['vibrant_outdir']}")
+        scripts.module.parse_vibrant_lytic_and_lysogenic_info(args['vibrant_outdir'], Path(args['input_metagenome']).stem)
         final_vb_virus_fasta_file = os.path.join(args['vibrant_outdir'], 'final_vb_virus.fasta')
         final_vb_virus_ffn_file = os.path.join(args['vibrant_outdir'], 'final_vb_virus.ffn')
         final_vb_virus_faa_file = os.path.join(args['vibrant_outdir'], 'final_vb_virus.faa')
@@ -202,6 +206,7 @@ def main(args):
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run VIBRANT to identify and annotate virus from input metagenome. In processing...")
         os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_VIBRANT.py')} {args['input_metagenome']} {args['vb_vs_dvf_outdir']} {args['threads']} {args['virome']} {args['input_length_limit']} {args['db_dir']} >/dev/null 2>&1")
+        scripts.module.parse_vibrant_lytic_and_lysogenic_info(inner_vb_outdir, Path(args['input_metagenome']).stem)
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run VIBRANT to identify and annotate viruses from input metagenome. Finished") 
         
@@ -285,6 +290,7 @@ def main(args):
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run VIBRANT to identify and annotate virus from input metagenome. In processing...")
         os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_VIBRANT.py')} {args['input_metagenome']} {args['vb_vs_outdir']} {args['threads']} {args['virome']} {args['input_length_limit']} {args['db_dir']} >/dev/null 2>&1")
+        scripts.module.parse_vibrant_lytic_and_lysogenic_info(inner_vb_outdir, Path(args['input_metagenome']).stem)
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run VIBRANT to identify and annotate viruses from input metagenome. Finished") 
         
@@ -471,9 +477,16 @@ def main(args):
     # Step 8 Get all virus sequence information    
     ## Step 8.1 Get VIBRANT lytic and lysogenic information and genome information
     checkv_dict = scripts.module.get_checkv_useful_info(os.path.join(args['checkv_outdir'], 'CheckV_quality_summary.txt'))
-    gn2lyso_lytic_result = {}
+    scf2lytic_or_lyso_summary = ''
     if args['identify_method'] == 'vb':
-        gn2lyso_lytic_result = scripts.module.parse_vibrant_lytic_and_lysogenic_info_for_wo_reads(args['vibrant_outdir'], Path(args['input_metagenome']).stem)
+        scf2lytic_or_lyso_summary = os.path.join(args['vibrant_outdir'], 'scf2lytic_or_lyso.summary.txt')
+    elif args['identify_method'] == 'vb-vs-dvf':
+        scf2lytic_or_lyso_summary = os.path.join(args['vb_vs_dvf_outdir'],f"VIBRANT_{Path(args['input_metagenome']).stem}", 'scf2lytic_or_lyso.summary.txt')
+    elif args['identify_method'] == 'vb-vs':        
+        scf2lytic_or_lyso_summary = os.path.join(args['vb_vs_outdir'],f"VIBRANT_{Path(args['input_metagenome']).stem}", 'scf2lytic_or_lyso.summary.txt')    
+    gn2lyso_lytic_result = {}
+    if args['identify_method'] == 'vb' or args['identify_method'] == 'vb-vs-dvf' or args['identify_method'] == 'vb-vs':
+        gn2lyso_lytic_result = scripts.module.get_gn_lyso_lytic_result_for_wo_reads(scf2lytic_or_lyso_summary, final_virus_fasta_file)
     gn2size_and_scf_no_and_pro_count = scripts.module.get_viral_gn_size_and_scf_no_and_pro_count_for_wo_reads(final_virus_fasta_file)
     gn2amg_statics = scripts.module.get_amg_statics_for_wo_reads(os.path.join(args['viwrap_summary_outdir'], 'final_virus.annotation.txt'))
     virus_summary_info = os.path.join(args['viwrap_summary_outdir'],'Virus_summary_info.txt')

@@ -102,6 +102,9 @@ def main(args):
                 
     if not os.path.exists(args['conda_env_dir']):
         sys.exit(f"Could not find conda env dirs within {args['conda_env_dir']}") 
+    
+    if os.path.exists(args['iPHoP_db_custom']):
+        sys.exit(f"Please make sure that {args['iPHoP_db_custom']} is not present before ViWrap run. If present, please remove the folder") 
 
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Looks like the input metagenome and reads, database, and custom MAGs dir (if option used) are now set up well, start up to run ViWrap pipeline")
@@ -115,6 +118,7 @@ def main(args):
         os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_VIBRANT.py')} {args['input_metagenome']} {args['out_dir']} {args['threads']} {args['virome']} {args['input_length_limit']} {args['db_dir']} >/dev/null 2>&1")
         default_vibrant_outdir = os.path.join(args['out_dir'],f"VIBRANT_{Path(args['input_metagenome']).stem}")
         os.system(f"mv {default_vibrant_outdir} {args['vibrant_outdir']}")
+        scripts.module.parse_vibrant_lytic_and_lysogenic_info(args['vibrant_outdir'], Path(args['input_metagenome']).stem)
     
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT to identify and annotate viruses from input metagenome. Finished")      
@@ -203,6 +207,7 @@ def main(args):
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run VIBRANT to identify and annotate virus from input metagenome. In processing...")
         os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_VIBRANT.py')} {args['input_metagenome']} {args['vb_vs_dvf_outdir']} {args['threads']} {args['virome']} {args['input_length_limit']} {args['db_dir']} >/dev/null 2>&1")
+        scripts.module.parse_vibrant_lytic_and_lysogenic_info(inner_vb_outdir, Path(args['input_metagenome']).stem)
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run VIBRANT to identify and annotate viruses from input metagenome. Finished") 
         
@@ -286,6 +291,7 @@ def main(args):
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run VIBRANT to identify and annotate virus from input metagenome. In processing...")
         os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_VIBRANT.py')} {args['input_metagenome']} {args['vb_vs_outdir']} {args['threads']} {args['virome']} {args['input_length_limit']} {args['db_dir']} >/dev/null 2>&1")
+        scripts.module.parse_vibrant_lytic_and_lysogenic_info(inner_vb_outdir, Path(args['input_metagenome']).stem)
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run VIBRANT to identify and annotate viruses from input metagenome. Finished") 
         
@@ -381,26 +387,46 @@ def main(args):
     logger.info(f"{time_current} | Run vRhyme to bin viral scaffolds. In processing...")        
         
     os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vRhyme')} python {os.path.join(args['root_dir'],'scripts/run_vRhyme.py')} {viral_scaffold} {args['vrhyme_outdir']} {args['mapping_outdir']} {args['threads']} >/dev/null 2>&1")
+    vRhyme_best_bin_dir = os.path.join(args['vrhyme_outdir'], 'vRhyme_best_bins_fasta')
+    scf2lytic_or_lyso_summary = ''
+    if args['identify_method'] == 'vb':
+        scf2lytic_or_lyso_summary = os.path.join(args['vibrant_outdir'], 'scf2lytic_or_lyso.summary.txt')
+    elif args['identify_method'] == 'vb-vs-dvf':
+        scf2lytic_or_lyso_summary = os.path.join(args['vb_vs_dvf_outdir'],f"VIBRANT_{Path(args['input_metagenome']).stem}", 'scf2lytic_or_lyso.summary.txt')
+    elif args['identify_method'] == 'vb-vs':        
+        scf2lytic_or_lyso_summary = os.path.join(args['vb_vs_outdir'],f"VIBRANT_{Path(args['input_metagenome']).stem}", 'scf2lytic_or_lyso.summary.txt')
+    scripts.module.get_vRhyme_best_bin_lytic_and_lysogenic_info(vRhyme_best_bin_dir, args['vrhyme_outdir'], scf2lytic_or_lyso_summary)
+    vRhyme_best_bin_lytic_and_lysogenic_info = os.path.join(args['vrhyme_outdir'], 'vRhyme_best_bin_lytic_and_lysogenic_info.txt')
+    
+    vRhyme_best_bin_CheckV_result = os.path.join(args['vrhyme_outdir'], 'vRhyme_best_bins_fasta_CheckV_result')
+    os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python {os.path.join(args['root_dir'],'scripts/run_CheckV.py')} {vRhyme_best_bin_dir} {vRhyme_best_bin_CheckV_result} {args['threads']} {args['CheckV_db']} >/dev/null 2>&1")
+    CheckV_quality_summary = os.path.join(vRhyme_best_bin_CheckV_result, 'CheckV_quality_summary.txt')
+    scripts.module.parse_checkv_result(vRhyme_best_bin_CheckV_result, CheckV_quality_summary)   
+    vRhyme_best_bin_scaffold_complete_info = os.path.join(args['vrhyme_outdir'], 'vRhyme_best_bin_scaffold_complete_info.txt')  
+    scripts.module.get_vRhyme_best_bin_scaffold_complete_info(CheckV_quality_summary, vRhyme_best_bin_scaffold_complete_info)
+    os.system(f"rm -rf {vRhyme_best_bin_CheckV_result}")
+    vRhyme_best_bin_dir_modified = os.path.join(args['vrhyme_outdir'], 'vRhyme_best_bins_fasta_modified')
+    scripts.module.make_vRhyme_best_bins_fasta_modified(vRhyme_best_bin_dir, vRhyme_best_bin_dir_modified, vRhyme_best_bin_lytic_and_lysogenic_info, vRhyme_best_bin_scaffold_complete_info)    
 
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-    logger.info(f"{time_current} | Run vRhyme to bin viral scaffolds. Finished")
+    logger.info(f"{time_current} | Run vRhyme to bin viral scaffolds. Finished") 
     
     
     # Step 5 Run vContact2
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Run vContact2 to cluster viral genomes. In processing...")    
     ## Step 5.1 Make unbinned viral gn folder
-    vRhyme_best_bin_dir = os.path.join(args['vrhyme_outdir'], 'vRhyme_best_bins_fasta')
+    vRhyme_best_bin_dir_modified = os.path.join(args['vrhyme_outdir'], 'vRhyme_best_bins_fasta')
     vRhyme_unbinned_viral_gn_dir = os.path.join(args['vrhyme_outdir'], 'vRhyme_unbinned_viral_gn_fasta')
-    scripts.module.make_unbinned_viral_gn(viral_scaffold, vRhyme_best_bin_dir, vRhyme_unbinned_viral_gn_dir)
+    scripts.module.make_unbinned_viral_gn(viral_scaffold, vRhyme_best_bin_dir_modified, vRhyme_unbinned_viral_gn_dir)
 
     ## Step 5.2 Prepare pro2viral_gn map file
     pro2viral_gn_map = os.path.join(args['vrhyme_outdir'], 'pro2viral_gn_map.csv')
-    scripts.module.get_pro2viral_gn_map(vRhyme_best_bin_dir, vRhyme_unbinned_viral_gn_dir, pro2viral_gn_map)
+    scripts.module.get_pro2viral_gn_map(vRhyme_best_bin_dir_modified, vRhyme_unbinned_viral_gn_dir, pro2viral_gn_map)
 
     ## Step 5.3 Make all vRhyme viral gn combined faa file
     all_vRhyme_faa = os.path.join(args['vrhyme_outdir'], 'all_vRhyme_faa.faa')
-    scripts.module.combine_all_vRhyme_faa(vRhyme_best_bin_dir, vRhyme_unbinned_viral_gn_dir, all_vRhyme_faa)
+    scripts.module.combine_all_vRhyme_faa(vRhyme_best_bin_dir_modified, vRhyme_unbinned_viral_gn_dir, all_vRhyme_faa)
 
     ## Step 5.4 Run vContact2
     cluster_one_jar = os.path.join(args['conda_env_dir'], 'ViWrap-vContact2/bin/cluster_one-1.0.jar')
@@ -422,7 +448,7 @@ def main(args):
     logger.info(f"{time_current} | Run CheckV to evaluate virus genome quality. In processing...")       
     ## Step 6.1 Link multiple scaffolds within a bin
     os.mkdir(args['nlinked_viral_gn_dir'])
-    scripts.module.Nlinker(vRhyme_best_bin_dir, args['nlinked_viral_gn_dir'], 'fasta', 1000)  
+    scripts.module.Nlinker(vRhyme_best_bin_dir_modified, args['nlinked_viral_gn_dir'], 'fasta', 1000)  
     scripts.module.Nlinker(vRhyme_unbinned_viral_gn_dir, args['nlinked_viral_gn_dir'], 'fasta', 1000) 
 
     ## Step 6.2 Run CheckV in parallel and parse the result
@@ -439,7 +465,7 @@ def main(args):
     logger.info(f"{time_current} | Run dRep to cluster virus species. In processing...") 
     
     ## Step 7.1 Make gn list for each genus
-    scripts.module.get_gn_list_for_genus(genus_cluster_info, args['drep_outdir'], vRhyme_best_bin_dir, vRhyme_unbinned_viral_gn_dir)  
+    scripts.module.get_gn_list_for_genus(genus_cluster_info, args['drep_outdir'], vRhyme_best_bin_dir_modified, vRhyme_unbinned_viral_gn_dir)  
 
     ## Step 7.2 Run dRep
     viral_genus_genome_list_dir = os.path.join(args['drep_outdir'], 'viral_genus_genome_list')
@@ -457,12 +483,12 @@ def main(args):
     
     ## Step 8.1 Run diamond to NCBI RefSeq viral protein db 
     tax_refseq_output = os.path.join(args['out_dir'], 'tax_refseq_output.txt')
-    os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-Tax')} python {os.path.join(args['root_dir'],'scripts/run_Tax_RefSeq.py')} {args['out_dir']} {vRhyme_best_bin_dir} {vRhyme_unbinned_viral_gn_dir} {args['Tax_classification_db']} {pro2viral_gn_map} {args['threads']} {tax_refseq_output}")
+    os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-Tax')} python {os.path.join(args['root_dir'],'scripts/run_Tax_RefSeq.py')} {args['out_dir']} {vRhyme_best_bin_dir_modified} {vRhyme_unbinned_viral_gn_dir} {args['Tax_classification_db']} {pro2viral_gn_map} {args['threads']} {tax_refseq_output}")
 
     ## Step 8.2 Run hmmsearch to marker VOG HMM db
     vog_marker_table = os.path.join(args['Tax_classification_db'], 'VOG_marker_table.txt')
     tax_vog_output = os.path.join(args['out_dir'], 'tax_vog_output.txt')
-    os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-Tax')} python {os.path.join(args['root_dir'],'scripts/run_Tax_VOG.py')} {vog_marker_table} {args['out_dir']} {vRhyme_best_bin_dir} {vRhyme_unbinned_viral_gn_dir} {args['Tax_classification_db']} {pro2viral_gn_map} {args['threads']} {tax_vog_output}")
+    os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-Tax')} python {os.path.join(args['root_dir'],'scripts/run_Tax_VOG.py')} {vog_marker_table} {args['out_dir']} {vRhyme_best_bin_dir_modified} {vRhyme_unbinned_viral_gn_dir} {args['Tax_classification_db']} {pro2viral_gn_map} {args['threads']} {tax_vog_output}")
 
     ## Step 8.3 Get taxonomy information from vContact2 result
     tax_vcontact2_output = os.path.join(args['out_dir'], 'tax_vcontact2_output.txt')
@@ -493,10 +519,10 @@ def main(args):
     if args['custom_MAGs_dir'] != 'none':
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Conduct Host prediction by iPHoP using custom MAGs. In processing...")   
-    
+               
         os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-GTDBTk')} python {os.path.join(args['root_dir'],'scripts/add_custom_MAGs_to_host_db__make_gtdbtk_results.py')} {args['out_dir']} {args['custom_MAGs_dir']} {args['threads']} >/dev/null 2>&1")
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP')} python {os.path.join(args['root_dir'],'scripts/add_custom_MAGs_to_host_db__add_to_db.py')} {args['out_dir']} {args['custom_MAGs_dir']} {args['iPHoP_db']} {args['iPHoP_db_custom']} >/dev/null 2>&1")    
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP')} python {os.path.join(args['root_dir'],'scripts/run_iPHoP.py')} {all_vRhyme_fasta_Nlinked} {args['iphop_custom_outdir']} {args['iPHoP_db_custom']} {args['threads']} >/dev/null 2>&1")   
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP')} python {os.path.join(args['root_dir'],'scripts/add_custom_MAGs_to_host_db__add_to_db.py')} {args['out_dir']} {args['custom_MAGs_dir']} {args['iPHoP_db']} {args['iPHoP_db_custom']} >/dev/null 2>&1")
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP')} python {os.path.join(args['root_dir'],'scripts/run_iPHoP.py')} {all_vRhyme_fasta_Nlinked} {args['iphop_custom_outdir']} {args['iPHoP_db_custom']} {args['threads']} >/dev/null 2>&1")  
 
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Conduct Host prediction by iPHoP using custom MAGs. Finished") 
@@ -506,7 +532,7 @@ def main(args):
     os.mkdir(args['viwrap_summary_outdir'])
     os.system(f"mv {os.path.join(args['out_dir'],'*.txt')} {args['viwrap_summary_outdir']}")
     virus_raw_abundance = os.path.join(args['viwrap_summary_outdir'],'Virus_raw_abundance.txt')
-    scripts.module.get_virus_raw_abundance(args['mapping_outdir'], vRhyme_best_bin_dir, vRhyme_unbinned_viral_gn_dir, virus_raw_abundance)
+    scripts.module.get_virus_raw_abundance(args['mapping_outdir'], vRhyme_best_bin_dir_modified, vRhyme_unbinned_viral_gn_dir, virus_raw_abundance)
     sample2read_info_file = os.path.join(args['viwrap_summary_outdir'],'Sample2read_info.txt')
     virus_normalized_abundance = os.path.join(args['viwrap_summary_outdir'],'Virus_normalized_abundance.txt')
     scripts.module.get_virus_normalized_abundance(args['mapping_outdir'], virus_raw_abundance, virus_normalized_abundance, sample2read_info, sample2read_info_file)
@@ -519,14 +545,14 @@ def main(args):
     ## Step 11.1 Move all virus genome fasta, ffn, and faa files
     viral_gn_dir = os.path.join(args['viwrap_summary_outdir'],'Virus_genomes_files')
     os.mkdir(viral_gn_dir)
-    os.system(f'cp {vRhyme_best_bin_dir}/* {viral_gn_dir}')
+    os.system(f'cp {vRhyme_best_bin_dir_modified}/* {viral_gn_dir}')
     os.system(f'cp {vRhyme_unbinned_viral_gn_dir}/* {viral_gn_dir}')
     
     ## Step 11.2 Get VIBRANT lytic and lysogenic information and genome information
     checkv_dict = scripts.module.get_checkv_useful_info(os.path.join(args['checkv_outdir'], 'CheckV_quality_summary.txt'))
     gn2lyso_lytic_result = {}
-    if args['identify_method'] == 'vb':
-        gn2lyso_lytic_result = scripts.module.parse_vibrant_lytic_and_lysogenic_info(args['vibrant_outdir'], Path(args['input_metagenome']).stem, viral_gn_dir)
+    if args['identify_method'] == 'vb' or args['identify_method'] == 'vb-vs-dvf' or args['identify_method'] == 'vb-vs':
+        gn2lyso_lytic_result = scripts.module.get_gn_lyso_lytic_result(scf2lytic_or_lyso_summary, vRhyme_best_bin_lytic_and_lysogenic_info, viral_gn_dir)
     gn2size_and_scf_no_and_pro_count = scripts.module.get_viral_gn_size_and_scf_no_and_pro_count(viral_gn_dir)
     gn2long_scf2kos = ''
     if args['identify_method'] == 'vb':
@@ -552,4 +578,4 @@ def main(args):
     end_time = datetime.now().replace(microsecond=0)
     duration = end_time - start_time
     logger.info(f"The total running time is {duration} (in \"hr:min:sec\" format)")  
-        
+     
