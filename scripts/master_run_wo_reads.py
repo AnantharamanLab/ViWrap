@@ -43,7 +43,7 @@ def set_defaults(args):
     args['dvf_outdir'] = os.path.join(args['out_dir'],f"00_DeepVirFinder_{Path(args['input_metagenome']).stem}")
     args['vb_vs_dvf_outdir'] = os.path.join(args['out_dir'],f"00_VIBRANT_VirSorter_DeepVirFinder_{Path(args['input_metagenome']).stem}")
     args['vb_vs_outdir'] = os.path.join(args['out_dir'],f"00_VIBRANT_VirSorter_{Path(args['input_metagenome']).stem}")
-    args['vcontact2_outdir'] = os.path.join(args['out_dir'],'01_vContact2_outdir')
+    args['vcontact2_outdir'] = os.path.join(args['out_dir'],'01_vConTACT2_outdir')
     args['checkv_outdir'] = os.path.join(args['out_dir'],'02_CheckV_outdir')
     args['drep_outdir'] = os.path.join(args['out_dir'],'03_dRep_outdir')
     args['iphop_outdir'] = os.path.join(args['out_dir'],'04_iPHoP_outdir')

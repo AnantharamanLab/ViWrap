@@ -46,7 +46,7 @@ def set_defaults(args):
     args['vb_vs_outdir'] = os.path.join(args['out_dir'],f"00_VIBRANT_VirSorter_{Path(args['input_metagenome']).stem}")
     args['mapping_outdir'] = os.path.join(args['out_dir'],'01_Mapping_result_outdir')
     args['vrhyme_outdir'] = os.path.join(args['out_dir'],'02_vRhyme_outdir')
-    args['vcontact2_outdir'] = os.path.join(args['out_dir'],'03_vContact2_outdir')
+    args['vcontact2_outdir'] = os.path.join(args['out_dir'],'03_vConTACT2_outdir')
     args['nlinked_viral_gn_dir'] = os.path.join(args['out_dir'],'04_Nlinked_viral_gn_dir')
     args['checkv_outdir'] = os.path.join(args['out_dir'],'05_CheckV_outdir')
     args['drep_outdir'] = os.path.join(args['out_dir'],'06_dRep_outdir')

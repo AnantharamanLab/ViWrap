@@ -269,7 +269,7 @@ ______
 - `00_VIBRANT_input_metageome_stem_name`: the virus identification result (would be "00_VirSorter_input_metageome_stem_name", "00_DeepVirFinder_input_metageome_stem_name", "00_VIBRANT_VirSorter_input_metageome_stem_name", or "00_VIBRANT_VirSorter_DeepVirFinder_input_metageome_stem_name")
 - `01_Mapping_result_outdir`: the reads mapping result
 - `02_vRhyme_outdir`: vRhyme binning result
-- `03_vContact2_outdir`: vContact2 classifying result
+- `03_vConTACT2_outdir`: vConTACT2 classifying result
 - `04_Nlinked_viral_gn_dir`: N-linked viral genome as CheckV inputs
 - `05_CheckV_outdir`: CheckV result
 - `06_dRep_outdir`: dRep clustering result
