@@ -682,8 +682,6 @@ def get_virus_raw_abundance(mapping_result_dir, vRhyme_best_bin_dir, vRhyme_unbi
             for scaffold in scaffolds:
                 if '_fragment_' in scaffold:
                     scaffold = scaffold.rsplit('_fragment_', 1)[0]
-                if '||' in scaffold:
-                    scaffold = scaffold.rsplit('||', 1)[0]
                 coverage = coverm_raw_dict[bam][scaffold]
                 coverages.append(coverage)
             gn_coverage = mean(coverages)
@@ -1043,8 +1041,7 @@ def get_amg_info_for_vb(vibrant_outdir, metagenomic_scaffold_stem_name, viral_gn
             if not line.startswith('protein\t'):
                 tmp = line.split('\t')
                 scf, ko = tmp[1], tmp[2]
-                if tmp[3] == 'AMG':
-                    scf2kos[scf].append(ko)
+                scf2kos[scf].append(ko)
                 
     # Step 3 Get gn2long_scf2kos dict
     for gn in gn2long_scfs:
@@ -1696,6 +1693,8 @@ def get_split_viral_gn(final_virus_fasta_file, split_viral_gn_dir):
         each_fasta_seq_dict = {}
         each_fasta_seq_dict[header] = seq
         each_fasta_seq_file = os.path.join(split_viral_gn_dir, f"{header_wo_array}.fasta")
+        if '||' in each_fasta_seq_file:
+            each_fasta_seq_file = each_fasta_seq_file.replace('||', '__', 1)
         write_down_seq(each_fasta_seq_dict, each_fasta_seq_file)
         
         each_faa_seq_dict = {}
@@ -1704,6 +1703,8 @@ def get_split_viral_gn(final_virus_fasta_file, split_viral_gn_dir):
             if header_wo_array_from_pro_header == header_wo_array:
                 each_faa_seq_dict[pro_header] = final_virus_faa_seq[pro_header]
                 each_faa_seq_file = os.path.join(split_viral_gn_dir, f"{header_wo_array}.faa")
+                if '||' in each_faa_seq_file:
+                    each_faa_seq_file = each_faa_seq_file.replace('||', '__', 1)
                 write_down_seq(each_faa_seq_dict, each_faa_seq_file)
                 
 def get_gn_lyso_lytic_result(scf2lytic_or_lyso_summary, vRhyme_best_bin_lytic_and_lysogenic_info, viral_gn_dir):
@@ -1772,5 +1773,171 @@ def get_gn_lyso_lytic_result_for_wo_reads(scf2lytic_or_lyso_summary, final_virus
     for gn in gn_list:
         gn2lyso_lytic_result[gn] = scf2lytic_or_lyso[gn][0]
         
-    return gn2lyso_lytic_result     
+    return gn2lyso_lytic_result  
+
+def generate_result_visualization_inputs(viwrap_summary_outdir, VIBRANT_db):
+    Result_visualization_inputs_folder = os.path.join(viwrap_summary_outdir, 'Result_visualization_inputs')
+    os.mkdir(Result_visualization_inputs_folder)
+    # Step 1 Make input for bar-plot 1 - virus statistics 1      
+    virus_statistics_1_file = os.path.join(Result_visualization_inputs_folder, 'virus_statistics_1.txt')
+    f = open(virus_statistics_1_file, 'w')
+    f.write('viral scaffold no.\tvirus no.\tspecies cluster no.\tgenus cluster no.\n')
+    virus_summary_info_df = pd.read_csv(os.path.join(viwrap_summary_outdir, 'Virus_summary_info.txt'), sep = '\t', index_col = 0) # Column 0 used as the row labels of the dataframe
+    viral_scaffold_no = virus_summary_info_df['scaffold_num'].sum()
+    virus_no = virus_summary_info_df.shape[0] # Give the number of rows
+    species_cluster_no = len(open(os.path.join(viwrap_summary_outdir, 'Species_cluster_info.txt')).readlines(  )) - 1
+    genus_cluster_no = len(open(os.path.join(viwrap_summary_outdir, 'Genus_cluster_info.txt')).readlines(  )) - 1
+    viral_scaffold_no = str(viral_scaffold_no)
+    virus_no = str(virus_no)
+    species_cluster_no = str(species_cluster_no)
+    genus_cluster_no = str(genus_cluster_no)
+    f.write(f"{viral_scaffold_no}\t{virus_no}\t{species_cluster_no}\t{genus_cluster_no}\n")
+    f.close()
+    
+    # Step 2 Make input for bar-plot 2 - virus statistics 2
+    virus_statistics_2_file = os.path.join(Result_visualization_inputs_folder, 'virus_statistics_2.txt')
+    f = open(virus_statistics_2_file, 'w')
+    f.write('virus no.\tno. of virus taxonomy info\tno. of virus with host prediction\n')
+    no_of_virus_taxonomy_info = len(open(os.path.join(viwrap_summary_outdir, 'Tax_classification_result.txt')).readlines(  ))
+    virus_with_host_prediction_set = set()
+    with open(os.path.join(viwrap_summary_outdir, 'Host_prediction_to_genus_m90.csv'), 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            tmp = line.split(',')
+            if tmp[0] != 'Virus':
+                if tmp[0] not in virus_with_host_prediction_set:
+                    virus_with_host_prediction_set.add(tmp[0])
+    lines.close()
+    no_of_virus_with_host_prediction = len(virus_with_host_prediction_set)
+    f.write(f"{virus_no}\t{no_of_virus_taxonomy_info}\t{no_of_virus_with_host_prediction}\n")
+    f.close()    
+    
+    # Step 3 Make input for pie-chart 1 - virus family relative abundance
+    family2rel_abun = {} # family => rel_abun
+    
+    virus2rel_abun = {} # virus => rel_abun
+    with open(os.path.join(viwrap_summary_outdir, 'Virus_normalized_abundance.txt'), 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            tmp = line.split('\t')
+            if tmp[0] and 'vRhyme_' in tmp[0]:
+                virus, rel_abun = tmp[0], (float(tmp[-1]) / 100)
+                virus2rel_abun[virus] = rel_abun
+    lines.close()            
+    
+    virus2family = {} # virus => family
+    with open(os.path.join(viwrap_summary_outdir, 'Tax_classification_result.txt'), 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            tmp = line.split('\t')
+            virus, tax = tmp[0], tmp[1]
+            ranks = tax.split(';')
+            order, family = ranks[4], ranks[5]
+            family_final = 'NA;NA'
+            if family == 'NA' and order != 'NA':
+                family_final = order + ';' + family
+            elif family != 'NA':
+                family_final = family
+            virus2family[virus] = family_final    
+    lines.close()
+
+    for virus in virus2rel_abun:
+        if virus not in virus2family:
+            virus2family[virus] = 'unassigned'
+            
+    family2virus = defaultdict(list) # family => [virus]
+    for virus in virus2family:
+        family = virus2family[virus]
+        family2virus[family].append(virus)
+            
+    for family in family2virus:
+        rel_abun = 0
+        viruses = family2virus[family]
+        for virus in viruses:
+            rel_abun = rel_abun + virus2rel_abun[virus]
+        family2rel_abun[family] = rel_abun    
+   
+    f = open(os.path.join(Result_visualization_inputs_folder, 'virus_family_relative_abundance.txt'), 'w')
+    f.write('family\trelative abundance\n')
+    for family in family2rel_abun:
+        f.write(f"{family}\t{family2rel_abun[family]}\n")
+    f.close()
+    
+    # Step 4 Make input for bar-plot 3 - KO ID relative abundance
+    ko2rel_abun = {} # ko => rel_abun
+    
+    sum_rel_abun_of_ko = 0
+    with open(os.path.join(viwrap_summary_outdir, 'Virus_summary_info.txt'), 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            tmp = line.split('\t')
+            if tmp[0]:
+                virus, AMG_KOs = tmp[0], tmp[4]
+                if AMG_KOs:
+                    for item in AMG_KOs.split(';'):
+                        ko, copy = item.split('(')[0], int(item.split('(')[1].replace(')', '', 1))
+                        if ko not in ko2rel_abun:
+                            ko2rel_abun[ko] = copy * virus2rel_abun[virus]
+                        else:
+                            ko2rel_abun[ko] = copy * virus2rel_abun[virus] + ko2rel_abun[ko]
+                        sum_rel_abun_of_ko = sum_rel_abun_of_ko + (copy * virus2rel_abun[virus])
+
+    for ko in ko2rel_abun:
+        ko2rel_abun[ko] = ko2rel_abun[ko] / sum_rel_abun_of_ko
+
+    f = open(os.path.join(Result_visualization_inputs_folder, 'KO_ID_relative_abundance.txt'), 'w')
+    f.write('KO\trelative abundance\n')
+    for ko in ko2rel_abun:
+        f.write(f"{ko}\t{ko2rel_abun[ko]}\n")
+    f.close()        
+        
+    # Step 5 Make input for pie-chart 2 - KO metabolism relative abundance 
+    metabolism2kos = {} # metabolism => [kos]
+    KEGG_pathway_file = os.path.join(VIBRANT_db, 'files/VIBRANT_KEGG_pathways_summary.tsv')
+    with open(KEGG_pathway_file, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            tmp = line.split('\t')
+            if 'map' in tmp[0]:
+                metabolism, ko_arrary = tmp[1], tmp[3]
+                if metabolism[0] == '"' and metabolism[-1] == '"':
+                    metabolism = metabolism.strip('"').rstrip('"')
+                kos = ko_arrary.split('~')
+                metabolism2kos[metabolism] = kos
+                
+    metabolism2rel_abun = {} # metabolism => rel_abun
+    sum_rel_abun_of_metabolism = 0
+    for metabolism in metabolism2kos:
+        rel_abun = 0
+        kos = metabolism2kos[metabolism]
+        for ko in ko2rel_abun:
+            if ko in kos:
+                rel_abun = rel_abun + ko2rel_abun[ko]
+                
+        metabolism2rel_abun[metabolism] = rel_abun
+        sum_rel_abun_of_metabolism = sum_rel_abun_of_metabolism + rel_abun
+        
+    for metabolism in metabolism2rel_abun:
+         metabolism2rel_abun[metabolism] = metabolism2rel_abun[metabolism] / sum_rel_abun_of_metabolism
+
+    f = open(os.path.join(Result_visualization_inputs_folder, 'KO_metabolism_relative_abundance.txt'), 'w')
+    f.write('KO metabolism\trelative abundance\n')
+    for metabolism in metabolism2rel_abun:
+        f.write(f"{metabolism}\t{metabolism2rel_abun[metabolism]}\n")
+    f.close()          
+                
+def change_vertical_bar_to_underscore(final_vs2_virus_fasta_file):    
+    # Step 1 Store seq
+    final_vs2_virus_fasta_file_seq = store_seq(final_vs2_virus_fasta_file)
+
+    # Step 2 Change vertical bar to underscore
+    final_vs2_virus_fasta_file_seq_new = {}
+    for header in final_vs2_virus_fasta_file_seq:
+        header_new = header.replace('||', '__', 1)
+        final_vs2_virus_fasta_file_seq_new[header_new] = final_vs2_virus_fasta_file_seq[header]
+        
+    # Step 3 Remove the old fasta file and write down the new one
+    os.system(f"rm {final_vs2_virus_fasta_file}")
+    write_down_seq(final_vs2_virus_fasta_file_seq_new, final_vs2_virus_fasta_file)
+        
       

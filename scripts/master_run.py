@@ -109,7 +109,7 @@ def main(args):
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Looks like the input metagenome and reads, database, and custom MAGs dir (if option used) are now set up well, start up to run ViWrap pipeline")
          
-         
+       
     # Step 2 Run VIBRANT or VirSorter2 or DVF
     if args['identify_method'] == 'vb':
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
@@ -579,8 +579,14 @@ def main(args):
     
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Get virus sequence information. Finished")  
+     
+   
+    # Step 12 Visualize the result
+    scripts.module.generate_result_visualization_inputs(args['viwrap_summary_outdir'], args['VIBRANT_db'])
     
-
+    time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
+    logger.info(f"{time_current} | Visualize the result. Finished")  
+    
     end_time = datetime.now().replace(microsecond=0)
     duration = end_time - start_time
     logger.info(f"The total running time is {duration} (in \"hr:min:sec\" format)")  
