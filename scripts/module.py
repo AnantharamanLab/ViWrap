@@ -1778,10 +1778,11 @@ def get_gn_lyso_lytic_result_for_wo_reads(scf2lytic_or_lyso_summary, final_virus
 def generate_result_visualization_inputs(viwrap_summary_outdir, VIBRANT_db):
     Result_visualization_inputs_folder = os.path.join(viwrap_summary_outdir, 'Result_visualization_inputs')
     os.mkdir(Result_visualization_inputs_folder)
-    # Step 1 Make input for bar-plot 1 - virus statistics 1      
-    virus_statistics_1_file = os.path.join(Result_visualization_inputs_folder, 'virus_statistics_1.txt')
+    
+    # Step 1 Make input for bar-plot 1 - virus statistics    
+    virus_statistics_file = os.path.join(Result_visualization_inputs_folder, 'virus_statistics.txt')
     f = open(virus_statistics_1_file, 'w')
-    f.write('viral scaffold no.\tvirus no.\tspecies cluster no.\tgenus cluster no.\n')
+    f.write('viral scaffold no.\tvirus no.\tspecies cluster no.\tgenus cluster no.\tno. of virus taxonomy info\tno. of virus with host prediction\n')
     virus_summary_info_df = pd.read_csv(os.path.join(viwrap_summary_outdir, 'Virus_summary_info.txt'), sep = '\t', index_col = 0) # Column 0 used as the row labels of the dataframe
     viral_scaffold_no = virus_summary_info_df['scaffold_num'].sum()
     virus_no = virus_summary_info_df.shape[0] # Give the number of rows
@@ -1791,13 +1792,6 @@ def generate_result_visualization_inputs(viwrap_summary_outdir, VIBRANT_db):
     virus_no = str(virus_no)
     species_cluster_no = str(species_cluster_no)
     genus_cluster_no = str(genus_cluster_no)
-    f.write(f"{viral_scaffold_no}\t{virus_no}\t{species_cluster_no}\t{genus_cluster_no}\n")
-    f.close()
-    
-    # Step 2 Make input for bar-plot 2 - virus statistics 2
-    virus_statistics_2_file = os.path.join(Result_visualization_inputs_folder, 'virus_statistics_2.txt')
-    f = open(virus_statistics_2_file, 'w')
-    f.write('virus no.\tno. of virus taxonomy info\tno. of virus with host prediction\n')
     no_of_virus_taxonomy_info = len(open(os.path.join(viwrap_summary_outdir, 'Tax_classification_result.txt')).readlines(  ))
     virus_with_host_prediction_set = set()
     with open(os.path.join(viwrap_summary_outdir, 'Host_prediction_to_genus_m90.csv'), 'r') as lines:
@@ -1809,8 +1803,8 @@ def generate_result_visualization_inputs(viwrap_summary_outdir, VIBRANT_db):
                     virus_with_host_prediction_set.add(tmp[0])
     lines.close()
     no_of_virus_with_host_prediction = len(virus_with_host_prediction_set)
-    f.write(f"{virus_no}\t{no_of_virus_taxonomy_info}\t{no_of_virus_with_host_prediction}\n")
-    f.close()    
+    f.write(f"{viral_scaffold_no}\t{virus_no}\t{species_cluster_no}\t{genus_cluster_no}\t{no_of_virus_taxonomy_info}\t{no_of_virus_with_host_prediction}\n")
+    f.close()
     
     # Step 3 Make input for pie-chart 1 - virus family relative abundance
     family2rel_abun = {} # family => rel_abun
@@ -1863,7 +1857,7 @@ def generate_result_visualization_inputs(viwrap_summary_outdir, VIBRANT_db):
         f.write(f"{family}\t{family2rel_abun[family]}\n")
     f.close()
     
-    # Step 4 Make input for bar-plot 3 - KO ID relative abundance
+    # Step 4 Make input for bar-plot 2 - KO ID relative abundance
     ko2rel_abun = {} # ko => rel_abun
     
     sum_rel_abun_of_ko = 0

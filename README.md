@@ -51,6 +51,8 @@ ______
 * Provide flowchart.
 * Provide "scf2lytic_or_lyso.summary.txt" for the VIBRANT result, "vRhyme_best_bin_lytic_and_lysogenic_info.txt" and 
   "vRhyme_best_bin_scaffold_complete_info.txt" for vRhyme generated vRhyme_best_bins. Then, based on the formulas of "Lytic and lysogenic viruses/scaffolds" (See "Notes - Lytic and lysogenic viruses can bin together" in "Output Explanations"), make modified vRhyme_best_bins (some bins are split into scaffolds). The corresponding downstream analysis has also been changed accordingly.
+* Add visualization output directory
+* Add phylogenetic tree building step for Caudovirales
 
 
 
@@ -108,7 +110,7 @@ ______
 Since ViWrap has many dependencies to be installed, it would be much easier to set up a conda environment instead of installing all dependencies in the global environment (make sure you have upfront conda installed on your server, i.e., [miniconda3](https://docs.conda.io/en/latest/miniconda.html) or anaconda3; we only suggest to run in version 3.0+ conda). Since ViWrap will use multiple conda environments with considerably large sizes, we strongly suggest placing them elsewhere (for example, here it is `/path/to/ViWrap_conda_environments`) instead of the home address ( `$HOME` ) as normally done.
 
 ```shell
-1. conda create -c bioconda -p /path/to/ViWrap_conda_environments/ViWrap python=3.8 biopython mamba numpy pandas pyfastx
+1. conda create -c bioconda -p /path/to/ViWrap_conda_environments/ViWrap python=3.8 biopython mamba numpy pandas pyfastx matplotlib seaborn
 2. conda activate /path/to/ViWrap_conda_environments/ViWrap
 ```
 
@@ -275,6 +277,7 @@ ______
 - `06_dRep_outdir`: dRep clustering result
 - `07_iPHoP_outdir`: iPHoP result for host prediction
 - `08_ViWrap_summary_outdir`: Summarized results
+- `09_Virus_statistics_visualization`: Visualized statistics of viruses
 - `ViWrap_run.log`: running log file containing the issued command and time log
 
 #### **Hierarchy** in `08_ViWrap_summary_outdir`
@@ -297,6 +300,30 @@ ______
     > Virus_raw_abundance.txt # Raw virus genome abundance
     > Virus_summary_info.txt # Summarized property for all virus genomes
 ```
+
+#### **Hierarchy** in `09_Virus_statistics_visualization`
+
+* '>' : folder
+
+* '-' : file 
+
+  ```shell
+  > 09_Virus_statistics_visualization
+      > Result_visualization_inputs 
+          - virus_statistics.txt
+          - virus_family_relative_abundance.txt
+          - KO_ID_relative_abundance.txt
+          - KO_metabolism_relative_abundance.txt
+      > Result_visualization_outputs    
+          - virus_statistics.png # the 1st bar-chart
+          - virus_family_relative_abundance.png # the 1st pie-chart
+          - KO_ID_relative_abundance.png # the 2nd bar-chart
+          - KO_metabolism_relative_abundance.png # the 2nd pie-chart
+          - virus_statistics.pdf
+          - virus_family_relative_abundance.pdf
+          - KO_ID_relative_abundance.pdf
+          - KO_metabolism_relative_abundance.pdf
+  ```
 
 ______
 #### Notes
