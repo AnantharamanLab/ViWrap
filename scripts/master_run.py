@@ -583,10 +583,9 @@ def main(args):
      
    
     # Step 12 Visualize the result
-    scripts.module.generate_result_visualization_inputs(args['viwrap_visualization_outdir'], args['VIBRANT_db'])
+    scripts.module.generate_result_visualization_inputs(args['viwrap_visualization_outdir'], args['viwrap_summary_outdir'], args['VIBRANT_db'])
     visualization_input_dir = os.path.join(args['viwrap_visualization_outdir'],'Result_visualization_inputs')
-    visualization_output_dir = os.path.join(args['viwrap_visualization_outdir'],'Result_visualization_outputs')
-    os.system(f"python {os.path.join(args['root_dir'],'scripts/run_Visualization.py')} -i {visualization_input_dir} -r {args['out_dir']} -o {visualization_output_dir}")
+    os.system(f"python {os.path.join(args['root_dir'],'scripts/run_Visualization.py')} -i {visualization_input_dir} -r {args['out_dir']} -o '09_Virus_statistics_visualization/Result_visualization_outputs'")
     
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Visualize the result. Finished")  

@@ -1775,13 +1775,14 @@ def get_gn_lyso_lytic_result_for_wo_reads(scf2lytic_or_lyso_summary, final_virus
         
     return gn2lyso_lytic_result  
 
-def generate_result_visualization_inputs(viwrap_summary_outdir, VIBRANT_db):
-    Result_visualization_inputs_folder = os.path.join(viwrap_summary_outdir, 'Result_visualization_inputs')
+def generate_result_visualization_inputs(viwrap_visualization_outdir, viwrap_summary_outdir, VIBRANT_db):
+    os.mkdir(viwrap_visualization_outdir)
+    Result_visualization_inputs_folder = os.path.join(viwrap_visualization_outdir, 'Result_visualization_inputs')
     os.mkdir(Result_visualization_inputs_folder)
     
     # Step 1 Make input for bar-plot 1 - virus statistics    
     virus_statistics_file = os.path.join(Result_visualization_inputs_folder, 'virus_statistics.txt')
-    f = open(virus_statistics_1_file, 'w')
+    f = open(virus_statistics_file, 'w')
     f.write('viral scaffold no.\tvirus no.\tspecies cluster no.\tgenus cluster no.\tno. of virus taxonomy info\tno. of virus with host prediction\n')
     virus_summary_info_df = pd.read_csv(os.path.join(viwrap_summary_outdir, 'Virus_summary_info.txt'), sep = '\t', index_col = 0) # Column 0 used as the row labels of the dataframe
     viral_scaffold_no = virus_summary_info_df['scaffold_num'].sum()
@@ -1806,7 +1807,7 @@ def generate_result_visualization_inputs(viwrap_summary_outdir, VIBRANT_db):
     f.write(f"{viral_scaffold_no}\t{virus_no}\t{species_cluster_no}\t{genus_cluster_no}\t{no_of_virus_taxonomy_info}\t{no_of_virus_with_host_prediction}\n")
     f.close()
     
-    # Step 3 Make input for pie-chart 1 - virus family relative abundance
+    # Step 2 Make input for pie-chart 1 - virus family relative abundance
     family2rel_abun = {} # family => rel_abun
     
     virus2rel_abun = {} # virus => rel_abun
@@ -1857,7 +1858,7 @@ def generate_result_visualization_inputs(viwrap_summary_outdir, VIBRANT_db):
         f.write(f"{family}\t{family2rel_abun[family]}\n")
     f.close()
     
-    # Step 4 Make input for bar-plot 2 - KO ID relative abundance
+    # Step 3 Make input for bar-plot 2 - KO ID relative abundance
     ko2rel_abun = {} # ko => rel_abun
     
     sum_rel_abun_of_ko = 0
@@ -1885,7 +1886,7 @@ def generate_result_visualization_inputs(viwrap_summary_outdir, VIBRANT_db):
         f.write(f"{ko}\t{ko2rel_abun[ko]}\n")
     f.close()        
         
-    # Step 5 Make input for pie-chart 2 - KO metabolism relative abundance 
+    # Step 4 Make input for pie-chart 2 - KO metabolism relative abundance 
     metabolism2kos = {} # metabolism => [kos]
     KEGG_pathway_file = os.path.join(VIBRANT_db, 'files/VIBRANT_KEGG_pathways_summary.tsv')
     with open(KEGG_pathway_file, 'r') as lines:

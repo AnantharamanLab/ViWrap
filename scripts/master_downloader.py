@@ -109,6 +109,7 @@ def main(args):
 
     ## Step 3.8 Download the latest VOG db and pick VOG markers
     scripts.downloadDB.get_marker_vog_hmm(vog_marker_list, args['Tax_classification_db'])
+    scripts.downloadDB.get_CCP77_vog_hmm(os.path.join(args['root_dir'], 'database/CCP77_reference_table.txt'), args['Tax_classification_db'])
 
     #############################
     # Part III Download IMGVR db#

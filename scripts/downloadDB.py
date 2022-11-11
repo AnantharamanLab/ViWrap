@@ -270,9 +270,26 @@ def get_marker_vog_hmm(vog_marker_list, tax_classification_db_dir):
     press_cmd = f'hmmpress {tax_classification_db_dir}/marker_VOG.hmm'
     os.system(press_cmd)
     
+    
+def get_CCP77_vog_hmm(CCP77_ref_table, tax_classification_db_dir):
+    # Step 1 Parse to get CCP77_hmms
+    CCP77_hmms = []
+    with open(CCP77_ref_table, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            tmp = line.split('\t')
+            if line.startswith('genome'):
+                for item in tmp:
+                    if item.startswith('VOG'):
+                        CCP77_hmms.append(f'{tax_classification_db_dir}/tmp/{item}.hmm')           
+    
+    # Step 2 Concatenate HMMs, and press
+    cat_cmd = f'cat {" ".join(CCP77_hmms)} > {tax_classification_db_dir}/CCP77_VOG.hmm'
+    os.system(cat_cmd)
+    
+    press_cmd = f'hmmpress {tax_classification_db_dir}/CCP77_VOG.hmm'
+    os.system(press_cmd)
+    
     rm_cmd = f'rm {tax_classification_db_dir}/vog.hmm.tar.gz; rm -r {tax_classification_db_dir}/tmp'
     os.system(rm_cmd)
-    
-    
-    
-                
+               
