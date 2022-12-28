@@ -109,27 +109,21 @@ ______
 
 Since ViWrap has many dependencies to be installed, it would be much easier to set up a conda environment instead of installing all dependencies in the global environment (make sure you have upfront conda installed on your server, i.e., [miniconda3](https://docs.conda.io/en/latest/miniconda.html) or anaconda3; we only suggest to run in version 3.0+ conda). Since ViWrap will use multiple conda environments with considerably large sizes, we strongly suggest placing them elsewhere (for example, here it is `/path/to/ViWrap_conda_environments`) instead of the home address ( `$HOME` ) as normally done.
 
-```shell
-1. conda create -c bioconda -p /path/to/ViWrap_conda_environments/ViWrap python=3.8 biopython mamba numpy pandas pyfastx matplotlib seaborn
-2. conda activate /path/to/ViWrap_conda_environments/ViWrap
-```
+1. `conda create -c bioconda -p /path/to/ViWrap_conda_environments/ViWrap python=3.8 biopython mamba numpy pandas pyfastx matplotlib seaborn`
+2. `conda activate /path/to/ViWrap_conda_environments/ViWrap`
 
 Note: `/path/to/conda_environments` indicates the directory that you will need to use to store all conda environments for ViWrap
 
 #### GitHub installation
 
-```shell
-1. git clone https://github.com/AnantharamanLab/ViWrap
-2. cd ViWrap
-3. chmod +x ViWrap scripts/*.py # Make all python scripts to be executable
-4. PATH=`pwd`:$PATH # Add ViWrap to the PATH, so it can be called elsewhere in a terminal
-```
+1. `git clone https://github.com/AnantharamanLab/ViWrap`
+2. `cd ViWrap`
+3. `chmod +x ViWrap scripts/*.py # Make all python scripts to be executable`
+4. `PATH=`pwd`:$PATH # Add ViWrap to the PATH, so it can be called elsewhere in a terminal`
 
 #### Set up the other conda environments required by ViWrap
 
-```shell
-ViWrap set_up_env --conda_env_dir /path/to/ViWrap_conda_environments 
-```
+`ViWrap set_up_env --conda_env_dir /path/to/ViWrap_conda_environments`
 
 This will take several minutes depending on your current internet speed. 
 
@@ -180,10 +174,8 @@ It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the
 
 #### Test ViWrap
 
-```shell
-1. ViWrap -h
-2. ViWrap run -h
-```
+1. `ViWrap -h`
+2. `ViWrap run -h`
 
 ______
 ## Running ViWrap <a name="run"></a>
