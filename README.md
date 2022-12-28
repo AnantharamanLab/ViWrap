@@ -119,7 +119,7 @@ Note: `/path/to/conda_environments` indicates the directory that you will need t
 1. `git clone https://github.com/AnantharamanLab/ViWrap`
 2. `cd ViWrap`
 3. `chmod +x ViWrap scripts/*.py # Make all python scripts to be executable`
-4. `PATH=`pwd`:$PATH # Add ViWrap to the PATH, so it can be called elsewhere in a terminal`
+4. ``PATH=`pwd`:$PATH # Add ViWrap to the PATH, so it can be called elsewhere in a terminal``
 
 #### Set up the other conda environments required by ViWrap
 
