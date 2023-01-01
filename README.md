@@ -29,8 +29,6 @@ Zhou, Z et al. ViWrap, a pipeline to identify, bin, classify, and predict host-v
 ______
 ## Table of Contents:
 1. [Updates](#updates)
-    * v1.1.0
-    * v1.0.0
 2. [Program Description](#program)
 3. [Installation](#install)
 5. [Running ViWrap](#run)
@@ -40,6 +38,13 @@ ______
 10.  [Contact](#contact)
 
 ______
+## Updates for v1.2.1 (Dec 2022): <a name="updates"></a>
+
+* Provide "AMG_results" in "ViWrap_summary_outdir" to include AMG statistics, AMG protein details, and AMG protein sequences.
+* Check and update the vContact2 conda environment.
+* Correct function "get_virus_genome_annotation_result" in "module.py" ("==" changed to "in" in outside elif)
+* Correct thread number mistake in "run_CheckV.py" script
+
 ## Updates for v1.2.0 (Oct 2022): <a name="updates"></a>
 
 * Modify "parse_dRep" function (module.py) so that it can also process the result even though dRep running is not successful.
@@ -177,6 +182,12 @@ It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the
 11G	./VirSorter2_db
 49G	./GTDB_db
 ```
+
+***Notes:*** 
+
+1) Since some software (VirSorter2) needs to config the database address into the conda environment, it is suggest to first set up the environments, then set up the databases. 
+
+2) Once you have replaced any conda environments, it is better to re-check/re-install the corresponding conda environments (especially for the case of VirSorter2)
 
 #### Test ViWrap
 
