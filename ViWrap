@@ -45,27 +45,26 @@ clean        Clean redundant information in each result directory
         "run",
         usage=argparse.SUPPRESS,
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description="""
-        Run the full wrapper for identifying, classifying, and characterizing virus genomes from metagenomes
+        description="""Run the full wrapper for identifying, classifying, and characterizing virus genomes from metagenomes
         
-        Usage: ViWrap run --input_metagenome <input metagenome assemblies> --input_reads <input metagenomic reads> --out_dir <output directory> [options]
+Usage: ViWrap run --input_metagenome <input metagenome assemblies> --input_reads <input metagenomic reads> --out_dir <output directory> [options]
 
-        Example 1: ViWrap run --input_metageome /path/to/Lake_01_assemblies.fasta \\
-                              --input_reads /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq \\
-                              --out_dir ./ViWrap_Lake_01_outdir \\
-                              --identify_method vb-vs \\
-                              --conda_env_dir /path/to/ViWrap_conda_environments
+Example 1: ViWrap run --input_metageome /path/to/Lake_01_assemblies.fasta \\
+                      --input_reads /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq \\
+                      --out_dir ./ViWrap_Lake_01_outdir \\
+                      --identify_method vb-vs \\
+                      --conda_env_dir /path/to/ViWrap_conda_environments
                     
-        Example 2: ViWrap run --input_metageome /path/to/Lake_01_assemblies.fasta \\
-                              --input_reads /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq \\
-                              --out_dir ./ViWrap_Lake_01_outdir \\
-                              --db_dir /path/to/ViWrap_db \\
-                              --identify_method vb-vs \\
-                              --conda_env_dir /path/to/ViWrap_conda_environments \\
-                              --threads 30 \\
-                              --virome \\
-                              --input_length_limit 2000 \\
-                              --custom_MAGs_dir /path/to/custom_MAGs_dir                   
+Example 2: ViWrap run --input_metageome /path/to/Lake_01_assemblies.fasta \\
+                      --input_reads /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq \\
+                      --out_dir ./ViWrap_Lake_01_outdir \\
+                      --db_dir /path/to/ViWrap_db \\
+                      --identify_method vb-vs \\
+                      --conda_env_dir /path/to/ViWrap_conda_environments \\
+                      --threads 30 \\
+                      --virome \\
+                      --input_length_limit 2000 \\
+                      --custom_MAGs_dir /path/to/custom_MAGs_dir                   
                     
         """,
     )
@@ -75,25 +74,24 @@ clean        Clean redundant information in each result directory
         "run_wo_reads",
         usage=argparse.SUPPRESS,
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description="""
-        Run the full wrapper for identifying, classifying, and characterizing virus genomes from metagenomes without metagenomic reads
+        description="""Run the full wrapper for identifying, classifying, and characterizing virus genomes from metagenomes without metagenomic reads
         
-        Usage: ViWrap run_wo_reads --input_metagenome <input metagenome assemblies> --out_dir <output directory> [options]
+Usage: ViWrap run_wo_reads --input_metagenome <input metagenome assemblies> --out_dir <output directory> [options]
 
-        Example 1: ViWrap run_wo_reads --input_metageome /path/to/Lake_01_assemblies.fasta \\
-                                       --out_dir ./ViWrap_Lake_01_outdir \\
-                                       --identify_method vb-vs \\
-                                       --conda_env_dir /path/to/ViWrap_conda_environments
+Example 1: ViWrap run_wo_reads --input_metageome /path/to/Lake_01_assemblies.fasta \\
+                               --out_dir ./ViWrap_Lake_01_outdir \\
+                               --identify_method vb-vs \\
+                               --conda_env_dir /path/to/ViWrap_conda_environments
                     
-        Example 2: ViWrap run_wo_reads --input_metageome /path/to/Lake_01_assemblies.fasta \\
-                                       --out_dir ./ViWrap_Lake_01_outdir \\
-                                       --db_dir /path/to/ViWrap_db \\
-                                       --identify_method vb-vs \\
-                                       --conda_env_dir /path/to/ViWrap_conda_environments \\
-                                       --threads 30 \\
-                                       --virome \\
-                                       --input_length_limit 2000 \\
-                                       --custom_MAGs_dir /path/to/custom_MAGs_dir                                       
+Example 2: ViWrap run_wo_reads --input_metageome /path/to/Lake_01_assemblies.fasta \\
+                               --out_dir ./ViWrap_Lake_01_outdir \\
+                               --db_dir /path/to/ViWrap_db \\
+                               --identify_method vb-vs \\
+                               --conda_env_dir /path/to/ViWrap_conda_environments \\
+                               --threads 30 \\
+                               --virome \\
+                               --input_length_limit 2000 \\
+                               --custom_MAGs_dir /path/to/custom_MAGs_dir                                       
         """,
     )
     master_run_wo_reads.fetch_arguments(run_wo_reads_parser,root_dir,db_path_default)
@@ -102,16 +100,15 @@ clean        Clean redundant information in each result directory
         "download",
         usage=argparse.SUPPRESS,
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description="""
-        To download and set up all ViWrap dependent database files\n
+        description="""To download and set up all ViWrap dependent database files\n
 		
-        Note: requires wget, tar, and gzip to be installed
+Note: requires wget, tar, and gzip to be installed
 		
-        Usage:
-        ViWrap download --db_dir <output directory for the database>  --conda_env_dir <conda env dir>
+Usage:
+ViWrap download --db_dir <output directory for the database>  --conda_env_dir <conda env dir>
 
-        Example:
-        ViWrap download --db_dir /path/to/ViWrap_db  --conda_env_dir /path/to/ViWrap_conda_environments
+Example:
+ViWrap download --db_dir /path/to/ViWrap_db  --conda_env_dir /path/to/ViWrap_conda_environments
 		""",
     )
     master_downloader.fetch_arguments(download_parser,root_dir,db_path_default)
@@ -121,10 +118,9 @@ clean        Clean redundant information in each result directory
         "set_up_env",
         usage=argparse.SUPPRESS,
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description="""
-        To set up the conda environments for ViWrap
+        description="""To set up the conda environments for ViWrap
         
-        Usage: ViWrap set_up_env --conda_env_dir /path/to/ViWrap_conda_environments
+Usage: ViWrap set_up_env --conda_env_dir /path/to/ViWrap_conda_environments
         """,
     )
     master_set_up_env.fetch_arguments(set_up_env_parser,root_dir,db_path_default)
@@ -134,14 +130,13 @@ clean        Clean redundant information in each result directory
         "clean",
         usage=argparse.SUPPRESS,
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description="""
-        Clean redundant information in each result directory
+        description="""Clean redundant information in each result directory
 		
-        Usage:
-		ViWrap clean --out_dir ./ViWrap_Lake_01_outdir
+Usage:
+ViWrap clean --out_dir ./ViWrap_Lake_01_outdir
         
-        if you have set the "custom_MAGs_dir" option, you can do like this:
-        ViWrap clean --out_dir ./ViWrap_Lake_01_outdir --custom_MAGs_dir /path/to/custom_MAGs_dir       
+if you have set the "custom_MAGs_dir" option, you can do like this:
+ViWrap clean --out_dir ./ViWrap_Lake_01_outdir --custom_MAGs_dir /path/to/custom_MAGs_dir       
 		""",
     )
     master_cleaner.fetch_arguments(clean_parser,root_dir,db_path_default)
