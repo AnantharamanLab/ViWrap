@@ -14,13 +14,15 @@ def fetch_arguments(parser,root_dir,db_path_default):
     parser.set_defaults(program="run")
     parser.add_argument('--input_metagenome','-i', dest='input_metagenome', required=True, default='none', help=r'(required) input metagenome assembly. It can be a metagenome or entire virome assembly. The extension of the input nucleotide sequence should be ".fasta"')
     parser.add_argument('--input_reads', '-r', dest = 'input_reads', required=True, default='none', help=r'(required) input metagenomic reads. The input paired reads should be  "forward_1.fastq or forward_R1.fastq" and "reverse_2.fastq or reverse_R2.fastq" connected by ",". Multiple paired reads can be provided at the same time for one metagenome assembly, connected by ",".  For example: -r /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq  Note that the extension of the input reads should be ".fastq" or ".fastq.gz"')
+    parser.add_argument('--input_reads_type', '-rt', dest = 'input_reads_type', required=False, default='illumina', help=r'input metagenomic reads type. The default is "illumina". If you are using long reads, you will need to assign: pacbio - PacBio CLR reads, pacbio_hifi - PacBio HiFi/CCS reads, pacbio_asm20 - PacBio HiFi/CCS reads (asm20), nanopore - Oxford Nanopore reads')
+    parser.add_argument('--reads_mapping_identity_cutoff', '-id', dest = 'reads_mapping_identity_cutoff', required=False, default=0.97, help=r'reads mapping identity cutoff. The default is "0.97". "0.97" is suitable for all illumina reads and also suitable for PacBio Sequel II (HiFi) or Nanopore PromethION Q20+ reads. For other PacBio or Nanopore reads with high error rate, the id cutoff is suggested to be 1 - error rate, i.e., 0.85 (if the error rate is 15%)')
     parser.add_argument('--out_dir','-o', dest='out_dir', required=False, default='./ViWrap_outdir', help=r'(required) output directory to deposit all results (default = ./ViWrap_outdir) output folder to deposit all results. ViWrap will exit if the folder already exists')
     parser.add_argument('--db_dir','-d', dest='db_dir', required=False, default=db_path_default, help=f'(required) database directory; default = {db_path_default}')
     parser.add_argument('--identify_method', dest='identify_method', required=False, default='vb-vs',help=r'(required) the virus identifying method to choose: vb - VIBRANT; vs - VirSorter2 and CheckV; dvf - DeepVirFinder; vb-vs - Use VIBRANT and VirSorter2 to get the overlapped viruses (default); vb-vs-dvf - Use all these three methods and get the overlapped viruses')
     parser.add_argument('--conda_env_dir', dest='conda_env_dir', required=True, default='none', help=r'(required) the directory where you put your conda environment files. It is the parent directory that contains all the conda environment folders')
     parser.add_argument('--threads','-t', dest='threads', required=False, default=10, help=r'number of threads (default = 10)')
     parser.add_argument('--virome','-v', dest='virome', action='store_true', required=False, default=False, help=r"edit VIBRANT's sensitivity if the input dataset is a virome. It is suggested to use it if you know that the input assembly is virome or metagenome")
-    parser.add_argument('--input_length_limit', dest='input_length_limit', required=False, default=2000, help=r'length in basepairs to limit input sequences (default=2000, can increase but not decrease); 2000 at least suggested for VIBRANT (vb)-based and INHERIT (in)-based pipeline, 5000 at least suggested for VirSorter2 (vs)-based pipeline')
+    parser.add_argument('--input_length_limit', dest='input_length_limit', required=False, default=2000, help=r'length in basepairs to limit input sequences (default=2000, can increase but not decrease); 2000 at least suggested for VIBRANT (vb)-based pipeline, 5000 at least suggested for VirSorter2 (vs)-based pipeline')
     parser.add_argument('--custom_MAGs_dir', dest='custom_MAGs_dir', required=False, default='none', help=r'custom MAGs dir that contains only *.fasta files for MAGs reconstructed from the same metagenome, this will be used in iPHoP for host prediction; note that it should be the absolute address path')	
     parser.add_argument('--root_dir', dest='root_dir', required=False, default=root_dir,help=argparse.SUPPRESS)
     
@@ -88,8 +90,16 @@ def main(args):
         sys.exit(f"Could not find input metagenome {args['input_metagenome']}")        
     if not os.path.exists(args['db_dir']):
         sys.exit(f"Could not find directory {args['db_dir']}. Maybe the database directory was not specified with the --db_dir and is not the default \".ViWrap_db/\" directory?")
- 
-    sample2read_info = scripts.module.get_read_info(args['input_reads'])
+
+    if args['input_reads_type'] != 'illumina' and args['input_reads_type'] != 'pacbio' and args['input_reads_type'] != 'pacbio_hifi' and args['input_reads_type'] != 'pacbio_asm20' and args['input_reads_type'] != 'nanopore':
+        sys.exit(f"The input reads type should be one of these: illumina, pacbio, pacbio_hifi, pacbio_asm20, and nanopore")  
+        
+    metaG_reads_list = args['input_reads'].split(',')
+    for each_read in metaG_reads_list:
+        if not each_read.endswith('.fastq') and not each_read.endswith('.fastq.gz'):
+            sys.exit(f"Please make sure that all your input reads are ended with .fastq or fastq.gz")  
+    
+    sample2read_info = scripts.module.get_read_info(args['input_reads'], args['input_reads_type'])  
     
     if args['custom_MAGs_dir'] != 'none' and not os.path.exists(args['custom_MAGs_dir']):
         sys.exit(f"Could not find custom MAGs directory {args['custom_MAGs_dir']}. Maybe the directory is not correct")
@@ -110,7 +120,7 @@ def main(args):
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Looks like the input metagenome and reads, database, and custom MAGs dir (if option used) are now set up well, start up to run ViWrap pipeline")
          
-       
+
     # Step 2 Run VIBRANT or VirSorter2 or DVF
     if args['identify_method'] == 'vb':
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
@@ -128,7 +138,7 @@ def main(args):
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VirSorter2 to identify viruses from input metagenome. Also plus CheckV to QC and trim, and KEGG, Pfam, and VOG HMMs to annotate viruses. In processing...")    
     
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2_1st.py')} {args['input_metagenome']} {args['virsorter_outdir']} {args['threads']} {args['input_length_limit']} >/dev/null 2>&1")
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2_1st.py')} {args['input_metagenome']} {args['virsorter_outdir']} {args['threads']} {args['input_length_limit']} ") # >/dev/null 2>&1
     
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VirSorter2 the 1st time to identify viruses from input metagenome. Finished")    
@@ -377,12 +387,12 @@ def main(args):
         viral_scaffold = os.path.join(args['vb_vs_dvf_outdir'], f"Overlap_{Path(args['input_metagenome']).stem}", 'final_overlapped_virus.fasta')   
     elif args['identify_method'] == 'vb-vs':        
         viral_scaffold = os.path.join(args['vb_vs_outdir'], f"Overlap_{Path(args['input_metagenome']).stem}", 'final_overlapped_virus.fasta')   
-    os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-Mapping')} python {os.path.join(args['root_dir'],'scripts/mapping_metaG_reads.py')} {viral_scaffold} {args['input_metagenome']} {args['input_reads']} {args['mapping_outdir']} {args['threads']} >/dev/null 2>&1")
+    os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-Mapping')} python {os.path.join(args['root_dir'],'scripts/mapping_metaG_reads.py')} {viral_scaffold} {args['input_metagenome']} {args['input_reads']} {args['mapping_outdir']} {args['input_reads_type']} {args['reads_mapping_identity_cutoff']} {args['threads']} >/dev/null 2>&1")
 
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Map reads to metagenome. Finished")
-    
-    
+   
+
     # Step 4 Run vRhyme
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Run vRhyme to bin viral scaffolds. In processing...")        
@@ -390,7 +400,7 @@ def main(args):
     ## Step 4.1 Run vRhyme to get the original vRhyme_best_bins    
     os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vRhyme')} python {os.path.join(args['root_dir'],'scripts/run_vRhyme.py')} {viral_scaffold} {args['vrhyme_outdir']} {args['mapping_outdir']} {args['threads']} >/dev/null 2>&1")
     vRhyme_best_bin_dir = os.path.join(args['vrhyme_outdir'], 'vRhyme_best_bins_fasta')
-    
+       
     ## Step 4.2 Get the lytic and lysogenic information for vRhyme_best_bins 
     scf2lytic_or_lyso_summary = ''
     if args['identify_method'] == 'vb':
@@ -401,7 +411,7 @@ def main(args):
         scf2lytic_or_lyso_summary = os.path.join(args['vb_vs_outdir'],f"VIBRANT_{Path(args['input_metagenome']).stem}", 'scf2lytic_or_lyso.summary.txt')
     scripts.module.get_vRhyme_best_bin_lytic_and_lysogenic_info(vRhyme_best_bin_dir, args['vrhyme_outdir'], scf2lytic_or_lyso_summary)
     vRhyme_best_bin_lytic_and_lysogenic_info = os.path.join(args['vrhyme_outdir'], 'vRhyme_best_bin_lytic_and_lysogenic_info.txt')
-    
+        
     ## Step 4.3 Get the scaffold complete information for vRhyme_best_bins
     vRhyme_best_bin_CheckV_result = os.path.join(args['vrhyme_outdir'], 'vRhyme_best_bins_fasta_CheckV_result')
     os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python {os.path.join(args['root_dir'],'scripts/run_CheckV.py')} {vRhyme_best_bin_dir} {vRhyme_best_bin_CheckV_result} {args['threads']} {args['CheckV_db']} >/dev/null 2>&1")
@@ -423,7 +433,6 @@ def main(args):
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Run vContact2 to cluster viral genomes. In processing...")    
     ## Step 5.1 Make unbinned viral gn folder
-    vRhyme_best_bin_dir_modified = os.path.join(args['vrhyme_outdir'], 'vRhyme_best_bins_fasta')
     vRhyme_unbinned_viral_gn_dir = os.path.join(args['vrhyme_outdir'], 'vRhyme_unbinned_viral_gn_fasta')
     scripts.module.make_unbinned_viral_gn(viral_scaffold, vRhyme_best_bin_dir_modified, vRhyme_unbinned_viral_gn_dir)
 
@@ -510,7 +519,7 @@ def main(args):
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Conduct taxonomic charaterization. Finished")  
     
-    
+        
     # Step 9 Host prediction
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Conduct Host prediction by iPHoP. In processing...")      
@@ -566,9 +575,9 @@ def main(args):
         gn2long_scf2kos = scripts.module.get_amg_info_for_vb(args['vibrant_outdir'], Path(args['input_metagenome']).stem, viral_gn_dir)
     elif args['identify_method'] == 'vs' or args['identify_method'] == 'dvf' or args['identify_method'] == 'vb-vs-dvf' or args['identify_method'] == 'vb-vs':
         gn2long_scf2kos = scripts.module.get_amg_info_for_vs_and_dvf(args, viral_gn_dir)
-    gn2amg_statics = scripts.module.get_amg_statics(gn2long_scf2kos)
+    gn2amg_statistics = scripts.module.get_amg_statistics(gn2long_scf2kos)
     virus_summary_info = os.path.join(args['viwrap_summary_outdir'],'Virus_summary_info.txt')
-    scripts.module.get_virus_summary_info(checkv_dict, gn2lyso_lytic_result, gn2size_and_scf_no_and_pro_count, gn2amg_statics, virus_summary_info) 
+    scripts.module.get_virus_summary_info(checkv_dict, gn2lyso_lytic_result, gn2size_and_scf_no_and_pro_count, gn2amg_statistics, virus_summary_info) 
     
     ## Step 11.3 Combine host prediction result
     combined_host_pred_to_genome_result = os.path.join(args['viwrap_summary_outdir'],'Host_prediction_to_genome_m90.csv')
@@ -577,6 +586,15 @@ def main(args):
     
     ## Step 11.4 Get virus genome annotation result
     scripts.module.get_virus_genome_annotation_result(args)
+    
+    ## Step 11.5 Get AMG results
+    AMG_dir = os.path.join(args['viwrap_summary_outdir'],'AMG_results')
+    os.mkdir(AMG_dir)
+    scripts.module.write_down_gn2amg_statistics(AMG_dir, gn2amg_statistics) # Write down the gn2amg_statistics dict    
+    virus_annotation_result_file = os.path.join(args['viwrap_summary_outdir'],'Virus_annotation_results.txt')
+    amg_pro2info = scripts.module.get_amg_pro_info(AMG_dir, virus_annotation_result_file, args['VIBRANT_db']) # Get the amg_pro2info dict
+    scripts.module.write_down_amg_pro2info(AMG_dir, amg_pro2info) # Write down the amg_pro2info dict
+    scripts.module.pick_amg_pro(AMG_dir, amg_pro2info, viral_gn_dir) # Pick the AMG proteins and write down the AMG proteins
     
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Get virus sequence information. Finished")  
@@ -594,4 +612,4 @@ def main(args):
     end_time = datetime.now().replace(microsecond=0)
     duration = end_time - start_time
     logger.info(f"The total running time is {duration} (in \"hr:min:sec\" format)")  
-     
+   

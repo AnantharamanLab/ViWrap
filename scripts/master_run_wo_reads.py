@@ -489,9 +489,9 @@ def main(args):
     if args['identify_method'] == 'vb' or args['identify_method'] == 'vb-vs-dvf' or args['identify_method'] == 'vb-vs':
         gn2lyso_lytic_result = scripts.module.get_gn_lyso_lytic_result_for_wo_reads(scf2lytic_or_lyso_summary, final_virus_fasta_file)
     gn2size_and_scf_no_and_pro_count = scripts.module.get_viral_gn_size_and_scf_no_and_pro_count_for_wo_reads(final_virus_fasta_file)
-    gn2amg_statics = scripts.module.get_amg_statics_for_wo_reads(os.path.join(args['viwrap_summary_outdir'], 'final_virus.annotation.txt'))
+    gn2amg_statistics = scripts.module.get_amg_statistics_for_wo_reads(os.path.join(args['viwrap_summary_outdir'], 'final_virus.annotation.txt'))
     virus_summary_info = os.path.join(args['viwrap_summary_outdir'],'Virus_summary_info.txt')
-    scripts.module.get_virus_summary_info(checkv_dict, gn2lyso_lytic_result, gn2size_and_scf_no_and_pro_count, gn2amg_statics, virus_summary_info) 
+    scripts.module.get_virus_summary_info(checkv_dict, gn2lyso_lytic_result, gn2size_and_scf_no_and_pro_count, gn2amg_statistics, virus_summary_info) 
     
     ## Step 8.2 Combine host prediction result
     combined_host_pred_to_genome_result = os.path.join(args['viwrap_summary_outdir'],'Host_prediction_to_genome_m90.csv')
@@ -502,6 +502,15 @@ def main(args):
     os.system(f"rm -rf {split_viral_gn_dir}")
     os.system(f"mv {args['out_dir']}/*.txt {args['viwrap_summary_outdir']}")
     
+    ## Step 8.4 Get AMG results
+    AMG_dir = os.path.join(args['viwrap_summary_outdir'],'AMG_results')
+    os.mkdir(AMG_dir)
+    scripts.module.write_down_gn2amg_statistics(AMG_dir, gn2amg_statistics) # Write down the gn2amg_statistics dict      
+    virus_annotation_result_file = os.path.join(args['viwrap_summary_outdir'],'final_virus.annotation.txt')
+    amg_pro2info = scripts.module.get_amg_pro_info_for_wo_reads(AMG_dir, virus_annotation_result_file, args['VIBRANT_db']) # Get the amg_pro2info dict 
+    scripts.module.write_down_amg_pro2info_for_wo_reads(AMG_dir, amg_pro2info) # Write down the amg_pro2info dict    
+    final_virus_faa_file = os.path.join(args['viwrap_summary_outdir'],'final_virus.faa') 
+    scripts.module.pick_amg_pro_for_wo_reads(AMG_dir, amg_pro2info, final_virus_faa_file) # Pick the AMG proteins and write down the AMG proteins
     
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Get virus sequence information. Finished")  

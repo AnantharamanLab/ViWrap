@@ -37,20 +37,20 @@ def main(args):
     logger.info(f"{time_current} | Looks like the input parameter is correct")
              
     # Step 2 Install conda env
-    
+ 
     os.system(f"mamba create -c bioconda -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python=3.7 vibrant==1.2.1 scikit-learn==0.21.3 biopython -y >/dev/null 2>&1")
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | ViWrap-VIBRANT conda env has been installed")
     
-    os.system(f"mamba create -c bioconda -p {os.path.join(args['conda_env_dir'], 'ViWrap-vRhyme')} python=3.8 networkx pandas numpy numba scikit-learn pysam samtools mash mummer mmseqs2 prodigal bowtie2 bwa vrhyme -y >/dev/null 2>&1")
+    os.system(f"mamba create -c bioconda -p {os.path.join(args['conda_env_dir'], 'ViWrap-vRhyme')} python=3.8 networkx pandas==1.0.0 numpy==1.20 numba scikit-learn==0.23.0 pysam samtools mash mummer mmseqs2 prodigal bowtie2 bwa vrhyme=1.1.0 -y >/dev/null 2>&1")
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | ViWrap-vRhyme conda env has been installed")
     
-    os.system(f"mamba create -p {os.path.join(args['conda_env_dir'], 'ViWrap-vContact2')} python=3.8 vcontact2==0.11.3 scipy=1.6.0 mcl blast diamond clusterone -y >/dev/null 2>&1")
+    os.system(f"mamba create -p {os.path.join(args['conda_env_dir'], 'ViWrap-vContact2')} -c bioconda -c conda-forge python=3.7 vcontact2=0.11.0 pytables biopython networkx numpy=1.19.0 pandas=0.25.3 scipy==1.6.1 scikit-learn==0.24.1 psutil pyparsing hdf5 clusterone mcl blast diamond -y >/dev/null 2>&1")
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | ViWrap-vContact2 conda env has been installed")
     
-    os.system(f"mamba create -c bioconda -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python=3 checkv diamond hmmer prodigal -y >/dev/null 2>&1")
+    os.system(f"mamba create -c bioconda -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} -c bioconda python=3.8 checkv diamond hmmer prodigal -y >/dev/null 2>&1")
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | ViWrap-CheckV conda env has been installed")
     
@@ -66,19 +66,23 @@ def main(args):
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | ViWrap-iPHoP conda env has been installed")
     
-    os.system(f"mamba create -c bioconda -p {os.path.join(args['conda_env_dir'], 'ViWrap-GTDBTk')} gtdbtk==1.6.0 -y >/dev/null 2>&1")
+    os.system(f"mamba create -c bioconda -p {os.path.join(args['conda_env_dir'], 'ViWrap-GTDBTk')} gtdbtk==2.1.1 numpy=1.20.0 -y >/dev/null 2>&1")
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | ViWrap-GTDBTk conda env has been installed")
     
-    os.system(f"mamba create -c conda-forge -c bioconda -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} virsorter==2.2.3 -y >/dev/null 2>&1")
+    os.system(f"mamba create -c conda-forge -c bioconda -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python=3.8 virsorter==2.2.3 numpy=1.20.0 -y >/dev/null 2>&1")
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
+    # Add "  - numpy=1.20.0" to the conda env yaml file
+    vs2_yaml_file = os.path.join(args['conda_env_dir'], 'ViWrap-vs2', 'lib/python3.8/site-packages/virsorter/envs/vs2.yaml')
+    with open(vs2_yaml_file, 'a') as f:
+        f.write('  - numpy=1.20.0\n')    
     logger.info(f"{time_current} | ViWrap-vs2 conda env has been installed")
-    
-    os.system(f"mamba create -c bioconda -p {os.path.join(args['conda_env_dir'], 'ViWrap-Mapping')} python=3 pysam bowtie2==2.4.5 coverm pandas pyfastx -y >/dev/null 2>&1")   
+   
+    os.system(f"mamba create -c bioconda -p {os.path.join(args['conda_env_dir'], 'ViWrap-Mapping')} python=3.8 pysam bowtie2==2.4.5 coverm pandas pyfastx minimap2 consent -y >/dev/null 2>&1")   
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | ViWrap-Mapping conda env has been installed")    
     
-    os.system(f"mamba create -c hcc -p {os.path.join(args['conda_env_dir'], 'ViWrap-DVF')} python=3 deepvirfinder -y >/dev/null 2>&1")   
+    os.system(f"mamba create -c hcc -p {os.path.join(args['conda_env_dir'], 'ViWrap-DVF')} -c hcc deepvirfinder -y >/dev/null 2>&1")   
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | ViWrap-DVF conda env has been installed")     
     
@@ -160,7 +164,7 @@ def main(args):
     end_time = datetime.now().replace(microsecond=0)
     duration = end_time - start_time
     logger.info(f"The total running time is {duration} (in \"hr:min:sec\" format)")      
-    
+   
     
     
     

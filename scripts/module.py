@@ -682,6 +682,8 @@ def get_virus_raw_abundance(mapping_result_dir, vRhyme_best_bin_dir, vRhyme_unbi
             for scaffold in scaffolds:
                 if '_fragment_' in scaffold:
                     scaffold = scaffold.rsplit('_fragment_', 1)[0]
+                if '||' in scaffold:
+                    scaffold = scaffold.rsplit('||', 1)[0]
                 coverage = coverm_raw_dict[bam][scaffold]
                 coverages.append(coverage)
             gn_coverage = mean(coverages)
@@ -693,40 +695,19 @@ def get_virus_raw_abundance(mapping_result_dir, vRhyme_best_bin_dir, vRhyme_unbi
     gn2bam2coverage_df.fillna(0, inplace=True)
     gn2bam2coverage_df.to_csv(virus_raw_abundance, sep='\t')
 
-def get_read_info(metaG_reads):
+def get_read_info(metaG_reads, input_reads_type):
     # (1) Test if the read pair is of the same size
     # (2) Get the info of read pair: read_count, read_total_base, average_length
     
     metaG_reads_list = metaG_reads.split(',')
     sample2read_info = {} # sample => [read_count, read_base]
-    
-    if len(metaG_reads_list) / 2 == 1:
-        sample = Path(metaG_reads_list[0]).stem.rsplit('_', 1)[0]
-        
-        fq1 = pyfastx.Fastq(metaG_reads_list[0])
-        fq2 = pyfastx.Fastq(metaG_reads_list[1])
 
-        fq1_read_count = len(fq1)
-        fq2_read_count = len(fq2)
-    
-        fq1_read_total_base = fq1.size
-        fq2_read_total_base = fq2.size       
-       
-        if fq1_read_count!= fq2_read_count:
-            print (f'Your input read pair of {sample} have different read counts, you will need to do reads QC before running this software')
-            sys.exit()    
-        else:
-            read_count = fq1_read_count + fq2_read_count
-            read_base = fq1_read_total_base + fq2_read_total_base
-            sample2read_info[sample] = [read_count, read_base]
+    if input_reads_type == 'illumina':  
+        if len(metaG_reads_list) / 2 == 1:
+            sample = Path(metaG_reads_list[0]).stem.rsplit('_', 1)[0]
             
-    elif len(metaG_reads_list) / 2 >= 2 and len(metaG_reads_list) % 2 == 0:
-        for i in range(0, len(metaG_reads_list), 2):
-            j = i + 1
-            sample = Path(metaG_reads_list[i]).stem.rsplit('_', 1)[0]
-            
-            fq1 = pyfastx.Fastq(metaG_reads_list[i])
-            fq2 = pyfastx.Fastq(metaG_reads_list[j])
+            fq1 = pyfastx.Fastq(metaG_reads_list[0])
+            fq2 = pyfastx.Fastq(metaG_reads_list[1])
 
             fq1_read_count = len(fq1)
             fq2_read_count = len(fq2)
@@ -740,8 +721,40 @@ def get_read_info(metaG_reads):
             else:
                 read_count = fq1_read_count + fq2_read_count
                 read_base = fq1_read_total_base + fq2_read_total_base
-                sample2read_info[sample] = [read_count, read_base]  
+                sample2read_info[sample] = [read_count, read_base]
                 
+        elif len(metaG_reads_list) / 2 >= 2 and len(metaG_reads_list) % 2 == 0:
+            for i in range(0, len(metaG_reads_list), 2):
+                j = i + 1
+                sample = Path(metaG_reads_list[i]).stem.rsplit('_', 1)[0]
+                
+                fq1 = pyfastx.Fastq(metaG_reads_list[i])
+                fq2 = pyfastx.Fastq(metaG_reads_list[j])
+
+                fq1_read_count = len(fq1)
+                fq2_read_count = len(fq2)
+            
+                fq1_read_total_base = fq1.size
+                fq2_read_total_base = fq2.size       
+               
+                if fq1_read_count!= fq2_read_count:
+                    print (f'Your input read pair of {sample} have different read counts, you will need to do reads QC before running this software')
+                    sys.exit()    
+                else:
+                    read_count = fq1_read_count + fq2_read_count
+                    read_base = fq1_read_total_base + fq2_read_total_base
+                    sample2read_info[sample] = [read_count, read_base]  
+    
+    else:
+        for i in range(0, len(metaG_reads_list)):
+            sample = Path(metaG_reads_list[i]).stem
+            fq1 = pyfastx.Fastq(metaG_reads_list[i])
+            fq1_read_count = len(fq1)
+            fq1_read_total_base = fq1.size
+            read_count = fq1_read_count
+            read_base = fq1_read_total_base
+            sample2read_info[sample] = [read_count, read_base]  
+            
     return sample2read_info           
     
 def get_virus_normalized_abundance(mapping_result_dir, virus_raw_abundance, virus_normalized_abundance, sample2read_info, sample2read_info_file):
@@ -1034,7 +1047,7 @@ def get_amg_info_for_vb(vibrant_outdir, metagenomic_scaffold_stem_name, viral_gn
         gn2long_scfs[gn] = long_scfs 
         
     # Step 2 Get scf2kos dict
-    scf2kos = defaultdict(list) # scf => [kos]
+    scf2kos = defaultdict(list) # scf => [kos]; kos here only include AMG KOs
     with open(f'{vibrant_outdir}/VIBRANT_results_{metagenomic_scaffold_stem_name}/VIBRANT_AMG_individuals_{metagenomic_scaffold_stem_name}.tsv','r') as lines:
         for line in lines:
             line = line.rstrip('\n')
@@ -1051,6 +1064,203 @@ def get_amg_info_for_vb(vibrant_outdir, metagenomic_scaffold_stem_name, viral_gn
             gn2long_scf2kos[gn][long_scf] = kos
             
     return gn2long_scf2kos  
+
+def get_amg_pro_info(AMG_dir, virus_annotation_result_file, VIBRANT_db):
+    amg_pro2info = {} # amg_pro => [long_scf, ko, ko_name, metabolisms, pathways, categories]
+    
+    # Step 1 Store the metabolism and pathway kos
+    metabolism2kos = {} # metabolism => [kos]
+    pathway2kos = {} # pathway => [kos]
+    KEGG_pathway_file = os.path.join(VIBRANT_db, 'files/VIBRANT_KEGG_pathways_summary.tsv')
+    with open(KEGG_pathway_file,  'rU') as lines: # 'U' to deal with either dos or unix file format
+        for line in lines:
+            line = line.rstrip('\n')
+            tmp = line.split('\t')
+            if 'map' in tmp[0]:
+                metabolism, pathway, ko_arrary = tmp[1], tmp[2], tmp[3]
+                if metabolism[0] == '"' and metabolism[-1] == '"':
+                    metabolism = metabolism.strip('"').rstrip('"')
+                if pathway[0] == '"' and pathway[-1] == '"':
+                    pathway = pathway.strip('"').rstrip('"')                 
+                kos = ko_arrary.split('~')
+                metabolism2kos[metabolism] = kos
+                pathway2kos[pathway] = kos
+    lines.close()            
+    
+    all_amg_kos = [] # Store all the amg kos
+    VIBRANT_AMGs_file = os.path.join(VIBRANT_db, 'files/VIBRANT_AMGs.tsv')
+    with open(VIBRANT_AMGs_file,  'rU') as lines: # 'U' to deal with either dos or unix file format  
+        for line in lines:
+            line = line.rstrip('\n')
+            if line != 'KO' and line.startswith('K'):
+                all_amg_kos.append(line)
+    lines.close()                
+                
+    # Step 2 Store category kos
+    category2kos = {} # category => [kos]
+    # XXXXXXXXX ADD LATER
+    
+    
+    # Step 3 Store ko2metablisms, ko2pathways, ko2categories dicts
+    ko2metablisms = {} # ko => metabolisms
+    ko2pathways = {} # ko => pathways
+    ko2categories = {} # ko => categories
+    for ko in all_amg_kos:
+        metabolism_hits = set()
+        pathway_hits = set()
+        category_hits = set()
+        for metabolism in metabolism2kos:
+            if ko in metabolism2kos[metabolism]:
+                metabolism_hits.add(metabolism)
+        for pathway in pathway2kos:
+            if ko in pathway2kos[pathway]:
+                pathway_hits.add(pathway)                
+        for category in category2kos:
+            if ko in category2kos[category]:
+                category_hits.add(category)
+        ko2metablisms[ko] = ' | '.join(list(metabolism_hits))
+        ko2pathways[ko] = ' | '.join(list(pathway_hits)) 
+        ko2categories[ko] = ' | '.join(list(category_hits))                                 
+    
+    # Step 4 Parse virus_annotation_result to get useful information for AMG KOs
+    with open(virus_annotation_result_file, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            if not line.startswith('viral genome'):
+                tmp = line.split('\t')
+                if tmp[4] == 'AMG':                
+                    amg_pro, long_scf, ko, ko_name = tmp[1], tmp[2], tmp[3], tmp[5]
+                    if ko_name[0] == '"' and ko_name[-1] == '"':
+                        ko_name = ko_name.strip('"').rstrip('"')
+                    metabolisms = ko2metablisms[ko]
+                    pathways = ko2pathways[ko]
+                    categories = ko2categories[ko]
+                    amg_pro2info[amg_pro] = [long_scf, ko, ko_name, metabolisms, pathways, categories]
+    lines.close()
+                
+    return amg_pro2info  
+    
+def get_amg_pro_info_for_wo_reads(AMG_dir, virus_annotation_result_file, VIBRANT_db):
+    amg_pro2info = {} # amg_pro => [scf, ko, ko_name, metabolisms, pathways, categories]
+    
+    # Step 1 Store the metabolism and pathway kos
+    metabolism2kos = {} # metabolism => [kos]
+    pathway2kos = {} # pathway => [kos]
+    KEGG_pathway_file = os.path.join(VIBRANT_db, 'files/VIBRANT_KEGG_pathways_summary.tsv')
+    with open(KEGG_pathway_file,  'rU') as lines: # 'U' to deal with either dos or unix file format
+        for line in lines:
+            line = line.rstrip('\n')
+            tmp = line.split('\t')
+            if 'map' in tmp[0]:
+                metabolism, pathway, ko_arrary = tmp[1], tmp[2], tmp[3]
+                if metabolism[0] == '"' and metabolism[-1] == '"':
+                    metabolism = metabolism.strip('"').rstrip('"')
+                if pathway[0] == '"' and pathway[-1] == '"':
+                    pathway = pathway.strip('"').rstrip('"')                 
+                kos = ko_arrary.split('~')
+                metabolism2kos[metabolism] = kos
+                pathway2kos[pathway] = kos
+    lines.close()            
+    
+    all_amg_kos = [] # Store all the amg kos
+    VIBRANT_AMGs_file = os.path.join(VIBRANT_db, 'files/VIBRANT_AMGs.tsv')
+    with open(VIBRANT_AMGs_file,  'rU') as lines: # 'U' to deal with either dos or unix file format  
+        for line in lines:
+            line = line.rstrip('\n')
+            if line != 'KO' and line.startswith('K'):
+                all_amg_kos.append(line)
+    lines.close()                
+                
+    # Step 2 Store category kos
+    category2kos = {} # category => [kos]
+    # XXXXXXXXX ADD LATER
+    # XXXX 合并kos
+    
+    # Step 3 Store ko2metablisms, ko2pathways, ko2categories dicts
+    ko2metablisms = {} # ko => metabolisms
+    ko2pathways = {} # ko => pathways
+    ko2categories = {} # ko => categories
+    for ko in all_amg_kos:
+        metabolism_hits = set()
+        pathway_hits = set()
+        category_hits = set()
+        for metabolism in metabolism2kos:
+            if ko in metabolism2kos[metabolism]:
+                metabolism_hits.add(metabolism)
+        for pathway in pathway2kos:
+            if ko in pathway2kos[pathway]:
+                pathway_hits.add(pathway)                
+        for category in category2kos:
+            if ko in category2kos[category]:
+                category_hits.add(category)
+        ko2metablisms[ko] = ' | '.join(list(metabolism_hits))
+        ko2pathways[ko] = ' | '.join(list(pathway_hits)) 
+        ko2categories[ko] = ' | '.join(list(category_hits))                                 
+    
+    # Step 4 Parse virus_annotation_result to get useful information for AMG KOs
+    with open(virus_annotation_result_file, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            if not line.startswith('protein'):
+                tmp = line.split('\t')
+                if tmp[3] == 'AMG':                
+                    amg_pro, scf, ko, ko_name = tmp[0], tmp[1], tmp[2], tmp[4]
+                    if ko_name[0] == '"' and ko_name[-1] == '"':
+                        ko_name = ko_name.strip('"').rstrip('"')
+                    metabolisms = ko2metablisms[ko]
+                    pathways = ko2pathways[ko]
+                    categories = ko2categories[ko]
+                    amg_pro2info[amg_pro] = [scf, ko, ko_name, metabolisms, pathways, categories]
+    lines.close()
+                
+    return amg_pro2info      
+    
+def write_down_amg_pro2info(AMG_dir, amg_pro2info):
+    f = open(os.path.join(AMG_dir,'AMG_pro2info.txt'), 'w')  # The name of the output file
+    header = 'Genome\tAMG\tScaffold\tAMG_KO\tAMG_KO_name\tMetabolism\tPathway\tCategory\n'
+    f.write(header)
+    amg_pro2info = dict(sorted(amg_pro2info.items())) # Store the dict by the keys
+    for amg_pro in amg_pro2info:
+        genome = amg_pro.split('__', 1)[0]
+        info = '\t'.join(amg_pro2info[amg_pro])    
+        line = f"{genome}\t{amg_pro}\t{info}\n"
+        f.write(line)
+    f.close()  
+
+def write_down_amg_pro2info_for_wo_reads(AMG_dir, amg_pro2info):
+    f = open(os.path.join(AMG_dir,'AMG_pro2info.txt'), 'w')  # The name of the output file
+    header = 'AMG\tScaffold\tAMG_KO\tAMG_KO_name\tMetabolism\tPathway\tCategory\n'
+    f.write(header)
+    amg_pro2info = dict(sorted(amg_pro2info.items())) # Store the dict by the keys
+    for amg_pro in amg_pro2info:
+        info = '\t'.join(amg_pro2info[amg_pro])    
+        line = f"{amg_pro}\t{info}\n"
+        f.write(line)
+    f.close()     
+    
+def pick_amg_pro(AMG_dir, amg_pro2info, viral_gn_dir):
+    amg_pro_seq_file = os.path.join(AMG_dir,'AMG_pros.faa')  # sequence file for AMG proteins 
+    
+    all_amg_pro_seq = {} # Store all the AMG proteins
+    all_faa_addrs = glob(f'{viral_gn_dir}/*.faa')
+    for faa_addr in all_faa_addrs:
+        faa_seq = store_seq(faa_addr)
+        for header_w_array in faa_seq:
+            header = header_w_array.replace('>', '', 1)
+            if header in amg_pro2info:
+                all_amg_pro_seq[header_w_array] = faa_seq[header_w_array]
+    write_down_seq(all_amg_pro_seq, amg_pro_seq_file)    
+    
+def pick_amg_pro_for_wo_reads(AMG_dir, amg_pro2info, final_virus_faa_file):
+    amg_pro_seq_file = os.path.join(AMG_dir,'AMG_pros.faa')  # sequence file for AMG proteins 
+    
+    all_amg_pro_seq = {} # Store all the AMG proteins
+    faa_seq = store_seq(final_virus_faa_file) 
+    for header_w_array in faa_seq:
+        header = header_w_array.replace('>', '', 1)
+        if header in amg_pro2info:
+            all_amg_pro_seq[header_w_array] = faa_seq[header_w_array]
+    write_down_seq(all_amg_pro_seq, amg_pro_seq_file)     
 
 def get_amg_info_for_vs_and_dvf(args, viral_gn_dir):
     gn2long_scf2kos = defaultdict(dict) # gn => long_scf => [kos]
@@ -1093,10 +1303,10 @@ def get_amg_info_for_vs_and_dvf(args, viral_gn_dir):
             
     return gn2long_scf2kos     
             
-def get_amg_statics(gn2long_scf2kos):
-    gn2amg_statics = {} # gn => amg_statics; for example, K00018(3);K01953(4)
+def get_amg_statistics(gn2long_scf2kos):
+    gn2amg_statistics = {} # gn => amg_statistics; for example, K00018(3);K01953(4)
     for gn in gn2long_scf2kos:
-        amg_statics_list = []
+        amg_statistics_list = []
         ko2hit_num = {} # ko => hit_num
         for long_scf in gn2long_scf2kos[gn]:
             kos = gn2long_scf2kos[gn][long_scf]
@@ -1104,13 +1314,13 @@ def get_amg_statics(gn2long_scf2kos):
                 ko2hit_num[ko] = ko2hit_num.get(ko, 0) + 1
         for ko in ko2hit_num:
             hit_num = ko2hit_num[ko]
-            amg_statics_list.append(f'{ko}({hit_num})')
-        gn2amg_statics[gn] = ';'.join(amg_statics_list)  
+            amg_statistics_list.append(f'{ko}({hit_num})')
+        gn2amg_statistics[gn] = ';'.join(amg_statistics_list)  
         
-    return gn2amg_statics 
+    return gn2amg_statistics 
 
-def get_amg_statics_for_wo_reads(final_virus_annotation_file):
-    gn2amg_statics = {} # gn => amg_statics; for example, K00018(3);K01953(4)
+def get_amg_statistics_for_wo_reads(final_virus_annotation_file):
+    gn2amg_statistics = {} # gn => amg_statistics; for example, K00018(3);K01953(4)
     # Step 1 Parse final_virus_annotation_file to get gn2kos dict (only AMG KO will be counted)
     gn2kos = defaultdict(list) # gn => [kos]
     with open(final_virus_annotation_file,'r') as lines:
@@ -1122,21 +1332,31 @@ def get_amg_statics_for_wo_reads(final_virus_annotation_file):
                 if tmp[3] == 'AMG':
                     gn2kos[gn].append(ko)    
     
-    # Step 2 Parse to get gn2amg_statics
+    # Step 2 Parse to get gn2amg_statistics
     for gn in gn2kos:
-        amg_statics_list = []
+        amg_statistics_list = []
         ko2hit_num = {} # ko => hit_num
         kos = gn2kos[gn]
         for ko in kos:
             ko2hit_num[ko] = ko2hit_num.get(ko, 0) + 1
         for ko in ko2hit_num:
             hit_num = ko2hit_num[ko]
-            amg_statics_list.append(f'{ko}({hit_num})')
-        gn2amg_statics[gn] = ';'.join(amg_statics_list)    
+            amg_statistics_list.append(f'{ko}({hit_num})')
+        gn2amg_statistics[gn] = ';'.join(amg_statistics_list)    
         
-    return gn2amg_statics       
+    return gn2amg_statistics
+
+def write_down_gn2amg_statistics(AMG_dir, gn2amg_statistics):
+    f = open(os.path.join(AMG_dir,'Gn2amg_statistics.txt'), 'w')  # The name of the output file
+    header = 'Gn\tAMG_KOs\n'
+    f.write(header)
+    for gn in gn2amg_statistics:
+        amg_statistics = gn2amg_statistics.get(gn, '')
+        line = f"{gn}\t{amg_statistics}\n"
+        f.write(line)
+    f.close()    
     
-def get_virus_summary_info(checkv_dict, gn2lyso_lytic_result, gn2size_and_scf_no_and_pro_count, gn2amg_statics, virus_summary_info):
+def get_virus_summary_info(checkv_dict, gn2lyso_lytic_result, gn2size_and_scf_no_and_pro_count, gn2amg_statistics, virus_summary_info):
     gns = list(gn2size_and_scf_no_and_pro_count.keys())
     
     virus_summary_info_dict = defaultdict(dict) # parameter => gn => value
@@ -1148,7 +1368,7 @@ def get_virus_summary_info(checkv_dict, gn2lyso_lytic_result, gn2size_and_scf_no
         virus_summary_info_dict['genome_size'][gn] = gn2size_and_scf_no_and_pro_count[gn][0]
         virus_summary_info_dict['scaffold_num'][gn] = gn2size_and_scf_no_and_pro_count[gn][1]
         virus_summary_info_dict['protein_count'][gn] = gn2size_and_scf_no_and_pro_count[gn][2]
-        virus_summary_info_dict['AMG_KOs'][gn] = gn2amg_statics.get(gn, '')
+        virus_summary_info_dict['AMG_KOs'][gn] = gn2amg_statistics.get(gn, '')
         
     virus_summary_info_df = pd.DataFrame(virus_summary_info_dict) 
 
@@ -1166,7 +1386,7 @@ def get_run_input_arguments(args):
     if args['conda_env_dir'] != 'none': argu_items.append('--conda_env_dir' + ' ' + args['conda_env_dir'])
     argu_items.append('--threads' + ' ' + args['threads'])
     if args['virome']: argu_items.append('--virome')
-    argu_items.append('--input_length_limit' + ' ' + args['input_length_limit'])
+    argu_items.append('--input_length_limit' + ' ' + str(args['input_length_limit']))
     if args['custom_MAGs_dir'] != 'none': argu_items.append('--custom_MAGs_dir' + ' ' + args['custom_MAGs_dir'])
     
     command += " ".join(argu_items)
@@ -1182,7 +1402,7 @@ def get_run_input_arguments_wo_reads(args):
     if args['conda_env_dir'] != 'none': argu_items.append('--conda_env_dir' + ' ' + args['conda_env_dir'])
     argu_items.append('--threads' + ' ' + args['threads'])
     if args['virome']: argu_items.append('--virome')
-    argu_items.append('--input_length_limit' + ' ' + args['input_length_limit'])
+    argu_items.append('--input_length_limit' + ' ' + str(args['input_length_limit']))
     if args['custom_MAGs_dir'] != 'none': argu_items.append('--custom_MAGs_dir' + ' ' + args['custom_MAGs_dir'])
     
     command += " ".join(argu_items)
@@ -1260,6 +1480,7 @@ def get_virus_genome_annotation_result(args):
                     vibrant_annotation_result_header = line
                 else:
                     tmp = line.split('\t')
+                    tmp = [item.strip('"') if item.startswith('"') and item.endswith('"') else item for item in tmp] # Remove the quotation marks and append the modified item to the new list
                     protein = tmp[0]
                     vibrant_annotation_result[protein] = tmp
         lines.close()            
@@ -1296,7 +1517,7 @@ def get_virus_genome_annotation_result(args):
             line = '\t'.join(vibrant_annotation_result_new[long_protein])
             f.write(line + '\n')
         f.close() 
-    elif args['identify_method'] == 'vs' or args['identify_method'] == 'dvf':
+    elif 'vs' in args['identify_method'] or 'dvf' in args['identify_method']:
         # Step 1 Store annotation result
         annotation_result_file = ''
         if args['identify_method'] == 'vs':
@@ -1317,6 +1538,7 @@ def get_virus_genome_annotation_result(args):
                     annotation_result_header = line
                 else:
                     tmp = line.split('\t')
+                    tmp = [item.strip('"') if item.startswith('"') and item.endswith('"') else item for item in tmp]
                     protein = tmp[0]
                     annotation_result[protein] = tmp
         lines.close() 
@@ -1889,7 +2111,7 @@ def generate_result_visualization_inputs(viwrap_visualization_outdir, viwrap_sum
     # Step 4 Make input for pie-chart 2 - KO metabolism relative abundance 
     metabolism2kos = {} # metabolism => [kos]
     KEGG_pathway_file = os.path.join(VIBRANT_db, 'files/VIBRANT_KEGG_pathways_summary.tsv')
-    with open(KEGG_pathway_file, 'r') as lines:
+    with open(KEGG_pathway_file,  'rU') as lines:
         for line in lines:
             line = line.rstrip('\n')
             tmp = line.split('\t')
@@ -1899,6 +2121,7 @@ def generate_result_visualization_inputs(viwrap_visualization_outdir, viwrap_sum
                     metabolism = metabolism.strip('"').rstrip('"')
                 kos = ko_arrary.split('~')
                 metabolism2kos[metabolism] = kos
+    lines.close()            
                 
     metabolism2rel_abun = {} # metabolism => rel_abun
     sum_rel_abun_of_metabolism = 0

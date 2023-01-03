@@ -109,7 +109,6 @@ def main(args):
 
     ## Step 3.8 Download the latest VOG db and pick VOG markers
     scripts.downloadDB.get_marker_vog_hmm(vog_marker_list, args['Tax_classification_db'])
-    scripts.downloadDB.get_CCP77_vog_hmm(os.path.join(args['root_dir'], 'database/CCP77_reference_table.txt'), args['Tax_classification_db'])
 
     #############################
     # Part III Download IMGVR db#
@@ -144,13 +143,13 @@ def main(args):
     logger.info(f"{time_current} | iPHoP db has been set up")     
 
 
-    # Step 6 Make GTDB-Tk db (v1.6.0)
-    os.system(f"wget https://data.gtdb.ecogenomic.org/releases/release202/202.0/auxillary_files/gtdbtk_r202_data.tar.gz -O {os.path.join(args['db_dir'], 'gtdbtk_r202_data.tar.gz')}")
+    # Step 6 Make GTDB-Tk db (v2.1.1) and release 207 v2
+    os.system(f"wget https://data.gtdb.ecogenomic.org/releases/release207/207.0/auxillary_files/gtdbtk_r207_v2_data.tar.gz -O {os.path.join(args['db_dir'], 'gtdbtk_r207_v2_data.tar.gz')}")
     os.mkdir(args['GTDB_db'])     
-    os.system(f"tar xzf {os.path.join(args['db_dir'], 'gtdbtk_r202_data.tar.gz')} --directory {args['GTDB_db']}")
-    os.system(f"mv {os.path.join(args['GTDB_db'], 'release202')} {os.path.join(args['GTDB_db'], 'GTDB_db')}")  
-    os.system(f"rm {os.path.join(args['db_dir'], 'gtdbtk_r202_data.tar.gz')}")
-    os.system(f"echo \"export GTDBTK_DATA_PATH={os.path.join(args['GTDB_db'], 'GTDB_db')}\" > {os.path.join(args['conda_env_dir'], 'ViWrap-GTDBTk/etc/conda/activate.d/gtdbtk.sh')}")
+    os.system(f"tar xzf {os.path.join(args['db_dir'], 'gtdbtk_r207_v2_data.tar.gz')} --directory {args['GTDB_db']}")
+    os.system(f"mv {os.path.join(args['GTDB_db'], 'release207_v2')} {os.path.join(args['GTDB_db'], 'GTDB_db')}")  
+    os.system(f"rm {os.path.join(args['db_dir'], 'gtdbtk_r207_v2_data.tar.gz')}")
+    os.system(f"conda env config vars set GTDBTK_DATA_PATH={os.path.join(args['GTDB_db'], 'GTDB_db')} -p {os.path.join(args['conda_env_dir'], 'ViWrap-GTDBTk')}")
     
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | GTDB-Tk db has been set up") 

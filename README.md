@@ -3,7 +3,7 @@
 </p>
 
 # **ViWrap**
-### A wrapper to identify, bin, classify, and predict host-viral relationship for viruses from Metagenomes
+### ViWrap: A modular pipeline to identify, bin, classify, and predict viral-host relationships for viruses from metagenomes 
 
 ```
 Oct 2022   
@@ -15,7 +15,7 @@ University of Wisconsin-Madison
 ```
 
 ## Current Version
-ViWrap v1.2.0 
+ViWrap v1.2.1 
 
 <img src="https://github.com/AnantharamanLab/ViWrap/blob/main/images/ViWrap-Flowchart.jpg">
 
@@ -23,7 +23,7 @@ ViWrap v1.2.0
 If you find ViWrap useful please consider citing our manuscript on XXX (still in draft):  
 
 ```tex
-Zhou, Z et al. ViWrap, a pipeline to identify, bin, classify, and predict host-viral relationship for viruses from Metagenomes. YYY. 2023
+Zhou, Z et al. ViWrap: A modular pipeline to identify, bin, classify, and predict viral-host relationships for viruses from metagenomes. XXX 2023
 ```
 
 ______
@@ -38,12 +38,16 @@ ______
 10.  [Contact](#contact)
 
 ______
-## Updates for v1.2.1 (Dec 2022): <a name="updates"></a>
+## Updates for v1.2.1 (Jan 2023): <a name="updates"></a>
 
 * Provide "AMG_results" in "ViWrap_summary_outdir" to include AMG statistics, AMG protein details, and AMG protein sequences.
 * Check and update the vContact2 conda environment.
 * Correct function "get_virus_genome_annotation_result" in "module.py" ("==" changed to "in" in outside elif)
 * Correct thread number mistake in "run_CheckV.py" script
+* Add long reads mapping function (for nanopore or pacbio reads)
+* Solve VirSorter 2 conda environment and database issues (set numpy to v1.20)
+* Update bam filtering steps
+* Update GTDB-Tk to v2.1.1 and db to release 207 v2
 
 ## Updates for v1.2.0 (Oct 2022): <a name="updates"></a>
 
@@ -57,7 +61,6 @@ ______
 * Provide "scf2lytic_or_lyso.summary.txt" for the VIBRANT result, "vRhyme_best_bin_lytic_and_lysogenic_info.txt" and 
   "vRhyme_best_bin_scaffold_complete_info.txt" for vRhyme generated vRhyme_best_bins. Then, based on the formulas of "Lytic and lysogenic viruses/scaffolds" (See "Notes - Lytic and lysogenic viruses can bin together" in "Output Explanations"), make modified vRhyme_best_bins (some bins are split into scaffolds). The corresponding downstream analysis has also been changed accordingly.
 * Add visualization output directory
-* Add phylogenetic tree building step for Caudovirales
 
 
 
@@ -98,7 +101,7 @@ ViWrap is an integrated wrapper/pipeline, the main contributors of each virus id
 
 #### **ViWrap Features**
 * Identify and annotate viruses by VIBRANT, VirSorter2, or DeepVirFinder
-* Map reads onto all input metagenome assemblies to get scaffold depth
+* Map reads (support both short and long reads) onto all input metagenome assemblies to get scaffold depth
 * Bin vMAGs using vRhyme
 * Classify vMAGs into genus using vContact2, into species using dRep
 * Get virus quality using CheckV
@@ -183,6 +186,8 @@ It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the
 
 2) Once you have replaced any conda environments, it is better to re-check/re-install the corresponding conda environments (especially for the case of VirSorter2)
 
+3) Since some db folders are restricted within the creator's rights, if anyone else in the group who wants to use ViWrap, the db folder rights should be opened by using`chmod -R 777 ./`
+
 #### Test ViWrap
 
 1. `ViWrap -h`
@@ -255,16 +260,15 @@ ______
 
 * `--input_metagenome/-i`: (required) input metagenome assembly. It can be a metagenome or entire virome assembly. The extension of the input nucleotide sequence should be ".fasta".
 * `--input_reads/-r`: (required) input metagenomic reads. The input paired reads should be  "forward_1.fastq or forward_R1.fastq" and "reverse_2.fastq or reverse_R2.fastq" connected by ",". Multiple paired reads can be provided at the same time for one metagenome assembly, connected by ",".  For example: `-r /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq`  Note that the extension of the input reads should be ".fastq" or ".fastq.gz".
-
+* `--input_reads_type/-r`: input metagenomic reads type. The default is "illumina". If you are using long reads, you will need to assign: pacbio - PacBio CLR reads, pacbio_hifi - PacBio HiFi/CCS reads, pacbio_asm20 - PacBio HiFi/CCS reads (asm20), nanopore - Oxford Nanopore reads. We use minimap2 to run long reads
+* `--reads_mapping_identity_cutoff/-id`: reads mapping identity cutoff. The default is "0.97". "0.97" is suitable for all illumina reads and also suitable for PacBio Sequel II (HiFi) or Nanopore PromethION Q20+ reads. For other PacBio or Nanopore reads with high error rate, the id cutoff is suggested to be 1 - error rate, i.e., 0.85 (if the error rate is 15%)
 * `--out_dir/-o`: (required) output directory to deposit all results (default = ./ViWrap_outdir) output folder to deposit all results. ViWrap will exit if the folder already exists.
 * `--db_dir/-d`: (required) database directory (default = $current_dir/ViWrap_db).
 * `--identify_method`: (required) the virus identifying method to choose: vb - VIBRANT; vs - VirSorter2 and CheckV; dvf - DeepVirFinder; vb-vs - Use VIBRANT and VirSorter2 to get the overlapped viruses (default); vb-vs-dvf - Use all these three methods and get the overlapped viruses. "vb-vs" is recommended by us since overlapped virus identification will provide more confident results. "vb-vs-dvf" would be too stringent to provide comprehensive virus identification results.
-
 * `--conda_env_dir`: (required) the directory where you put your conda environment files. It is the parent directory that contains all the conda environment folders.
 * `--threads/-t`: number of threads (default = 10).
 * `--virome/-v`: edit VIBRANT's sensitivity if the input dataset is a virome. It is suggested to use it if you know that the input assembly is virome or metagenome. 
-
-* `--input_length_limit`: length in basepairs to limit input sequences (default=2000, can increase but not decrease); 2000 at least suggested for VIBRANT (vb)-based and INHERIT (in)-based pipeline, 5000 at least suggested for VirSorter2 (vs)-based pipeline.
+* `--input_length_limit`: length in basepairs to limit input sequences (default=2000, can increase but not decrease); 2000 at least suggested for VIBRANT (vb)-based pipeline, 5000 at least suggested for VirSorter2 (vs)-based pipeline.
 * `--custom_MAGs_dir`: custom MAGs dir that contains only *.fasta files for MAGs reconstructed from the same metagenome, this will be used in iPHoP for further host prediction; note that it should be the absolute address path.
 
 ______
@@ -299,9 +303,13 @@ ______
          - vRhyme*.fasta
          - vRhyme*.faa
          - vRhyme*.ffn
-    > Virus_normalized_abundance.txt # Normalized virus genome abundance (normalized by 100M reads/sample)
-    > Virus_raw_abundance.txt # Raw virus genome abundance
-    > Virus_summary_info.txt # Summarized property for all virus genomes
+    - Virus_normalized_abundance.txt # Normalized virus genome abundance (normalized by 100M reads/sample)
+    - Virus_raw_abundance.txt # Raw virus genome abundance
+    - Virus_summary_info.txt # Summarized property for all virus genomes
+    > AMG_statistics # Contains AMG protein info, statistics, and protein sequences
+         - AMG_pro2info.txt
+         - Gn2amg_statistics.txt
+         - AMG_pros.faa
 ```
 
 #### **Hierarchy** in `09_Virus_statistics_visualization`

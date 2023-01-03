@@ -21,7 +21,7 @@ def run_checkv(input_dir, outdir, threads, checkv_db_dir):
             if "fasta" in file_name:
                 file_name_with_path = os.path.join(path, file_name)
                 file_name_stem = Path(file_name).stem
-                each_cmd = f'checkv end_to_end {file_name_with_path} {outdir}/{file_name_stem} -t {threads} -d {checkv_db_dir} 1> /dev/null'
+                each_cmd = f'checkv end_to_end {file_name_with_path} {outdir}/{file_name_stem} -t 1 -d {checkv_db_dir} 1> /dev/null'
                 checkv_cmd.append(each_cmd)
                 
     n = int(threads) # The number of parallel processes
