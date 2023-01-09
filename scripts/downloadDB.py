@@ -4,39 +4,33 @@ try:
     import warnings
     import sys
     import os
+
     warnings.filterwarnings("ignore")
     from pathlib import Path
     import subprocess
     from subprocess import DEVNULL, STDOUT, check_call
     from Bio import SeqIO
+    import re
 except Exception as e:
     sys.stderr.write(str(e) + "\n\n")
     exit(1)
-    
-def store_seq(input_seq_file): # The input sequence file should be a file with full path
-    head = "" # Store the header line
-    seq_dict = {} # Store the sequence dict
-    
+
+WHITESPACE_PATTERN = re.compile(r"\s+")
+
+
+def store_seq(input_seq_file):  
+    # The input sequence file should be a file with full path
+    head = ""  # Store the header line
+    seq_dict = {}  # Store the sequence dict
+
     with open(input_seq_file, "r") as seq_lines:
         for line in seq_lines:
-            line = line.rstrip("\n") # Remove "\n" in the end
+            line = line.rstrip("\n")  # Remove "\n" in the end
             if ">" in line:
-                if (" " or "\t") in line: # Break at the first " " or "\t"
-                    spliter = ""
-                    for i in range(len(line)):
-                        if line[i] == " " or line[i] == "\t":
-                            spliter = line[i]
-                            break 
-                           
-                    head = line.split(f'{spliter}', 1)[0]
-                    seq_dict[head] = ""
-                else:
-                    head = line
-                    seq_dict[head] = ""
+                head = WHITESPACE_PATTERN.split(line)[0]
+                seq_dict[head] = ""
             else:
                 seq_dict[head] += line
-            
-    seq_lines.close()
     
     return seq_dict    
 
