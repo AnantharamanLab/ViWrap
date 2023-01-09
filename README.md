@@ -115,12 +115,19 @@ ______
 
 #### **Set up the conda environment for ViWrap**
 
-Since ViWrap has many dependencies to be installed, it would be much easier to set up a conda environment instead of installing all dependencies in the global environment (make sure you have upfront conda installed on your server, i.e., [miniconda3](https://docs.conda.io/en/latest/miniconda.html) or anaconda3; we only suggest to run in version 3.0+ conda). Since ViWrap will use multiple conda environments with considerably large sizes, we strongly suggest placing them elsewhere (for example, here it is `/path/to/ViWrap_conda_environments`) instead of the home address ( `$HOME` ) as normally done.
+Since ViWrap has many dependencies to be installed, it would be much easier to set up a conda environment instead of installing all dependencies in the global environment (make sure you have upfront conda installed on your server, i.e., [miniconda3](https://docs.conda.io/en/latest/miniconda.html) or anaconda3; we only suggest to run in version 3.0+ conda). There are 12 conda envs associated with ViWrap, so it may be useful to keep these associated together in a directory separate from your normal conda installation, which will be referred to as `/path/to/ViWrap_conda_environments`. **Note: ensure that wherever you install the ViWrap conda envs has at least 5-6 Gb of storage available.** ViWrap was tested extensively with an environment installed separately from the normal conda installation.
 
-1. `conda create -c bioconda -p /path/to/ViWrap_conda_environments/ViWrap python=3.8 biopython mamba numpy pandas pyfastx matplotlib seaborn`
-2. `conda activate /path/to/ViWrap_conda_environments/ViWrap`
+Choose one:
+1. Install in separate directory:
+   1. `conda create -c bioconda -c conda-forge -p /path/to/ViWrap_conda_environments/ViWrap python=3.8 biopython mamba numpy pandas pyfastx matplotlib seaborn`
+   2. `conda activate /path/to/ViWrap_conda_environments/ViWrap`
 
-Note: `/path/to/conda_environments` indicates the directory that you will need to use to store all conda environments for ViWrap
+   Note: `/path/to/conda_environments` indicates the directory that you will need to use to store all conda environments for ViWrap
+2. Install in normal conda folder
+   1. 1. `conda create -c bioconda -c conda-forge -n ViWrap python=3.8 biopython mamba numpy pandas pyfastx matplotlib seaborn`
+   2. `conda activate ViWrap`
+   
+   If you choose to proceed this route, you will just need to use the path to your ViWrap conda installation. It will look something like this: `/path/to/miniconda3/envs/ViWrap/`
 
 #### GitHub installation
 
