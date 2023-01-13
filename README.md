@@ -124,7 +124,7 @@ Choose one:
 
    Note: `/path/to/conda_environments` indicates the directory that you will need to use to store all conda environments for ViWrap
 2. Install in normal conda folder
-   1. 1. `conda create -c bioconda -c conda-forge -n ViWrap python=3.8 biopython mamba numpy pandas pyfastx matplotlib seaborn`
+   1. `conda create -c bioconda -c conda-forge -n ViWrap python=3.8 biopython mamba numpy pandas pyfastx matplotlib seaborn`
    2. `conda activate ViWrap`
    
    If you choose to proceed this route, you will just need to use the path to your ViWrap conda installation. It will look something like this: `/path/to/miniconda3/envs/ViWrap/`
@@ -142,7 +142,7 @@ Choose one:
 
 This will take several minutes depending on your current internet speed. 
 
-**Note**: `/path/to/ViWrap_conda_environments` can be set anywhere on your server to contain ViWrap conda environments, it does not necessarily have to be "miniconda3/envs" or "anaconda3/envs"; on contrary, we suggest avoiding these two addresses, it is better to be set to elsewhere that is not within `$HOME`.
+**Note**: `/path/to/ViWrap_conda_environments` can be set anywhere on your server to contain ViWrap conda environments. If you use `-n ViWrap` in the above step, you will input `/path/to/miniconda3/envs` to `--conda_env_dir` option.
 
 ViWrap will use the "-p" or "--prefix" option to specify where to write the environment files:
 
