@@ -4,33 +4,39 @@ try:
     import warnings
     import sys
     import os
-
     warnings.filterwarnings("ignore")
     from pathlib import Path
     import subprocess
     from subprocess import DEVNULL, STDOUT, check_call
     from Bio import SeqIO
-    import re
 except Exception as e:
     sys.stderr.write(str(e) + "\n\n")
     exit(1)
-
-WHITESPACE_PATTERN = re.compile(r"\s+")
-
-
-def store_seq(input_seq_file):  
-    # The input sequence file should be a file with full path
-    head = ""  # Store the header line
-    seq_dict = {}  # Store the sequence dict
-
+    
+def store_seq(input_seq_file): # The input sequence file should be a file with full path
+    head = "" # Store the header line
+    seq_dict = {} # Store the sequence dict
+    
     with open(input_seq_file, "r") as seq_lines:
         for line in seq_lines:
-            line = line.rstrip("\n")  # Remove "\n" in the end
+            line = line.rstrip("\n") # Remove "\n" in the end
             if ">" in line:
-                head = WHITESPACE_PATTERN.split(line)[0]
-                seq_dict[head] = ""
+                if (" " or "\t") in line: # Break at the first " " or "\t"
+                    spliter = ""
+                    for i in range(len(line)):
+                        if line[i] == " " or line[i] == "\t":
+                            spliter = line[i]
+                            break 
+                           
+                    head = line.split(f'{spliter}', 1)[0]
+                    seq_dict[head] = ""
+                else:
+                    head = line
+                    seq_dict[head] = ""
             else:
                 seq_dict[head] += line
+            
+    seq_lines.close()
     
     return seq_dict    
 
@@ -246,8 +252,8 @@ def get_vog_marker_table(vog_marker_table):
     return vog_marker_list
     
 def get_marker_vog_hmm(vog_marker_list, tax_classification_db_dir):
-    # Step 1 Download whole VOG HMMs
-    wget_cmd = f'wget http://fileshare.csb.univie.ac.at/vog/latest/vog.hmm.tar.gz -O {tax_classification_db_dir}/vog.hmm.tar.gz'
+    # Step 1 Download whole VOG HMMs (VOG 215)
+    wget_cmd = f'wget http://fileshare.csb.univie.ac.at/vog/vog97/vog.hmm.tar.gz -O {tax_classification_db_dir}/vog.hmm.tar.gz'
     os.system(wget_cmd)
     # Step 2 Pick marker VOG HMMs, concatenate, and press
     os.mkdir(f'{tax_classification_db_dir}/tmp')
@@ -263,4 +269,7 @@ def get_marker_vog_hmm(vog_marker_list, tax_classification_db_dir):
     
     press_cmd = f'hmmpress {tax_classification_db_dir}/marker_VOG.hmm'
     os.system(press_cmd)
+    
+    os.system(f'rm -rf {tax_classification_db_dir}/tmp')
+    os.system(f'rm {tax_classification_db_dir}/vog.hmm.tar.gz')
     
