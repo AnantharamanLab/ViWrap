@@ -115,12 +115,16 @@ ______
 
 #### **Set up the conda environment for ViWrap**
 
-Since ViWrap has many dependencies to be installed, it would be much easier to set up a conda environment instead of installing all dependencies in the global environment (make sure you have upfront conda installed on your server, i.e., [miniconda3](https://docs.conda.io/en/latest/miniconda.html) or anaconda3; we only suggest to run in version 3.0+ conda). Since ViWrap will use multiple conda environments with considerably large sizes, we strongly suggest placing them elsewhere (for example, here it is `/path/to/ViWrap_conda_environments`) instead of the home address ( `$HOME` ) as normally done.
+Since ViWrap has many dependencies to be installed, it would be much easier to set up a conda environment instead of installing all dependencies in the global environment (make sure you have upfront conda installed on your server, i.e., [miniconda3](https://docs.conda.io/en/latest/miniconda.html) or anaconda3; we only suggest to run in version 3.0+ conda).  There are 12 conda envs associated with ViWrap, so it may be useful to keep these associated together in a directory separate from your normal conda installation, which will be referred to as `/path/to/ViWrap_conda_environments`. ***\*Note: ensure that wherever you install the ViWrap conda envs has at least 5-6 Gb of storage available.\**** ViWrap was tested extensively with an environment installed separately from the normal conda installation. 
 
 1. `conda create -c bioconda -p /path/to/ViWrap_conda_environments/ViWrap python=3.8 biopython mamba numpy pandas pyfastx matplotlib seaborn`
 2. `conda activate /path/to/ViWrap_conda_environments/ViWrap`
 
-Note: `/path/to/conda_environments` indicates the directory that you will need to use to store all conda environments for ViWrap
+**Note**: 
+
+1. `/path/to/conda_environments` indicates the directory that you will need to use to store all conda environments for ViWrap. 
+
+2. If you have your miniconda3 installed not in your home address ( `$HOME` ) and the space is big enough to store all ViWrap conda envs, you can set `-p` to `path/to/miniconda3/envs/ViWrap`. And in the later `set_up_env` step, your `--conda_env_dir` will be `path/to/miniconda3/envs`.
 
 #### GitHub installation
 
@@ -135,7 +139,7 @@ Note: `/path/to/conda_environments` indicates the directory that you will need t
 
 This will take several minutes depending on your current internet speed. 
 
-**Note**: `/path/to/ViWrap_conda_environments` can be set anywhere on your server to contain ViWrap conda environments, it does not necessarily have to be "miniconda3/envs" or "anaconda3/envs"; on contrary, we suggest avoiding these two addresses, it is better to be set to elsewhere that is not within `$HOME`.
+**Note**: `/path/to/ViWrap_conda_environments` can be set anywhere on your server to contain ViWrap conda environments.
 
 ViWrap will use the "-p" or "--prefix" option to specify where to write the environment files:
 
