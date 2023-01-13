@@ -79,6 +79,8 @@ def read_files(inputdir: Path) -> Dict[str, pd.DataFrame]:
 
 
 def _plot_KO_abundance(df: pd.DataFrame, ax: plt.Axes):
+    n_colors = len(df)
+    sns.set_palette(palette="husl", n_colors=n_colors)
     sns.barplot(data=df, x="KO", y="relative abundance", ax=ax, edgecolor="black")
     ax.xaxis.set_tick_params(rotation=45)
 
@@ -87,11 +89,14 @@ def _plot_KO_metabolism_abundance(
     df: pd.DataFrame, ax: plt.Axes, wedgeprops: Dict[str, str]
 ):
     data = df.query("`relative abundance` > 0")
+    n_colors = len(data)
+    colors = sns.color_palette(palette="husl", n_colors=n_colors)
     ax.pie(
         data["relative abundance"],
         labels=data["KO metabolism"],
         autopct="%.2f%%",
         wedgeprops=wedgeprops,
+        colors=colors
     )
 
 
@@ -99,15 +104,20 @@ def _plot_virus_families(df: pd.DataFrame, ax: plt.Axes, wedgeprops: Dict[str, s
     labels = [
         f"{row.family} ({row.relative_abundance * 100:.2f}%)" for row in df.itertuples()
     ]
+    n_colors = len(df)
+    colors = sns.color_palette(palette="husl", n_colors=n_colors)
     ax.pie(
         df["relative_abundance"],
         labels=labels,
         rotatelabels=True,
         wedgeprops=wedgeprops,
+        colors=colors
     )
 
 
 def _plot_virus_stats(df: pd.DataFrame, ax: plt.Axes):
+    n_colors = len(df)
+    sns.set_palette(palette="husl", n_colors=n_colors)
     sns.barplot(data=df, x="metric", y="Count", ax=ax, edgecolor="black")
     ax.xaxis.set_tick_params(rotation=45)
     ax.set(xlabel="", ylim=(0, ax.get_ylim()[1] * 1.1))
