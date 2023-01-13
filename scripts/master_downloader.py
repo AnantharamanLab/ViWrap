@@ -52,17 +52,17 @@ def main(args):
 
     if not os.path.exists(args['conda_env_dir']):
         sys.exit(f"Could not find conda env dirs within {args['conda_env_dir']}") 
-   
+    
     if os.path.exists(args['db_dir']):
         sys.exit(f"The db dir of {args['db_dir']} has also ready been set up")
     else:
         os.mkdir(args['db_dir'])
-
+    
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Looks like the input conda software is correct")  
     
     set_defaults(args)
-
+    
     # Step 2  Make VIBRANT db
     vibrant_db_dir_absolute_path = os.path.abspath(args['VIBRANT_db'])
     os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} bash {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT/bin/download-db.sh')} {vibrant_db_dir_absolute_path}")
@@ -98,7 +98,7 @@ def main(args):
 
     ## Step 3.6 Remove useless files
     scripts.downloadDB.remove(args['Tax_classification_db'])
-
+    
     ##########################
     # Part II Download VOG db#
     ##########################
@@ -109,7 +109,7 @@ def main(args):
 
     ## Step 3.8 Download the latest VOG db and pick VOG markers
     scripts.downloadDB.get_marker_vog_hmm(vog_marker_list, args['Tax_classification_db'])
-
+    
     #############################
     # Part III Download IMGVR db#
     #############################
@@ -131,7 +131,7 @@ def main(args):
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | CheckV db has been set up")  
     
-
+    
     # Step 5 Make iPHoP db
     os.system(f"wget https://portal.nersc.gov/cfs/m342/iphop/db/iPHoP.latest.tar.gz -O {os.path.join(args['db_dir'], 'iPHoP.latest.tar.gz')}") 
     os.mkdir(os.path.join(args['db_dir'], 'iPHoP_db'))
@@ -141,7 +141,7 @@ def main(args):
     
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | iPHoP db has been set up")     
-
+    
 
     # Step 6 Make GTDB-Tk db (v2.1.1) and release 207 v2
     os.system(f"wget https://data.gtdb.ecogenomic.org/releases/release207/207.0/auxillary_files/gtdbtk_r207_v2_data.tar.gz -O {os.path.join(args['db_dir'], 'gtdbtk_r207_v2_data.tar.gz')}")
@@ -173,3 +173,4 @@ def main(args):
     end_time = datetime.now().replace(microsecond=0)
     duration = end_time - start_time
     logger.info(f"The total running time is {duration} (in \"hr:min:sec\" format)")  
+        
