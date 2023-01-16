@@ -1388,6 +1388,7 @@ def get_run_input_arguments(args):
     if args['virome']: argu_items.append('--virome')
     argu_items.append('--input_length_limit' + ' ' + str(args['input_length_limit']))
     if args['custom_MAGs_dir'] != 'none': argu_items.append('--custom_MAGs_dir' + ' ' + args['custom_MAGs_dir'])
+    if args['iPHoP_db_custom_pre'] != 'none': argu_items.append('--iPHoP_db_custom_pre' + ' ' + args['iPHoP_db_custom_pre'])
     
     command += " ".join(argu_items)
     return command

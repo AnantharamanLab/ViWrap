@@ -162,7 +162,7 @@ def main(args):
     logger.info(f"{time_current} | VirSorter2 db has been set up")     
     
     # Step 8 Download DVF db
-    os.system(f"git clone https://github.com/jessieren/DeepVirFinder.git {os.path.join(args['db_dir'], 'DVF_db_tmp')}")
+    os.system(f"git clone  .git {os.path.join(args['db_dir'], 'DVF_db_tmp')}")
     os.system(f"mv {os.path.join(args['db_dir'], 'DVF_db_tmp/models')} {args['DVF_db']}")
     os.system(f"rm -rf {os.path.join(args['db_dir'], 'DVF_db_tmp')}")
     
