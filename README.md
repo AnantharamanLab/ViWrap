@@ -31,11 +31,12 @@ ______
 1. [Updates](#updates)
 2. [Program Description](#program)
 3. [Installation](#install)
+4. [Settings](#settings)
 5. [Running ViWrap](#run)
     * ViWrap tasks
     * Flag explanations
-5. [Output Explanations](#out)
-10.  [Contact](#contact)
+6. [Output Explanations](#out)
+7. [Contact](#contact)
 
 ______
 ## Updates for v1.2.1 (Jan 2023): <a name="updates"></a>
@@ -195,10 +196,73 @@ It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the
 
 3) Since some db folders are restricted within the creator's rights, if anyone else in the group who wants to use ViWrap, the db folder rights should be opened by using`chmod -R 777 ./`
 
-#### Test ViWrap
+#### See ViWrap help
 
 1. `ViWrap -h`
 2. `ViWrap run -h`
+
+------
+
+## Settings <a name="settings"></a>
+
+#### Settings for v1.2.1
+
+- **Conda env:**
+
+  | Software   | Version | Software                        | Version     |
+  | ---------- | ------- | ------------------------------- | ----------- |
+  | VIBRANT    | v1.2.1  | dRep                            | v3.4.0      |
+  | vRhyme     | v1.1.0  | DIAMOND (within ViWrap-Tax)     | v2.0.15     |
+  | vContact2  | v0.11.0 | iPHoP                           | v1.2.0      |
+  | CheckV     | v1.0.1  | GTDB-Tk                         | v2.1.1      |
+  | VirSorter2 | v2.2.3  | Bowtie2 (within ViWrap-Mapping) | v2.4.5      |
+  | Minimap2   | v2.24   | DeepVirFinder                   | v2020.11.21 |
+
+- **db:**
+
+  | db                          | Versio | db                          | Version        |
+  | --------------------------- | ------ | --------------------------- | -------------- |
+  | NCBI RefSeq viral sequences | latest | ICTV Master Species List    | 2021 v3        |
+  | VOG HMM                     | VOG 97 | IMGVR high-quality vOTU rep | v4.1           |
+  | iPHoP db                    | latest | GTDB-Tk db                  | release 207 v2 |
+  | VirSorter2 db               | latest | DVF db (models)             | v1.0           |
+
+- **Running setting**
+
+  (***note***: here only shows some specific settings; default settings or user-adjustable settings are not included)
+
+  | Command                                          | option                    | explanation                                                  | setting                           |
+  | ------------------------------------------------ | ------------------------- | ------------------------------------------------------------ | --------------------------------- |
+  | run_virsorter2_1st                               | --keep-original-seq       | keep the original sequences instead of trimmed               | N/A                               |
+  |                                                  | --min-score               | minimal score to be identified as viral                      | 0.5                               |
+  | run_virsorter2_2nd                               | --seqname-suffix-off      | turn off adding suffix to sequence names                     | N/A                               |
+  |                                                  | --viral-gene-enrich-off   | turn off the requirement of more viral than cellular genes for calling full sequence viral | N/A                               |
+  |                                                  | --prep-for-dramv          | turn on generating viral seqfile and viral-affi-contigs.tab for DRAMv | N/A                               |
+  |                                                  | --min-score               | minimal score to be identified as viral                      | 0.5                               |
+  | filter_sorted_bam (coverm)                       | --min-read-aligned-length | exclude reads with smaller numbers of aligned bases          | 50 (short reads) 500 (long reads) |
+  | run_vrhyme                                       | --red                     | maximum number of redundant proteins per bin                 | 2                                 |
+  | run_vcontact2                                    | --rel-mode                | method to use to create the protein-protein similarity edge file | Diamond                           |
+  |                                                  | --db                      | select a reference database to de novo cluster proteins against | None                              |
+  |                                                  | --pcs-mode                | whether to use ClusterONE or MCL for Protein Cluster (PC) generation | MCL                               |
+  |                                                  | --vcs-mode                | whether to use ClusterONE or MCL for Viral Cluster (VC) generation | ClusterONE                        |
+  | run_drep (dRep dereplicate)                      | --ignoreGenomeQuality     | don't run checkM or do any quality filtering                 | N/A                               |
+  |                                                  | -pa                       | ANI threshold to form primary (MASH) clusters                | 0.8                               |
+  |                                                  | -sa                       | ANI threshold to form secondary clusters                     | 0.95                              |
+  |                                                  | -nc                       | minmum level of overlap between genomes when doing secondary comparisons | 0.85                              |
+  |                                                  | -comW                     | completeness weight (SCORING CRITERIA)                       | 0                                 |
+  |                                                  | -conW                     | contamination weight (SCORING CRITERIA)                      | 0                                 |
+  |                                                  | -strW                     | strain heterogeneity weight (SCORING CRITERIA)               | 0                                 |
+  |                                                  | -N50W                     | weight of log(genome N50) (SCORING CRITERIA)                 | 0                                 |
+  |                                                  | -sizeW                    | weight of log(genome size) (SCORING CRITERIA)                | 1                                 |
+  |                                                  | -centW                    | weight of (centrality - S_ani) (SCORING CRITERIA)            | 0                                 |
+  | run_diamond_to_RefSeq_viral_protein_db (diamond) | --evalue                  | maximum e-value to report alignments                         | 0.00001                           |
+  |                                                  | --query-cover             | minimum query cover% to report an alignment                  | 50                                |
+  |                                                  | --subject-cover           | minimum subject cover% to report an alignment                | 50                                |
+  |                                                  | -k                        | maximum number of target sequences to report alignments for  | 10000                             |
+  | run_hmmsearch_to_marker_VOG_HMM_db (hmmsearch)   | -E                        | report sequences <= this E-value threshold in output         | 0.01                              |
+  | run_iphop (iphop predict)                        | --no_qc                   | bypass the automated QC that filters out input sequences with > 10% Ns or with characters other than ATCGN | N/A                               |
+
+  
 
 ______
 ## Running ViWrap <a name="run"></a>
@@ -207,7 +271,7 @@ ______
 
 - `run`: Run the full wrapper for identifying, classifying, and characterizing virus genomes from metagenomes
 
-  ```python
+  ```bash
   # Usage: ViWrap run --input_metagenome <input metagenome assemblies> --input_reads <input metagenomic reads> --out_dir <output directory> [options]
   
   # Example 1 (minimal required inputs):
@@ -234,7 +298,7 @@ ______
 
 - `download`: Download and setup the ViWrap database
 
-  ```python
+  ```bash
   # Note: requires wget, tar, and gzip to be installed
   	
   # Usage:
@@ -246,14 +310,14 @@ ______
 
 - `set_up_env`: Set up the conda environments for all scripts 
 
-  ```python
+  ```bash
   # Usage: 
   ViWrap set_up_env --conda_env_dir /path/to/ViWrap_conda_environments  
   ```
 
 - `clean`: Clean redundant information in each result directory
 
-  ```python
+  ```bash
   # Usage:
   ViWrap clean --out_dir ./ViWrap_Lake_01_outdir
       
@@ -277,6 +341,24 @@ ______
 * `--virome/-v`: edit VIBRANT's sensitivity if the input dataset is a virome. It is suggested to use it if you know that the input assembly is virome or metagenome. 
 * `--input_length_limit`: length in basepairs to limit input sequences (default=2000, can increase but not decrease); 2000 at least suggested for VIBRANT (vb)-based pipeline, 5000 at least suggested for VirSorter2 (vs)-based pipeline.
 * `--custom_MAGs_dir`: custom MAGs dir that contains only *.fasta files for MAGs reconstructed from the same metagenome, this will be used in iPHoP for further host prediction; note that it should be the absolute address path.
+* `--iPHoP_db_custom_pre`: custom iPHoP db that has been made from the previous run, this will be used in iPHoP for host prediction by custom db; note that it should be the absolute address path.
+
+#### Test run
+
+```bash
+ViWrap run --input_metageome /path/to/example_data/Guaymas_scaffolds_min1000.subset.fasta \
+           --input_reads /path/to/example_data/reads_1.fastq.gz,/path/to/example_data/reads_2.fastq.gz \
+           --out_dir ./test_outdir \
+           --db_dir /path/to/ViWrap_db \
+           --identify_method vb \
+           --threads 20 \
+           --input_length_limit 5000 \           
+           --conda_env_dir /path/to/ViWrap_conda_environments
+           
+# The total running time is about 2 hrs           
+```
+
+
 
 ______
 ## Output Explanations <a name="out"></a>

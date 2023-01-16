@@ -252,7 +252,7 @@ def get_vog_marker_table(vog_marker_table):
     return vog_marker_list
     
 def get_marker_vog_hmm(vog_marker_list, tax_classification_db_dir):
-    # Step 1 Download whole VOG HMMs (VOG 215)
+    # Step 1 Download whole VOG HMMs (VOG 97)
     wget_cmd = f'wget http://fileshare.csb.univie.ac.at/vog/vog97/vog.hmm.tar.gz -O {tax_classification_db_dir}/vog.hmm.tar.gz'
     os.system(wget_cmd)
     # Step 2 Pick marker VOG HMMs, concatenate, and press

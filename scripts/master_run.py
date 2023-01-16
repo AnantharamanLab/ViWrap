@@ -24,6 +24,7 @@ def fetch_arguments(parser,root_dir,db_path_default):
     parser.add_argument('--virome','-v', dest='virome', action='store_true', required=False, default=False, help=r"edit VIBRANT's sensitivity if the input dataset is a virome. It is suggested to use it if you know that the input assembly is virome or metagenome")
     parser.add_argument('--input_length_limit', dest='input_length_limit', required=False, default=2000, help=r'length in basepairs to limit input sequences (default=2000, can increase but not decrease); 2000 at least suggested for VIBRANT (vb)-based pipeline, 5000 at least suggested for VirSorter2 (vs)-based pipeline')
     parser.add_argument('--custom_MAGs_dir', dest='custom_MAGs_dir', required=False, default='none', help=r'custom MAGs dir that contains only *.fasta files for MAGs reconstructed from the same metagenome, this will be used in iPHoP for host prediction; note that it should be the absolute address path')	
+    parser.add_argument('--iPHoP_db_custom_pre', dest='iPHoP_db_custom_pre', required=False, default='none', help=r'custom iPHoP db that has been made from the previous run, this will be used in iPHoP for host prediction by custom db; note that it should be the absolute address path')
     parser.add_argument('--root_dir', dest='root_dir', required=False, default=root_dir,help=argparse.SUPPRESS)
     
 
@@ -532,7 +533,7 @@ def main(args):
     logger.info(f"{time_current} | Conduct Host prediction by iPHoP. Finished")  
     
     ## Step 9.2 Host prediction by iPHoP by adding custom MAGs to host db
-    if args['custom_MAGs_dir'] != 'none':
+    if args['custom_MAGs_dir'] != 'none' and args['iPHoP_db_custom_pre'] == 'none':
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Conduct Host prediction by iPHoP using custom MAGs. In processing...")   
                
@@ -542,8 +543,16 @@ def main(args):
 
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Conduct Host prediction by iPHoP using custom MAGs. Finished") 
+    elif args['custom_MAGs_dir'] != 'none' and args['iPHoP_db_custom_pre'] != 'none': # iPHoP db custom was provided (by the previous run)   
+        time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
+        logger.info(f"{time_current} | Conduct Host prediction by iPHoP using custom MAGs. In processing...") 
     
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP')} python {os.path.join(args['root_dir'],'scripts/run_iPHoP.py')} {all_vRhyme_fasta_Nlinked} {args['iphop_custom_outdir']} {args['iPHoP_db_custom_pre']} {args['threads']} >/dev/null 2>&1")                     
     
+        time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
+        logger.info(f"{time_current} | Conduct Host prediction by iPHoP using custom MAGs. Finished") 
+
+        
     # Step 10 Get virus genome abundance
     os.mkdir(args['viwrap_summary_outdir'])
     os.system(f"mv {os.path.join(args['out_dir'],'*.txt')} {args['viwrap_summary_outdir']}")
