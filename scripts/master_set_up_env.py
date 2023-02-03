@@ -91,7 +91,7 @@ def main(args):
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | ViWrap-Tax conda env has been installed")
     
-    os.system(f"mamba create-c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP')} python=3.8 iphop=1.2.0 -y >/dev/null 2>&1") 
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP')} python=3.8 iphop=1.2.0 -y >/dev/null 2>&1") 
     if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP/bin')):
         logger.info("ViWrap-iPHoP conda env path has been checked")
     else:
@@ -99,7 +99,7 @@ def main(args):
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | ViWrap-iPHoP conda env has been installed")
     
-    os.system(f"mamba create-c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-GTDBTk')} gtdbtk=2.1.1 numpy=1.20.0 -y >/dev/null 2>&1")
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-GTDBTk')} gtdbtk=2.1.1 numpy=1.20.0 -y >/dev/null 2>&1")
     if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-GTDBTk/bin')):
         logger.info("ViWrap-GTDBTk conda env path has been checked")
     else:
@@ -107,7 +107,7 @@ def main(args):
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | ViWrap-GTDBTk conda env has been installed")
     
-    os.system(f"mamba create-c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python=3.8 virsorter=2.2.3 numpy=1.20.0 -y >/dev/null 2>&1")    
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python=3.8 virsorter=2.2.3 numpy=1.20.0 -y >/dev/null 2>&1")    
     # Add "  - numpy=1.20.0" to the conda env yaml file
     vs2_yaml_file = os.path.join(args['conda_env_dir'], 'ViWrap-vs2', 'lib/python3.8/site-packages/virsorter/envs/vs2.yaml')
     with open(vs2_yaml_file, 'a') as f:
@@ -119,7 +119,7 @@ def main(args):
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | ViWrap-vs2 conda env has been installed")
    
-    os.system(f"mamba create-c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-Mapping')} python=3.8 pysam bowtie2=2.4.5 coverm pandas pyfastx minimap2=2.24 consent -y >/dev/null 2>&1")   
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-Mapping')} python=3.8 pysam bowtie2=2.4.5 coverm pandas pyfastx minimap2=2.24 consent -y >/dev/null 2>&1")   
     if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-Mapping/bin')):
         logger.info("ViWrap-Mapping conda env path has been checked")
     else:
