@@ -54,7 +54,7 @@ def main(args):
     else:
         logger.info(f"{time_current} | ViWrap-vRhyme conda env path is not present!")
         
-    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-vContact2')} python=3.7 vcontact2=0.11.0 pytables biopython networkx numpy=1.19.0 pandas=0.25.3 scipy=1.6.1 scikit-learn=0.24.1 psutil pyparsing hdf5 clusterone mcl blast diamond -y >/dev/null 2>&1")
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-vContact2')} python=3.7 vcontact2=0.11.0 pytables biopython networkx numpy=1.19.0 pandas=0.25.3 scipy=1.6.1 scikit-learn=0.24.1 psutil pyparsing hdf5 clusterone mcl blast diamond=2.0.15 -y >/dev/null 2>&1")
     os.system("wget http://www.paccanarolab.org/static_content/clusterone/cluster_one-1.0.jar -q")
     os.system(f"mv cluster_one-1.0.jar {os.path.join(args['conda_env_dir'], 'ViWrap-vContact2/bin')}")    
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
@@ -63,7 +63,7 @@ def main(args):
     else:
         logger.info(f"{time_current} | ViWrap-vContact2 conda env path is not present!")    
     
-    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python=3.8 checkv=1.0.1 diamond hmmer prodigal -y >/dev/null 2>&1")
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python=3.8 checkv=1.0.1 diamond=2.0.15 hmmer=3.3.2 prodigal -y >/dev/null 2>&1")
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-CheckV/bin')):
         logger.info(f"{time_current} | ViWrap-CheckV conda env has been installed")
@@ -77,7 +77,7 @@ def main(args):
     else:
         logger.info(f"{time_current} | ViWrap-dRep conda env path is not present!")     
        
-    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-Tax')} python=3 diamond=2.0.15 hmmer -y >/dev/null 2>&1") 
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-Tax')} python=3 diamond=2.0.15 hmmer=3.3.2 -y >/dev/null 2>&1") 
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-Tax/bin')):
         logger.info(f"{time_current} | ViWrap-Tax conda env has been installed")
