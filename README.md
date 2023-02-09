@@ -275,7 +275,7 @@ ______
   # Usage: ViWrap run --input_metagenome <input metagenome assemblies> --input_reads <input metagenomic reads> --out_dir <output directory> [options]
   
   # Example 1 (minimal required inputs):
-  ViWrap run --input_metageome /path/to/Lake_01_assemblies.fasta \
+  ViWrap run --input_metagenome /path/to/Lake_01_assemblies.fasta \
              --input_reads /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq \
              --out_dir ./ViWrap_Lake_01_outdir \
              --db_dir /path/to/ViWrap_db \
@@ -283,7 +283,7 @@ ______
              --conda_env_dir /path/to/ViWrap_conda_environments
                   
   # Example 2 (with custom MAGs from the same metagenome provided for further host prediction)
-  ViWrap run --input_metageome /path/to/Lake_01_assemblies.fasta \
+  ViWrap run --input_metagenome /path/to/Lake_01_assemblies.fasta \
              --input_reads /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq \
              --out_dir ./ViWrap_Lake_01_outdir \
              --db_dir /path/to/ViWrap_db \
@@ -346,7 +346,7 @@ ______
 #### Test run
 
 ```bash
-ViWrap run --input_metageome /path/to/example_data/Guaymas_scaffolds_min1000.subset.fasta \
+ViWrap run --input_metagenome /path/to/example_data/Guaymas_scaffolds_min1000.subset.fasta \
            --input_reads /path/to/example_data/reads_1.fastq.gz,/path/to/example_data/reads_2.fastq.gz \
            --out_dir ./test_outdir \
            --db_dir /path/to/ViWrap_db \
@@ -364,7 +364,7 @@ ______
 ## Output Explanations <a name="out"></a>
 
 #### **All result folders**
-- `00_VIBRANT_input_metageome_stem_name`: the virus identification result (would be "00_VirSorter_input_metageome_stem_name", "00_DeepVirFinder_input_metageome_stem_name", "00_VIBRANT_VirSorter_input_metageome_stem_name", or "00_VIBRANT_VirSorter_DeepVirFinder_input_metageome_stem_name")
+- `00_VIBRANT_input_metagenome_stem_name`: the virus identification result (would be "00_VirSorter_input_metagenome_stem_name", "00_DeepVirFinder_input_metagenome_stem_name", "00_VIBRANT_VirSorter_input_metagenome_stem_name", or "00_VIBRANT_VirSorter_DeepVirFinder_input_metagenome_stem_name")
 - `01_Mapping_result_outdir`: the reads mapping result
 - `02_vRhyme_outdir`: vRhyme binning result
 - `03_vConTACT2_outdir`: vConTACT2 classifying result
@@ -439,7 +439,7 @@ ______
 - **Using "run_wo_reads" will only provide viral scaffold results**
 
   - Since vRhyme needs scaffold coverage information for virus binning. Using "run_wo_reads" will not give viral binning results; each viral scaffold will be treated as a viral genome in the downstream analysis after viral binning. In the end, it will generate viral abundance results neither. 
-  - It will only generate five result folders: `00_VIBRANT_input_metageome_stem_name`, `01_vContact2_outdir`, `02_CheckV_outdir`, `03_dRep_outdir`, `04_iPHoP_outdir`, and `05_ViWrap_summary_outdir`
+  - It will only generate five result folders: `00_VIBRANT_input_metagenome_stem_name`, `01_vContact2_outdir`, `02_CheckV_outdir`, `03_dRep_outdir`, `04_iPHoP_outdir`, and `05_ViWrap_summary_outdir`
   - This method will facilitate identify viruses from both metagenomes and genomes without the usage of metagenomic/genomic reads.
 
 - **Lytic and lysogenic viruses can bin together** (copied from vRhyme GitHub page)
