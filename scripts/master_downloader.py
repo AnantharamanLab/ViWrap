@@ -144,7 +144,7 @@ def main(args):
     
 
     # Step 6 Make GTDB-Tk db (v2.1.1) and release 207 v2
-    os.system(f"wget https://data.gtdb.ecogenomic.org/releases/release207/207.0/auxillary_files/gtdbtk_r207_v2_data.tar.gz -O {os.path.join(args['db_dir'], 'gtdbtk_r207_v2_data.tar.gz')}")
+    os.system(f"wget https://data.gtdb.ecogenomic.org/releases/release207/207.0/auxillary_files/gtdbtk_r207_v2_data.tar.gz -O {os.path.join(args['db_dir'], 'gtdbtk_r207_v2_data.tar.gz')} --no-check-certificate")
     os.mkdir(args['GTDB_db'])     
     os.system(f"tar xzf {os.path.join(args['db_dir'], 'gtdbtk_r207_v2_data.tar.gz')} --directory {args['GTDB_db']}")
     os.system(f"mv {os.path.join(args['GTDB_db'], 'release207_v2')} {os.path.join(args['GTDB_db'], 'GTDB_db')}")  
@@ -162,7 +162,7 @@ def main(args):
     logger.info(f"{time_current} | VirSorter2 db has been set up")     
     
     # Step 8 Download DVF db
-    os.system(f"git clone  .git {os.path.join(args['db_dir'], 'DVF_db_tmp')}")
+    os.system(f"git clone https://github.com/jessieren/DeepVirFinder.git {os.path.join(args['db_dir'], 'DVF_db_tmp')}")
     os.system(f"mv {os.path.join(args['db_dir'], 'DVF_db_tmp/models')} {args['DVF_db']}")
     os.system(f"rm -rf {os.path.join(args['db_dir'], 'DVF_db_tmp')}")
     
