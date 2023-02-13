@@ -53,7 +53,7 @@ def write_down_seq(seq_dict, path_to_file):
     
 def dl_refseq_viral_protein(tax_classification_db_dir):
     dl_cmd = []
-    for i in range(1, 4):
+    for i in range(1, 2):
         each_dl_cmd = f'wget https://ftp.ncbi.nlm.nih.gov/refseq/release/viral/viral.{i}.protein.faa.gz -O {tax_classification_db_dir}/viral.{i}.protein.faa.gz'
         each_gzip_cmd = f'gzip -d {tax_classification_db_dir}/viral.{i}.protein.faa.gz'
         each_cmd = each_dl_cmd + ";" + each_gzip_cmd
