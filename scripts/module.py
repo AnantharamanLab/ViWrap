@@ -552,6 +552,7 @@ def get_gn_list_for_genus_for_wo_reads(genus_cluster_info, dRep_outdir, split_vi
         f.close()          
     
 def parse_dRep(viwrap_outdir, dRep_outdir, species_cluster_info, genus_cluster_info, viral_genus_genome_list_dir):
+    # Step 1 Get the viral genome to VC (a.k.a genus) or Unclustered Genus map
     gn2VC = {} # gn => VC or UnclusteredGenus
     with open(genus_cluster_info, "r") as genus_cluster:
         for line in genus_cluster:
@@ -563,21 +564,23 @@ def parse_dRep(viwrap_outdir, dRep_outdir, species_cluster_info, genus_cluster_i
                     gn2VC[gn] = VC                
     genus_cluster.close()   
     
+    # Step 1 Get the species information
     species_cluster_dict = {} # species_rep => species_rep, gns, genus
-
+                              # species rep genome => species rep genome, all the genomes that belong to this species, the genus affiliation of genus
     walk = os.walk(dRep_outdir)
     for path, dir_list, file_list in walk:   
         for dir_name in dir_list:
             if 'Output' in dir_name:
                 dir_name_with_path = os.path.join(path, dir_name)
-                Cdb = dir_name_with_path + "/data_tables/Cdb.csv"
-                Wdb = dir_name_with_path + "/data_tables/Wdb.csv"
-                Bdb = dir_name_with_path + "/data_tables/Bdb.csv"
+                Cdb = dir_name_with_path + "/data_tables/Cdb.csv" # Genomes and cluster designations
+                Wdb = dir_name_with_path + "/data_tables/Wdb.csv" # Winning genomes
+                Bdb = dir_name_with_path + "/data_tables/Bdb.csv" # Sequence locations and filenames
                 
                 cluster2species_rep = {} # cluster => species_rep (within this genus)
-                gn2cluster = {}
+                                         # cluster here means species cluster, can be regarded as 'species'
+                gn2cluster = {} # g => cluster; store the genome to cluster map
                 
-                if os.path.exists(Cdb) and os.path.exists(Wdb):
+                if os.path.exists(Cdb) and os.path.exists(Wdb): # Both Cdb and Wdb should exist
                     with open(Wdb, "r") as Wdb_file:
                         for line in Wdb_file:
                             line = line.rstrip("/n")
@@ -595,7 +598,7 @@ def parse_dRep(viwrap_outdir, dRep_outdir, species_cluster_info, genus_cluster_i
                                 cluster = line.split(",")[1]
                                 gn2cluster[gn] = cluster
                     Cdb_file.close()  
-                else:
+                else: # If not both Cdb and Wdb should exist, there is not clustering; each genome is an individual cluster (species)
                     with open(Bdb, "r") as Bdb_file:
                         for line in Bdb_file:
                             line = line.rstrip("/n")
@@ -619,6 +622,7 @@ def parse_dRep(viwrap_outdir, dRep_outdir, species_cluster_info, genus_cluster_i
                             
                     species_cluster_dict[species_rep][1] = ';'.join(gns)       
                                 
+    # Step 3 Store the viral genus genome list and viral genus genome list for singleton
     viral_genus_genome_lists = glob(f'{viral_genus_genome_list_dir}/viral_genus_genome_list.*.txt')
     viral_genus_genome_lists_singleton = []
     for viral_genus_genome_list in viral_genus_genome_lists:
@@ -627,6 +631,7 @@ def parse_dRep(viwrap_outdir, dRep_outdir, species_cluster_info, genus_cluster_i
             if line_num == 1:
                 viral_genus_genome_lists_singleton.append(viral_genus_genome_list)
     
+    # Step 4 Get the species information from viral genus genome list for singleton (each singleton viral genome will be an individual species)
     for viral_genus_genome_list in viral_genus_genome_lists_singleton:
         with open(viral_genus_genome_list, 'r') as lines:
             for line in lines:
@@ -634,12 +639,12 @@ def parse_dRep(viwrap_outdir, dRep_outdir, species_cluster_info, genus_cluster_i
                 singeton_gn = Path(line).stem
                 species_cluster_dict[singeton_gn] = [singeton_gn, singeton_gn, gn2VC[singeton_gn]]              
               
-    # Store UnclusteredGenus
+    # Step 5 Get species information for each genome in UnclusteredGenus (each viral genome in UnclusteredGenus will be an individual species)
     for gn in gn2VC:
         if 'UnclusteredGenus' in gn2VC[gn]:
             species_cluster_dict[gn] = [gn, gn, gn2VC[gn]]
             
-    # Write down species_cluster_info
+    # Step 6 Write down species_cluster_info
     f = open(f'{viwrap_outdir}/Species_cluster_info.txt',"w")
     f.write('#species_rep,genomes,genus\n')
     for species_rep in species_cluster_dict:
@@ -1388,6 +1393,7 @@ def get_run_input_arguments(args):
     if args['virome']: argu_items.append('--virome')
     argu_items.append('--input_length_limit' + ' ' + str(args['input_length_limit']))
     if args['custom_MAGs_dir'] != 'none': argu_items.append('--custom_MAGs_dir' + ' ' + args['custom_MAGs_dir'])
+    if args['iPHoP_db_custom'] != 'none': argu_items.append('--iPHoP_db_custom' + ' ' + args['iPHoP_db_custom'])
     if args['iPHoP_db_custom_pre'] != 'none': argu_items.append('--iPHoP_db_custom_pre' + ' ' + args['iPHoP_db_custom_pre'])
     
     command += " ".join(argu_items)
