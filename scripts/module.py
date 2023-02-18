@@ -973,12 +973,15 @@ def make_vRhyme_best_bins_fasta_modified(vRhyme_best_bin_dir, vRhyme_best_bin_di
         ffn_addr_new = os.path.join(vRhyme_best_bin_dir_modified, f"{fasta_stem}.ffn")
         
         if fasta_stem not in vRhyme_bin_to_split:
-            # Copy fasta files
-            os.system(f"cp {fasta_addr} {fasta_addr_new}")
-            # Copy faa files
-            os.system(f"cp {faa_addr} {faa_addr_new}")
-            # Copy ffn files
-            os.system(f"cp {ffn_addr} {ffn_addr_new}")
+            # store and re-write fasta files
+            fasta_seq = store_seq(f"{fasta_addr}")
+            write_down_seq(fasta_seq, f"{fasta_addr_new}")
+            # store and re-write faa files
+            faa_seq = store_seq(f"{faa_addr}")
+            write_down_seq(faa_seq, f"{faa_addr_new}")
+            # store and re-write ffn files
+            ffn_seq = store_seq(f"{ffn_addr}")
+            write_down_seq(ffn_seq, f"{ffn_addr_new}")
                       
 def parse_vibrant_lytic_and_lysogenic_info_for_wo_reads(vibrant_outdir, metagenomic_scaffold_stem_name):
     # Step 1 Get scf 2 lytic or lysogenic dict

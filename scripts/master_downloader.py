@@ -127,6 +127,7 @@ def main(args):
     # Step 4 Make CheckV db
     os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} checkv download_database {args['db_dir']} >/dev/null 2>&1")
     os.system(f"mv {os.path.join(args['db_dir'], 'checkv-db-v*')} {args['CheckV_db']}")
+    os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} export CHECKVDB={args['CheckV_db']}")
 
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | CheckV db has been set up")  
