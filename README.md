@@ -50,6 +50,8 @@ ______
 * Update bam filtering steps
 * Update GTDB-Tk to v2.1.1 and db to release 207 v2
 * Change the output place of "iPHoP_db_custom"
+* Update the "master_downloader.py" to add checkV DB setting up command line
+* Update the "module.py" to change long headers into short headers in the output virus faa files (within the folders of "02_vRhyme_outdir/vRhyme_best_bins_fasta_modified" and "08_ViWrap_summary_outdir/Virus_genomes_files")
 
 ## Updates for v1.2.0 (Oct 2022): <a name="updates"></a>
 
