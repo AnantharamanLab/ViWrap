@@ -435,6 +435,7 @@ def main(args):
     # Step 5 Run vContact2
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Run vContact2 to cluster viral genomes. In processing...")    
+    
     ## Step 5.1 Make unbinned viral gn folder
     vRhyme_unbinned_viral_gn_dir = os.path.join(args['vrhyme_outdir'], 'vRhyme_unbinned_viral_gn_fasta')
     scripts.module.make_unbinned_viral_gn(viral_scaffold, vRhyme_best_bin_dir_modified, vRhyme_unbinned_viral_gn_dir)
@@ -451,7 +452,6 @@ def main(args):
     cluster_one_jar = os.path.join(args['conda_env_dir'], 'ViWrap-vContact2/bin/cluster_one-1.0.jar')
     os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vContact2')} python {os.path.join(args['root_dir'],'scripts/run_vContact2.py')} {all_vRhyme_faa} {pro2viral_gn_map} {args['Tax_classification_db']} {cluster_one_jar} {args['vcontact2_outdir']} {args['threads']} >/dev/null 2>&1")
 
-
     ## Step 5.5 Write down genus cluster info
     genome_by_genome_file = os.path.join(args['vcontact2_outdir'], 'genome_by_genome_overview.csv')
     genus_cluster_info = os.path.join(args['out_dir'], 'Genus_cluster_info.txt')
@@ -465,6 +465,7 @@ def main(args):
     # Step 6 Run CheckV
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Run CheckV to evaluate virus genome quality. In processing...")       
+    
     ## Step 6.1 Link multiple scaffolds within a bin
     os.mkdir(args['nlinked_viral_gn_dir'])
     scripts.module.Nlinker(vRhyme_best_bin_dir_modified, args['nlinked_viral_gn_dir'], 'fasta', 1000)  
@@ -526,6 +527,7 @@ def main(args):
     # Step 9 Host prediction
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Conduct Host prediction by iPHoP. In processing...")      
+    
     ## Step 9.1 Host prediction by iPHoP
     all_vRhyme_fasta_Nlinked = os.path.join(args['vrhyme_outdir'], 'all_vRhyme_fasta.Nlinked_viral_gn.fasta')
     scripts.module.combine_all_vRhyme_fasta(args['nlinked_viral_gn_dir'], '', all_vRhyme_fasta_Nlinked)

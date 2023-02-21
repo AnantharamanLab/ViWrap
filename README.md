@@ -274,6 +274,8 @@ ______
 
 - `run`: Run the full wrapper for identifying, classifying, and characterizing virus genomes from metagenomes
 
+  ***Note***: Before running, please check the header of each input metagenome sequence. Since in the downstream analysis we will add `vRhyme_bin_{i}__` or `vRhyme_unbinned_{i}__` in front of each sequence header, the double understores `__` will be used as the internal splitter. It is suggested to avoid using `__` in your input metagenome, or replace it with other markers.
+
   ```bash
   # Usage: ViWrap run --input_metagenome <input metagenome assemblies> --input_reads <input metagenomic reads> --out_dir <output directory> [options]
   
@@ -296,7 +298,6 @@ ______
              --virome \
              --input_length_limit 2000 \
              --custom_MAGs_dir /path/to/custom_MAGs_dir 
-              
   ```
 
 - `download`: Download and setup the ViWrap database
