@@ -101,12 +101,12 @@ def write_down_seq(seq_dict, path_to_file):
     
 def make_unbinned_viral_gn(viral_scaffold, vRhyme_best_bin_dir, vRhyme_unbinned_viral_gn_dir):
     viral_scaffold_faa = viral_scaffold.rsplit(".", 1)[0] + ".faa"
-    viral_scaffold_ffn = viral_scaffold.rsplit(".", 1)[0] + ".faa"       
-    viral_scaffold_fasta_dict = store_seq_with_full_head(viral_scaffold)
-    viral_scaffold_faa_dict = store_seq_with_full_head(viral_scaffold_faa)
-    viral_scaffold_ffn_dict = store_seq_with_full_head(viral_scaffold_ffn)
+    viral_scaffold_ffn = viral_scaffold.rsplit(".", 1)[0] + ".ffn"         
+    viral_scaffold_fasta_dict = store_seq(viral_scaffold) # Store all viral scaffold fasta seq 
+    viral_scaffold_faa_dict = store_seq(viral_scaffold_faa) # Store all viral scaffold faa seq 
+    viral_scaffold_ffn_dict = store_seq(viral_scaffold_ffn) # Store all viral scaffold ffn seq 
     
-    # Step 1 Make unnbinned fasta dict and write down unbinned viral genome fasta file
+    # Step 1 Make unbinned fasta dict and write down unbinned viral genome fasta file
     viral_scaffold_fasta_binned_dict = {} # scaffold_id (NODE_10610_length_8667_cov_0.658730) => bin_name (vRhyme_10)
 
     walk = os.walk(vRhyme_best_bin_dir)
@@ -141,18 +141,17 @@ def make_unbinned_viral_gn(viral_scaffold, vRhyme_best_bin_dir, vRhyme_unbinned_
         unbinned_fasta_file.close()
         
     # Step 2 Write down unbinned viral genome faa file    
-    viral_scaffold_faa_unbinned_dict = {} # pro_id (NODE_10811_length_8534_cov_0.218494_1  (1..228)        1       PF02229.16      Transcriptional Coactivator p15 (PC4)) => unbinned_gn_name (vRhyme_unbinned_1)
+    viral_scaffold_faa_unbinned_dict = {} # pro_id (NODE_10811_length_8534_cov_0.218494_1) => unbinned_gn_name (vRhyme_unbinned_1)
     for header in viral_scaffold_faa_dict:
         pro_id = header.replace(">", "", 1)
-        scaffold_id = pro_id.split("\t", 1)[0].rsplit("_", 1)[0]
+        scaffold_id = pro_id.rsplit("_", 1)[0]
         if scaffold_id in viral_scaffold_fasta_unbinned_dict:
             viral_scaffold_faa_unbinned_dict[pro_id] = viral_scaffold_fasta_unbinned_dict[scaffold_id]
-   
-    
+       
     for scaffold_id in viral_scaffold_fasta_unbinned_dict:
         unbinned_faa_file = open(f'{vRhyme_unbinned_viral_gn_dir}/{viral_scaffold_fasta_unbinned_dict[scaffold_id]}.faa',"w")
         for pro_id in viral_scaffold_faa_unbinned_dict:
-            scaffold_id_within = pro_id.split("\t", 1)[0].rsplit("_", 1)[0]
+            scaffold_id_within = pro_id.rsplit("_", 1)[0]
             if (scaffold_id_within == scaffold_id):
                 unbinned_faa_file.write(f'>{viral_scaffold_faa_unbinned_dict[pro_id]}__{pro_id}\n')
                 pro_id_w_array = ">" + pro_id
@@ -160,78 +159,22 @@ def make_unbinned_viral_gn(viral_scaffold, vRhyme_best_bin_dir, vRhyme_unbinned_
         unbinned_faa_file.close()    
         
     # Step 3 Write down unbinned viral genome ffn file    
-    viral_scaffold_ffn_unbinned_dict = {} # pro_id (NODE_10811_length_8534_cov_0.218494_1  (1..228)        1       PF02229.16      Transcriptional Coactivator p15 (PC4)) => unbinned_gn_name (vRhyme_unbinned_1)
+    viral_scaffold_ffn_unbinned_dict = {} # pro_id (NODE_10811_length_8534_cov_0.218494_1) => unbinned_gn_name (vRhyme_unbinned_1)
     for header in viral_scaffold_ffn_dict:
         pro_id = header.replace(">", "", 1)
-        scaffold_id = pro_id.split("\t", 1)[0].rsplit("_", 1)[0]
+        scaffold_id = pro_id.rsplit("_", 1)[0]
         if scaffold_id in viral_scaffold_fasta_unbinned_dict:
             viral_scaffold_ffn_unbinned_dict[pro_id] = viral_scaffold_fasta_unbinned_dict[scaffold_id]
     
     for scaffold_id in viral_scaffold_fasta_unbinned_dict:
         unbinned_ffn_file = open(f'{vRhyme_unbinned_viral_gn_dir}/{viral_scaffold_fasta_unbinned_dict[scaffold_id]}.ffn',"w")
         for pro_id in viral_scaffold_ffn_unbinned_dict:
-            scaffold_id_within = pro_id.split("\t", 1)[0].rsplit("_", 1)[0]
+            scaffold_id_within = pro_id.rsplit("_", 1)[0]
             if (scaffold_id_within == scaffold_id):
                 unbinned_ffn_file.write(f'>{viral_scaffold_ffn_unbinned_dict[pro_id]}__{pro_id}\n')
                 pro_id_w_array = ">" + pro_id
                 unbinned_ffn_file.write(f'{viral_scaffold_ffn_dict[pro_id_w_array]}\n')
-        unbinned_ffn_file.close()  
-        
-    # Step 4 Write down best bin faa file
-    viral_scaffold_faa_binned_dict = {} # pro_id (NODE_10811_length_8534_cov_0.218494_1  (1..228)        1       PF02229.16      Transcriptional Coactivator p15 (PC4)) => unbinned_gn_name (vRhyme_bin_1)
-    for header in viral_scaffold_faa_dict:
-        pro_id = header.replace(">", "", 1)
-        scaffold_id = pro_id.split("\t", 1)[0].rsplit("_", 1)[0]
-        if scaffold_id in viral_scaffold_fasta_binned_dict:
-            viral_scaffold_faa_binned_dict[pro_id] = viral_scaffold_fasta_binned_dict[scaffold_id]
-
-    binned_faa_name2scaffolds = {} # binned_faa_name to scaffolds
-    for scaffold_id in viral_scaffold_fasta_binned_dict:
-        binned_faa_name = viral_scaffold_fasta_binned_dict[scaffold_id].replace("vRhyme","vRhyme_bin",1)
-        if binned_faa_name not in binned_faa_name2scaffolds:
-            binned_faa_name2scaffolds[binned_faa_name] = scaffold_id
-        else:
-            binned_faa_name2scaffolds[binned_faa_name] += "\t" + scaffold_id
-
-    for binned_faa_name in binned_faa_name2scaffolds:
-        binned_faa_file = open(f'{vRhyme_best_bin_dir}/{binned_faa_name}.faa',"w") 
-        scaffolds = binned_faa_name2scaffolds[binned_faa_name].split("\t")
-        for scaffold_id in scaffolds:
-            for pro_id in viral_scaffold_faa_binned_dict:
-                scaffold_id_within = pro_id.split("\t", 1)[0].rsplit("_", 1)[0]
-                if (scaffold_id_within == scaffold_id):
-                    binned_faa_file.write(f'>{viral_scaffold_faa_binned_dict[pro_id]}__{pro_id}\n')
-                    pro_id_w_array = ">" + pro_id
-                    binned_faa_file.write(f'{viral_scaffold_faa_dict[pro_id_w_array]}\n')
-        binned_faa_file.close()
-        
-    # Step 5 Write down best bin ffn file
-    viral_scaffold_ffn_binned_dict = {} # pro_id (NODE_10811_length_8534_cov_0.218494_1  (1..228)        1       PF02229.16      Transcriptional Coactivator p15 (PC4)) => unbinned_gn_name (vRhyme_bin_1)
-    for header in viral_scaffold_ffn_dict:
-        pro_id = header.replace(">", "", 1)
-        scaffold_id = pro_id.split("\t", 1)[0].rsplit("_", 1)[0]
-        if scaffold_id in viral_scaffold_fasta_binned_dict:
-            viral_scaffold_ffn_binned_dict[pro_id] = viral_scaffold_fasta_binned_dict[scaffold_id]
-
-    binned_ffn_name2scaffolds = {} # binned_ffn_name to scaffolds
-    for scaffold_id in viral_scaffold_fasta_binned_dict:
-        binned_ffn_name = viral_scaffold_fasta_binned_dict[scaffold_id].replace("vRhyme","vRhyme_bin",1)
-        if binned_ffn_name not in binned_ffn_name2scaffolds:
-            binned_ffn_name2scaffolds[binned_ffn_name] = scaffold_id
-        else:
-            binned_ffn_name2scaffolds[binned_ffn_name] += "\t" + scaffold_id
-
-    for binned_ffn_name in binned_ffn_name2scaffolds:
-        binned_ffn_file = open(f'{vRhyme_best_bin_dir}/{binned_ffn_name}.ffn',"w") 
-        scaffolds = binned_ffn_name2scaffolds[binned_ffn_name].split("\t")
-        for scaffold_id in scaffolds:
-            for pro_id in viral_scaffold_ffn_binned_dict:
-                scaffold_id_within = pro_id.split("\t", 1)[0].rsplit("_", 1)[0]
-                if (scaffold_id_within == scaffold_id):
-                    binned_ffn_file.write(f'>{viral_scaffold_ffn_binned_dict[pro_id]}__{pro_id}\n')
-                    pro_id_w_array = ">" + pro_id
-                    binned_ffn_file.write(f'{viral_scaffold_ffn_dict[pro_id_w_array]}\n')
-        binned_ffn_file.close()         
+        unbinned_ffn_file.close()    
     
 def get_pro2viral_gn_map(vRhyme_best_bin_dir, vRhyme_unbinned_viral_gn_dir, pro2viral_gn_map):
     pro2viral_gn_dict = {}
@@ -975,13 +918,16 @@ def make_vRhyme_best_bins_fasta_modified(vRhyme_best_bin_dir, vRhyme_best_bin_di
         if fasta_stem not in vRhyme_bin_to_split:
             # store and re-write fasta files
             fasta_seq = store_seq(f"{fasta_addr}")
-            write_down_seq(fasta_seq, f"{fasta_addr_new}")
+            fasta_seq_new = {k.replace("vRhyme", "vRhyme_bin", 1): v for k, v in fasta_seq.items()}
+            write_down_seq(fasta_seq_new, f"{fasta_addr_new}")
             # store and re-write faa files
             faa_seq = store_seq(f"{faa_addr}")
-            write_down_seq(faa_seq, f"{faa_addr_new}")
+            faa_seq_new = {k.replace("vRhyme", "vRhyme_bin", 1): v for k, v in faa_seq.items()}
+            write_down_seq(faa_seq_new, f"{faa_addr_new}")
             # store and re-write ffn files
             ffn_seq = store_seq(f"{ffn_addr}")
-            write_down_seq(ffn_seq, f"{ffn_addr_new}")
+            ffn_seq_new = {k.replace("vRhyme", "vRhyme_bin", 1): v for k, v in ffn_seq.items()}
+            write_down_seq(ffn_seq_new, f"{ffn_addr_new}")
                       
 def parse_vibrant_lytic_and_lysogenic_info_for_wo_reads(vibrant_outdir, metagenomic_scaffold_stem_name):
     # Step 1 Get scf 2 lytic or lysogenic dict
