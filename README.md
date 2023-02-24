@@ -52,6 +52,7 @@ ______
 * Change the output place of "iPHoP_db_custom"
 * Update the "master_downloader.py" to add checkV DB setting up command line
 * Update the "module.py" to change long headers into short headers in the output virus faa files (within the folders of "02_vRhyme_outdir/vRhyme_best_bins_fasta_modified" and "08_ViWrap_summary_outdir/Virus_genomes_files"). And correct the ffn files error.
+* Update "VOG_marker_table.txt" to remove "Caudovirales" from the tax column
 
 ## Updates for v1.2.0 (Oct 2022): <a name="updates"></a>
 
