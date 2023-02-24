@@ -8,7 +8,7 @@ VOG00228	REFSEQ F-box containing protein	Varidnaviria;Bamfordvirae;Nucleocytovir
 VOG00238	sp|Q67621|AC4_TYCS2 Protein C4	Monodnaviria;Shotokuvirae;Cressdnaviricota;Repensiviricetes;Geplafuvirales;Geminiviridae
 VOG00240	sp|Q9E785|MATRX_BEFVB Matrix protein	Riboviria;Orthornavirae;Negarnaviricota;Monjiviricetes;Mononegavirales;Rhabdoviridae
 VOG00247	sp|P0DOL5|E10_VAR67 Probable FAD-linked sulfhydryl oxidase E10	Varidnaviria;Bamfordvirae;Nucleocytoviricota;NA;NA;NA
-VOG00251	sp|P03724|GP14_BPT7 Internal virion protein gp14	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;Caudovirales;Autographiviridae
+VOG00251	sp|P03724|GP14_BPT7 Internal virion protein gp14	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;NA;Autographiviridae
 VOG00259	sp|P09504|P0_TYYVF Suppressor of silencing P0	Riboviria;Orthornavirae;NA;NA;NA;NA
 VOG00342	sp|Q80921|VE7_HPV48 Protein E7	Monodnaviria;Shotokuvirae;Cossaviricota;Papovaviricetes;Zurhausenvirales;Papillomaviridae
 VOG00358	sp|Q5UP93|YL017_MIMIV Uncharacterized protein L17	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
@@ -49,7 +49,7 @@ VOG01311	REFSEQ putative glycoprotein	Riboviria;Orthornavirae;Negarnaviricota;Mo
 VOG01319	sp|Q5UQR9|YL334_MIMIV Uncharacterized protein L334	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
 VOG01328	sp|Q5UNT2|YL672_MIMIV Uncharacterized protein L672	Varidnaviria;Bamfordvirae;Nucleocytoviricota;Megaviricetes;Imitervirales;Mimiviridae
 VOG01436	sp|B4YNF9|V19_SPTNK Structural protein V19	Varidnaviria;Bamfordvirae;Preplasmiviricota;Maveriviricetes;Priklausovirales;Lavidaviridae
-VOG01461	sp|Q05233|VG26_BPML5 Minor tail protein Gp26	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;Caudovirales;NA
+VOG01461	sp|Q05233|VG26_BPML5 Minor tail protein Gp26	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;NA;NA
 VOG01468	sp|P07297|CAPSD_PAVBP Minor capsid protein VP1	Monodnaviria;Shotokuvirae;Cossaviricota;Quintoviricetes;Piccovirales;Parvoviridae
 VOG01512	sp|P17190|HBEAG_HPBDB External core antigen	Riboviria;Pararnavirae;Artverviricota;Revtraviricetes;Blubervirales;Hepadnaviridae
 VOG01513	sp|P20997|RUVV_VACCC Resolvase A22	Varidnaviria;Bamfordvirae;Nucleocytoviricota;NA;NA;NA
@@ -566,11 +566,11 @@ VOG08046	sp|Q6R7E4|Y085_OSHVF Uncharacterized protein ORF85	Duplodnaviria;Heungg
 VOG08047	sp|Q6R7F9|Y069_OSHVF Uncharacterized protein ORF69	Duplodnaviria;Heunggongvirae;Peploviricota;Herviviricetes;Herpesvirales;Malacoherpesviridae
 VOG08777	REFSEQ RNA-dependent RNA polymerase	Riboviria;Orthornavirae;Negarnaviricota;Yunchangviricetes;Goujianvirales;Yueviridae
 VOG09082	REFSEQ coat protein	Varidnaviria;Bamfordvirae;Preplasmiviricota;Tectiliviricetes;Belfryvirales;Turriviridae
-VOG09528	sp|Q05219|VG13_BPML5 Gene 13 protein	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;Caudovirales;NA
+VOG09528	sp|Q05219|VG13_BPML5 Gene 13 protein	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;NA;NA
 VOG09862	sp|O55247|G1P_BPPHL Gene 1 protein	Monodnaviria;Loebvirae;Hofneiviricota;Faserviricetes;Tubulavirales;Inoviridae
-VOG10818	sp|P20324|SCAF_BPT3 Capsid assembly scaffolding protein	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;Caudovirales;Autographiviridae
-VOG10819	sp|P03747|TUBE2_BPT7 Tail tubular protein gp12	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;Caudovirales;Autographiviridae
-VOG11404	sp|P19195|Y9KD_BPBF2 Uncharacterized 9.2 kDa protein	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;Caudovirales;Demerecviridae
+VOG10818	sp|P20324|SCAF_BPT3 Capsid assembly scaffolding protein	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;NA;Autographiviridae
+VOG10819	sp|P03747|TUBE2_BPT7 Tail tubular protein gp12	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;NA;Autographiviridae
+VOG11404	sp|P19195|Y9KD_BPBF2 Uncharacterized 9.2 kDa protein	Duplodnaviria;Heunggongvirae;Uroviricota;Caudoviricetes;NA;Demerecviridae
 VOG11820	sp|P15893|ORF2_SPV1R Uncharacterized protein ORF2	Monodnaviria;Loebvirae;Hofneiviricota;Faserviricetes;Tubulavirales;Plectroviridae
 VOG11821	sp|Q88416|ORF5_SPV1C Uncharacterized protein ORF5	Monodnaviria;Loebvirae;Hofneiviricota;Faserviricetes;Tubulavirales;Plectroviridae
 VOG11822	sp|P15900|CAPSD_SPV1R Putative capsid protein ORF9	Monodnaviria;Loebvirae;Hofneiviricota;Faserviricetes;Tubulavirales;Plectroviridae
