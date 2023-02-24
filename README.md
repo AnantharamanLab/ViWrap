@@ -91,17 +91,43 @@ ViWrap is a wrapper to identify, bin, classify, and predict host-viral relations
 
 ViWrap is an integrated wrapper/pipeline, the main contributors of each virus identifying, binning, classifying, and viral host predicting software within it should be acknowledged (Citations and links are provided):
 
-[VIBRANT](https://github.com/AnantharamanLab/VIBRANT): https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-020-00867-0
+[VIBRANT](https://github.com/AnantharamanLab/VIBRANT): [link to online paper](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-020-00867-0)
 
-[VirSorter2](https://github.com/jiarong/VirSorter2): https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-020-00990-y
+```
+Kieft, Kristopher, Zhichao Zhou, and Karthik Anantharaman. "VIBRANT: automated recovery, annotation and curation of microbial viruses, and evaluation of viral community function from genomic sequences." Microbiome 8, no. 1 (2020): 1-23. 
+```
 
-[DeepVirFinder](https://github.com/jessieren/DeepVirFinder): https://link.springer.com/article/10.1007/s40484-019-0187-4
+[VirSorter2](https://github.com/jiarong/VirSorter2): [link to online paper](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-020-00990-y)
 
-[vContact2](https://bitbucket.org/MAVERICLab/vcontact2/wiki/Home): https://www.nature.com/articles/s41587-019-0100-8
+```
+Guo, Jiarong, Ben Bolduc, Ahmed A. Zayed, Arvind Varsani, Guillermo Dominguez-Huerta, Tom O. Delmont, Akbar Adjie Pratama et al. "VirSorter2: a multi-classifier, expert-guided approach to detect diverse DNA and RNA viruses." Microbiome 9 (2021): 1-13.
+```
 
-[vRhyme](https://github.com/AnantharamanLab/vRhyme): https://academic.oup.com/nar/advance-article/doi/10.1093/nar/gkac341/6584432
+[DeepVirFinder](https://github.com/jessieren/DeepVirFinder): [link to online paper](https://link.springer.com/article/10.1007/s40484-019-0187-4)
 
-[iPHoP](https://bitbucket.org/srouxjgi/iphop/src/main/) ([and software within it](https://bitbucket.org/srouxjgi/iphop/src/main/#markdown-header-citation)): https://www.biorxiv.org/content/10.1101/2022.07.28.501908v1
+```
+Ren, Jie, Kai Song, Chao Deng, Nathan A. Ahlgren, Jed A. Fuhrman, Yi Li, Xiaohui Xie, Ryan Poplin, and Fengzhu Sun. "Identifying viruses from metagenomic data using deep learning." Quantitative Biology 8 (2020): 64-77.
+```
+
+[vContact2](https://bitbucket.org/MAVERICLab/vcontact2/wiki/Home): [link to online paper](https://www.nature.com/articles/s41587-019-0100-8)
+
+```
+Bin Jang, Ho, Benjamin Bolduc, Olivier Zablocki, Jens H. Kuhn, Simon Roux, Evelien M. Adriaenssens, J. Rodney Brister et al. "Taxonomic assignment of uncultivated prokaryotic virus genomes is enabled by gene-sharing networks." Nature biotechnology 37, no. 6 (2019): 632-639.
+```
+
+[vRhyme](https://github.com/AnantharamanLab/vRhyme): [link to online paper](https://academic.oup.com/nar/advance-article/doi/10.1093/nar/gkac341/6584432)
+
+```
+Kieft, Kristopher, Alyssa Adams, Rauf Salamzade, Lindsay Kalan, and Karthik Anantharaman. "vRhyme enables binning of viral genomes from metagenomes." Nucleic Acids Research 50, no. 14 (2022): e83-e83.
+```
+
+[iPHoP](https://bitbucket.org/srouxjgi/iphop/src/main/) ([and software within it](https://bitbucket.org/srouxjgi/iphop/src/main/#markdown-header-citation)): [link to online paper](https://www.biorxiv.org/content/10.1101/2022.07.28.501908v1)
+
+```
+Roux, Simon, Antonio Pedro Camargo, Felipe Hernandes Coutinho, Shareef M. Dabdoub, Bas E. Dutilh, Stephen Nayfach, and Andrew Tritt. "iPHoP: an integrated machine-learning framework to maximize host prediction for metagenome-assembled virus genomes." bioRxiv (2022): 2022-07.
+```
+
+
 
 
 #### **ViWrap Features**
@@ -156,7 +182,7 @@ ViWrap will use the "-p" or "--prefix" option to specify where to write the envi
 For example,`conda create --prefix /tmp/test-env python=3.8`
 will create the environment named `/tmp/test-env` which resides in `/tmp/` instead of the default `.conda`.
 
-The following 11 conda environments will be set up:
+The following 11 conda environments will be set up, the **estimated running time will be 20-30 minutes**, depending on your current internet speed:
 
 ```
 121M	./ViWrap-VIBRANT
@@ -178,7 +204,7 @@ The following 11 conda environments will be set up:
 ViWrap download --db_dir /path/to/ViWrap_db  --conda_env_dir /path/to/ViWrap_conda_environments
 ```
 
-`/path/to/ViWrap_db` is the place you store the ViWrap database. Please make sure there is enough space to store the database (~280G at least). It will take ~3-4 hours to set up well depending on your current internet speed. This is kind of tedious, however, you will only need to do this one time.
+`/path/to/ViWrap_db` is the place you store the ViWrap database. Please make sure there is enough space to store the database (~280G at least). It will **take** **~3-4 hours** to set up well depending on your current internet speed. This is kind of tedious, however, you will only need to do this one time.
 
 It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the directory of "ViWrap_db"): 
 
