@@ -1995,9 +1995,11 @@ def generate_result_visualization_inputs(viwrap_visualization_outdir, viwrap_sum
             tmp = line.split('\t')
             virus, tax = tmp[0], tmp[1]
             ranks = tax.split(';')
-            order, family = ranks[4], ranks[5]
+            class_, order, family = ranks[3], ranks[4], ranks[5]
             family_final = 'NA;NA'
-            if family == 'NA' and order != 'NA':
+            if family == 'NA' and order == 'NA':
+                family_final = class_ + ';NA;NA'
+            elif family == 'NA' and order != 'NA':
                 family_final = order + ';' + family
             elif family != 'NA':
                 family_final = family
