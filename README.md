@@ -54,6 +54,7 @@ ______
 * Update the "module.py" to change long headers into short headers in the output virus faa files (within the folders of "02_vRhyme_outdir/vRhyme_best_bins_fasta_modified" and "08_ViWrap_summary_outdir/Virus_genomes_files"). And correct the ffn files error.
 * Update "VOG_marker_table.txt" to remove "Caudovirales" from the tax column
 * Update the IMG/VR v3 to v4
+* Update the KEGG metabolism calculation issue (denominator sometimes could be "0") in the function "generate_result_visualization_inputs" within the "module.py" script
 
 ## Updates for v1.2.0 (Oct 2022): <a name="updates"></a>
 
