@@ -2084,7 +2084,8 @@ def generate_result_visualization_inputs(viwrap_visualization_outdir, viwrap_sum
         sum_rel_abun_of_metabolism = sum_rel_abun_of_metabolism + rel_abun
         
     for metabolism in metabolism2rel_abun:
-         metabolism2rel_abun[metabolism] = metabolism2rel_abun[metabolism] / sum_rel_abun_of_metabolism
+        if sum_rel_abun_of_metabolism != 0:
+            metabolism2rel_abun[metabolism] = metabolism2rel_abun[metabolism] / sum_rel_abun_of_metabolism
 
     f = open(os.path.join(Result_visualization_inputs_folder, 'KO_metabolism_relative_abundance.txt'), 'w')
     f.write('KO metabolism\trelative abundance\n')
