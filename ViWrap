@@ -64,7 +64,8 @@ Example 2: ViWrap run --input_metageome /path/to/Lake_01_assemblies.fasta \\
                       --threads 30 \\
                       --virome \\
                       --input_length_limit 2000 \\
-                      --custom_MAGs_dir /path/to/custom_MAGs_dir                   
+                      --custom_MAGs_dir /path/to/custom_MAGs_dir \\ 
+                      --iPHoP_db_custom /path/to/iPHoP_db_custom                      
                     
         """,
     )
