@@ -462,7 +462,7 @@ ______
       > Result_visualization_inputs 
           - virus_statistics.txt
           - virus_family_relative_abundance.txt
-          - KO_ID_relative_abundance.txt
+          - KO_ID_relative_abundance.txt # The relative abundance of KO among all KOs (KO assigned to AMG)
           - KO_metabolism_relative_abundance.txt
       > Result_visualization_outputs    
           - virus_statistics.png # the 1st bar-chart
