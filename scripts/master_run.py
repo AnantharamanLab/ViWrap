@@ -144,25 +144,15 @@ def main(args):
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VirSorter2 to identify viruses from input metagenome. Also plus CheckV to QC and trim, and KEGG, Pfam, and VOG HMMs to annotate viruses. In processing...")    
     
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2_1st.py')} {args['input_metagenome']} {args['virsorter_outdir']} {args['threads']} {args['input_length_limit']} >/dev/null 2>&1")
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2.py')} {args['input_metagenome']} {args['virsorter_outdir']} {args['threads']} {args['input_length_limit']} >/dev/null 2>&1")
     
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-        logger.info(f"{time_current} | Run VirSorter2 the 1st time to identify viruses from input metagenome. Finished")    
+        logger.info(f"{time_current} | Run VirSorter2 to identify viruses from input metagenome. Finished")    
 
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2_CheckV_1st.py')} {args['virsorter_outdir']} {args['threads']} {args['CheckV_db']} >/dev/null 2>&1")
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2_CheckV.py')} {args['virsorter_outdir']} {args['threads']} {args['CheckV_db']} >/dev/null 2>&1")
         
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-        logger.info(f"{time_current} | Run CheckV the 1st time to QC and trim viruses identified from VirSorter2 1st run. Finished")   
-        
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2_2nd.py')} {args['virsorter_outdir']} {args['threads']} {args['input_length_limit']} >/dev/null 2>&1")
-    
-        time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-        logger.info(f"{time_current} | Run VirSorter2 the 2nd time for CheckV-trimmed sequences. Finished")    
-
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2_CheckV_2nd.py')} {args['virsorter_outdir']} {args['threads']} {args['CheckV_db']} >/dev/null 2>&1")
-        
-        time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-        logger.info(f"{time_current} | Run CheckV the 2nd time to get viral and host gene counts. Finished")
+        logger.info(f"{time_current} | Run CheckV to QC and trim viruses identified from VirSorter2. Finished")   
 
         keep1_list_file = os.path.join(args['virsorter_outdir'], 'keep1_list.txt')
         keep2_list_file = os.path.join(args['virsorter_outdir'], 'keep2_list.txt')
@@ -232,25 +222,15 @@ def main(args):
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run VirSorter2 to identify viruses from input metagenome. Also plus CheckV to QC and trim, and KEGG, Pfam, and VOG HMMs to annotate viruses. In processing...")    
     
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2_1st.py')} {args['input_metagenome']} {inner_vs_outdir} {args['threads']} {args['input_length_limit']} >/dev/null 2>&1")
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2.py')} {args['input_metagenome']} {inner_vs_outdir} {args['threads']} {args['input_length_limit']} >/dev/null 2>&1")
     
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-        logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run VirSorter2 the 1st time to identify viruses from input metagenome. Finished")    
+        logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run VirSorter2 to identify viruses from input metagenome. Finished")    
 
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2_CheckV_1st.py')} {inner_vs_outdir} {args['threads']} {args['CheckV_db']} >/dev/null 2>&1")
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2_CheckV.py')} {inner_vs_outdir} {args['threads']} {args['CheckV_db']} >/dev/null 2>&1")
         
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-        logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run CheckV the 1st time to QC and trim viruses identified from VirSorter2 1st run. Finished")   
-        
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2_2nd.py')} {inner_vs_outdir} {args['threads']} {args['input_length_limit']} >/dev/null 2>&1")
-    
-        time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-        logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run VirSorter2 the 2nd time for CheckV-trimmed sequences. Finished")    
-
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2_CheckV_2nd.py')} {inner_vs_outdir} {args['threads']} {args['CheckV_db']} >/dev/null 2>&1")
-        
-        time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-        logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run CheckV the 2nd time to get viral and host gene counts. Finished")
+        logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run CheckV to QC and trim viruses identified from VirSorter2. Finished")   
 
         keep1_list_file = os.path.join(inner_vs_outdir, 'keep1_list.txt')
         keep2_list_file = os.path.join(inner_vs_outdir, 'keep2_list.txt')
@@ -316,25 +296,15 @@ def main(args):
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run VirSorter2 to identify viruses from input metagenome. Also plus CheckV to QC and trim, and KEGG, Pfam, and VOG HMMs to annotate viruses. In processing...")    
     
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2_1st.py')} {args['input_metagenome']} {inner_vs_outdir} {args['threads']} {args['input_length_limit']} >/dev/null 2>&1")
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2.py')} {args['input_metagenome']} {inner_vs_outdir} {args['threads']} {args['input_length_limit']} >/dev/null 2>&1")
     
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-        logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run VirSorter2 the 1st time to identify viruses from input metagenome. Finished")    
+        logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run VirSorter2 to identify viruses from input metagenome. Finished")    
 
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2_CheckV_1st.py')} {inner_vs_outdir} {args['threads']} {args['CheckV_db']} >/dev/null 2>&1")
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2_CheckV.py')} {inner_vs_outdir} {args['threads']} {args['CheckV_db']} >/dev/null 2>&1")
         
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-        logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run CheckV the 1st time to QC and trim viruses identified from VirSorter2 1st run. Finished")   
-        
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2_2nd.py')} {inner_vs_outdir} {args['threads']} {args['input_length_limit']} >/dev/null 2>&1")
-    
-        time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-        logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run VirSorter2 the 2nd time for CheckV-trimmed sequences. Finished")    
-
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2_CheckV_2nd.py')} {inner_vs_outdir} {args['threads']} {args['CheckV_db']} >/dev/null 2>&1")
-        
-        time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-        logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run CheckV the 2nd time to get viral and host gene counts. Finished")
+        logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run CheckV to QC and trim viruses identified from VirSorter2. Finished")   
 
         keep1_list_file = os.path.join(inner_vs_outdir, 'keep1_list.txt')
         keep2_list_file = os.path.join(inner_vs_outdir, 'keep2_list.txt')

@@ -1524,8 +1524,8 @@ def get_virus_genome_annotation_result(args):
 
 def screen_virsorter2_result(virsorter_outdir, keep1_list_file, keep2_list_file, discard_list_file, manual_check_list_file):
     seq2info = defaultdict(list) # seq => [length, score, hallmark, viral_gene, host_gene]
-    # Step 1 Parse final_viral_score file from VirSorter2 pass2 folder
-    final_viral_score = os.path.join(virsorter_outdir, 'pass2/final-viral-score.tsv')
+    # Step 1 Parse final_viral_score file from VirSorter2 pass folder
+    final_viral_score = os.path.join(virsorter_outdir, 'pass/final-viral-score.tsv')
     with open(final_viral_score, 'r') as lines:
         for line in lines:
             line = line.rstrip('\n')
@@ -1537,8 +1537,8 @@ def screen_virsorter2_result(virsorter_outdir, keep1_list_file, keep2_list_file,
                 seq2info[seq].append(hallmark)
     lines.close()
 
-    # Step 2 Parse quality_summary file from VirSorter2 CheckV_result_2nd folder
-    quality_summary = os.path.join(virsorter_outdir, 'CheckV_result_2nd/quality_summary.tsv')
+    # Step 2 Parse quality_summary file from VirSorter2 CheckV_result folder
+    quality_summary = os.path.join(virsorter_outdir, 'CheckV_result/quality_summary.tsv')
     with open(quality_summary, 'r') as lines:
         for line in lines:
             line = line.rstrip('\n')
@@ -1622,7 +1622,7 @@ def get_keep2_mc_seq(virsorter_outdir, keep2_list_file, manual_check_list_file, 
     lines.close()  
 
     # Step 2 Make keep2_fasta, manual_check_fasta
-    all_seq = store_seq(os.path.join(virsorter_outdir, 'pass2/final-viral-combined.fa'))
+    all_seq = store_seq(os.path.join(virsorter_outdir, 'pass/final-viral-combined.fa'))
     
     all_seq_keep2 = {}
     for header in all_seq:
@@ -1730,7 +1730,7 @@ def get_final_vs2_virus(virsorter_outdir, keep1_list_file, keep2_list_vb_passed_
         lines.close()  
 
     # Step 2 Make final_vs2_virus.fasta
-    all_seq = store_seq(os.path.join(virsorter_outdir, 'pass2/final-viral-combined.fa'))
+    all_seq = store_seq(os.path.join(virsorter_outdir, 'pass/final-viral-combined.fa'))
     
     all_seq_final = {}
     for header in all_seq:

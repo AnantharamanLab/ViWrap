@@ -55,7 +55,7 @@ ______
 * Update "VOG_marker_table.txt" to remove "Caudovirales" from the tax column
 * Update the IMG/VR v3 to v4
 * Update the KEGG metabolism calculation issue (denominator sometimes could be "0") in the function "generate_result_visualization_inputs" within the "module.py" script
-* Update the CheckV command (skip decontamination step) for "run_CheckV.py" and "run_VirSorter2_CheckV_2nd.py" and add a pre-check step for input scaffold length limit when using vs method
+* Update the vs virus identifying method - delete the 2nd vs and CheckV steps and add a pre-check step for input scaffold length limit when using vs method
 
 ## Updates for v1.2.0 (Oct 2022): <a name="updates"></a>
 
