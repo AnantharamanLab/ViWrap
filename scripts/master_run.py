@@ -119,6 +119,9 @@ def main(args):
                 
     if not os.path.exists(args['conda_env_dir']):
         sys.exit(f"Could not find conda env dirs within {args['conda_env_dir']}") 
+        
+    if int(args['input_length_limit']) < 5000 and 'vs' in args['identify_method']:
+        sys.exit(f"Since you have included vs - VirSorter2 in the identify_method, you have to use input_length_limit that >= 5000") 
      
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Looks like the input metagenome and reads, database, and custom MAGs dir (if option used) are now set up well, start up to run ViWrap pipeline")
