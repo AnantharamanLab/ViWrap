@@ -392,7 +392,13 @@ ______
 
 * `--iPHoP_db_custom_pre`: custom iPHoP db that has been made from the previous run, this will be used in iPHoP for host prediction by custom db; note that it should be the absolute address path.
 
-  Note that if you use `--custom_MAGs_dir`, you will also need to use `--iPHoP_db_custom` to assign the output place of the generated custom iPHoP db.
+  ***Note that***:
+  
+  (1) if you use `--custom_MAGs_dir`, you will also need to use `--iPHoP_db_custom` to assign the output place of the generated custom iPHoP db.
+  
+  (2) If you use `--iPHoP_db_custom_pre`, you will not need to use `--custom_MAGs_dir` or `iPHoP_db_custom`. Simply assign the custom iPHoP db that has been made from the previous run.
+  
+  
 
 #### Test run
 
