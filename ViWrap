@@ -49,13 +49,13 @@ clean        Clean redundant information in each result directory
         
 Usage: ViWrap run --input_metagenome <input metagenome assemblies> --input_reads <input metagenomic reads> --out_dir <output directory> [options]
 
-Example 1: ViWrap run --input_metageome /path/to/Lake_01_assemblies.fasta \\
+Example 1: ViWrap run --input_metagenome /path/to/Lake_01_assemblies.fasta \\
                       --input_reads /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq \\
                       --out_dir ./ViWrap_Lake_01_outdir \\
                       --identify_method vb-vs \\
                       --conda_env_dir /path/to/ViWrap_conda_environments
                     
-Example 2: ViWrap run --input_metageome /path/to/Lake_01_assemblies.fasta \\
+Example 2: ViWrap run --input_metagenome /path/to/Lake_01_assemblies.fasta \\
                       --input_reads /path/to/Lake_01_T1_1.fastq,/path/to/Lake_01_T1_2.fastq,/path/to/Lake_01_T2_1.fastq,/path/to/Lake_01_T2_2.fastq \\
                       --out_dir ./ViWrap_Lake_01_outdir \\
                       --db_dir /path/to/ViWrap_db \\
@@ -79,12 +79,12 @@ Example 2: ViWrap run --input_metageome /path/to/Lake_01_assemblies.fasta \\
         
 Usage: ViWrap run_wo_reads --input_metagenome <input metagenome assemblies> --out_dir <output directory> [options]
 
-Example 1: ViWrap run_wo_reads --input_metageome /path/to/Lake_01_assemblies.fasta \\
+Example 1: ViWrap run_wo_reads --input_metagenome /path/to/Lake_01_assemblies.fasta \\
                                --out_dir ./ViWrap_Lake_01_outdir \\
                                --identify_method vb-vs \\
                                --conda_env_dir /path/to/ViWrap_conda_environments
                     
-Example 2: ViWrap run_wo_reads --input_metageome /path/to/Lake_01_assemblies.fasta \\
+Example 2: ViWrap run_wo_reads --input_metagenome /path/to/Lake_01_assemblies.fasta \\
                                --out_dir ./ViWrap_Lake_01_outdir \\
                                --db_dir /path/to/ViWrap_db \\
                                --identify_method vb-vs \\
