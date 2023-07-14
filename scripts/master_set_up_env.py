@@ -37,14 +37,14 @@ def main(args):
     logger.info(f"{time_current} | Looks like the input parameter is correct")
              
     # Step 2 Install conda env 
-    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python=3.7 vibrant=1.2.1 scikit-learn=0.21.3 biopython -y >/dev/null 2>&1")
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python=3.7 vibrant=1.2.1 scikit-learn=0.21.3 biopython=1.79 -y >/dev/null 2>&1")
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT/bin')):
         logger.info(f"{time_current} | ViWrap-VIBRANT conda env has been installed")  
     else:
         logger.info(f"{time_current} | ViWrap-VIBRANT conda env path is not present!")
     
-    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-vRhyme')} python=3.8 networkx pandas=1.0.0 numpy=1.20 numba scikit-learn=0.23.0 pysam samtools mash mummer mmseqs2 prodigal bowtie2 bwa vrhyme=1.1.0 -y >/dev/null 2>&1")
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-vRhyme')} python=3.8 networkx=3.1 pandas=1.0.0 numpy=1.20.3 numba=0.56.4 scikit-learn=0.23.0 pysam=0.21.0 samtools=1.17 mash=2.3 mummer=3.23 mmseqs2=14.7e284 prodigal=2.6.3 bowtie2=2.5.1 bwa=0.7.17 vrhyme=1.1.0 -y >/dev/null 2>&1")
     os.system(f"wget https://github.com/AnantharamanLab/vRhyme/raw/master/vRhyme/models/vRhyme_machine_model_ET.sav.gz -q")
     os.system(f"mv vRhyme_machine_model_ET.sav.gz {os.path.join(args['conda_env_dir'], 'ViWrap-vRhyme/lib/python3.8/site-packages/vRhyme/models')}")
     os.system(f"gzip -d {os.path.join(args['conda_env_dir'], 'ViWrap-vRhyme/lib/python3.8/site-packages/vRhyme/models/vRhyme_machine_model_ET.sav.gz')}")
@@ -54,8 +54,9 @@ def main(args):
     else:
         logger.info(f"{time_current} | ViWrap-vRhyme conda env path is not present!")
         
-    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-vContact2')} python=3.7 vcontact2=0.11.0 pytables biopython networkx numpy=1.19.0 pandas=0.25.3 scipy=1.6.1 scikit-learn=0.24.1 psutil pyparsing hdf5 clusterone mcl blast diamond=2.0.15 -y >/dev/null 2>&1")
-    os.system("wget http://www.paccanarolab.org/static_content/clusterone/cluster_one-1.0.jar -q")
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-vContact2')} python=3.7 vcontact2=0.11.0 pytables=3.7.0 biopython=1.79 networkx=2.5.1 numpy=1.19.0 pandas=0.25.3 scipy=1.6.1 scikit-learn=0.24.1 psutil=5.9.3 pyparsing=3.0.9 hdf5=1.12.1 clusterone=1.0 mcl=14.137 blast=2.13.0 diamond=2.0.15 -y >/dev/null 2>&1")
+    os.system("wget https://paccanarolab.org/static_content/clusterone/cluster_one-1.0.jar -q")
+    
     os.system(f"mv cluster_one-1.0.jar {os.path.join(args['conda_env_dir'], 'ViWrap-vContact2/bin')}")    
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-vContact2/bin')):
@@ -63,21 +64,21 @@ def main(args):
     else:
         logger.info(f"{time_current} | ViWrap-vContact2 conda env path is not present!")    
     
-    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python=3.8 checkv=1.0.1 diamond=2.0.15 hmmer=3.3.2 prodigal -y >/dev/null 2>&1")
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python=3.8 checkv=1.0.1 diamond=2.0.15 hmmer=3.3.2 prodigal=2.6.3 -y >/dev/null 2>&1")
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-CheckV/bin')):
         logger.info(f"{time_current} | ViWrap-CheckV conda env has been installed")
     else:
         logger.info(f"{time_current} | ViWrap-CheckV conda env path is not present!")         
     
-    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-dRep')} python=3 drep=3.4.0 mash mummer -y >/dev/null 2>&1")
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-dRep')} python=3.11.0 drep=3.4.0 mash=2.3 mummer=3.23 -y >/dev/null 2>&1")
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-dRep/bin')):
         logger.info(f"{time_current} | ViWrap-dRep conda env has been installed")
     else:
         logger.info(f"{time_current} | ViWrap-dRep conda env path is not present!")     
        
-    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-Tax')} python=3 diamond=2.0.15 hmmer=3.3.2 -y >/dev/null 2>&1") 
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-Tax')} python=3.11.0 diamond=2.0.15 hmmer=3.3.2 -y >/dev/null 2>&1") 
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-Tax/bin')):
         logger.info(f"{time_current} | ViWrap-Tax conda env has been installed")
@@ -105,7 +106,7 @@ def main(args):
     else:
         logger.info(f"{time_current} | ViWrap-vs2 conda env path is not present!")          
     
-    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-Mapping')} python=3.8 pysam bowtie2=2.4.5 coverm pandas pyfastx minimap2=2.24 consent -y >/dev/null 2>&1")   
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-Mapping')} python=3.8 pysam=0.20.0 bowtie2=2.4.5 coverm=0.6.1 pandas=1.5.3 pyfastx=0.8.4 minimap2=2.24 consent=2.2.2 -y >/dev/null 2>&1")   
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-Mapping/bin')):
         logger.info(f"{time_current} | ViWrap-Mapping conda env has been installed")    
