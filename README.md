@@ -326,7 +326,7 @@ ______
              --conda_env_dir /path/to/ViWrap_conda_environments \
              --threads 30 \
              --virome \
-             --input_length_limit 2000 \
+             --input_length_limit 5000 \
              --custom_MAGs_dir /path/to/custom_MAGs_dir 
              --iPHoP_db_custom /path/to/iPHoP_db_custom
   ```

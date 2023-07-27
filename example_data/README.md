@@ -9,6 +9,6 @@ ViWrap run  --input_metagenome test_metaG.fasta \
             --identify_method vb-vs \
             --conda_env_dir /slowdata/yml_environments \ # Change according to your case
             --threads 10 \
-            --input_length_limit 2000
+            --input_length_limit 5000
 ```
 
