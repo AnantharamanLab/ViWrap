@@ -201,6 +201,8 @@ The following 11 conda environments will be set up, the **estimated running time
 2.1G	./ViWrap-DVF
 ```
 
+**Note:**  We have fixed the versions of Python modules to prevent potential errors caused by version upgrades. If you encounter any issues with these conda environments, please verify the module versions set in "scripts/master_set_up_env.py". 
+
 #### Set up ViWrap database
 
 ```shell
