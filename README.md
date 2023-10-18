@@ -20,11 +20,7 @@ ViWrap v1.2.1
 <img src="https://github.com/AnantharamanLab/ViWrap/blob/main/images/ViWrap-Flowchart.jpg">
 
 ## Citation
-If you find ViWrap useful please consider citing our 
-
-[manuscript]: https://onlinelibrary.wiley.com/doi/full/10.1002/imt2.118
-
- on iMeta:  
+If you find ViWrap useful please consider citing our [manuscript](https://onlinelibrary.wiley.com/doi/full/10.1002/imt2.118) on iMeta: 
 
 ```tex
 Zhou, Zhichao, Martin, Cody, Kosmopoulos, James C., and Anantharaman, Karthik. 2023. “ ViWrap: A Modular Pipeline to Identify, Bin, Classify, and Predict Viral–Host Relationships for Viruses from Metagenomes.” iMeta 2, e118. https://doi.org/10.1002/imt2.118
