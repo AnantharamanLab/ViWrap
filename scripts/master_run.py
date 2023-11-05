@@ -126,7 +126,7 @@ def main(args):
         elif os.path.exists(args['iPHoP_db_custom_pre']) and not os.path.isabs(args['iPHoP_db_custom_pre']:
             sys.exit(f"The input 'iPHoP_db_custom_pre' directory {args['iPHoP_db_custom_pre']} is not an absolute address, please change it to an absolute address")
         elif args['custom_MAGs_dir'] != 'none' or args['iPHoP_db_custom'] != 'none':
-            sys.exit(f"If you use --iPHoP_db_custom_pre, you should not need to use --custom_MAGs_dir or --iPHoP_db_custom. Simply assign the custom iPHoP db that has been made from the previous run")
+            sys.exit(f"If you use --iPHoP_db_custom_pre, you should not use --custom_MAGs_dir or --iPHoP_db_custom. Simply assign the custom iPHoP db that has been made from the previous run")
            
     if not os.path.exists(args['conda_env_dir']):
         sys.exit(f"Could not find conda env dirs within {args['conda_env_dir']}") 
