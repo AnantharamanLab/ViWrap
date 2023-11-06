@@ -43,19 +43,19 @@ ______
 
 * Provide "AMG_results" in "ViWrap_summary_outdir" to include AMG statistics, AMG protein details, and AMG protein sequences.
 * Check and update the vContact2 conda environment.
-* Correct function "get_virus_genome_annotation_result" in "module.py" ("==" changed to "in" in outside elif)
-* Correct thread number mistake in "run_CheckV.py" script
-* Add long reads mapping function (for nanopore or pacbio reads)
-* Solve VirSorter 2 conda environment and database issues (set numpy to v1.20)
-* Update bam filtering steps
-* Update GTDB-Tk to v2.1.1 and db to release 207 v2
-* Change the output place of "iPHoP_db_custom"
-* Update the "master_downloader.py" to add checkV DB setting up command line
+* Correct function "get_virus_genome_annotation_result" in "module.py" ("==" changed to "in" in outside elif).
+* Correct thread number mistake in "run_CheckV.py" script.
+* Add long reads mapping function (for nanopore or pacbio reads).
+* Solve VirSorter 2 conda environment and database issues (set numpy to v1.20).
+* Update bam filtering steps.
+* Update GTDB-Tk to v2.1.1 and db to release 207 v2.
+* Change the output place of "iPHoP_db_custom".
+* Update the "master_downloader.py" to add checkV DB setting up command line.
 * Update the "module.py" to change long headers into short headers in the output virus faa files (within the folders of "02_vRhyme_outdir/vRhyme_best_bins_fasta_modified" and "08_ViWrap_summary_outdir/Virus_genomes_files"). And correct the ffn files error.
-* Update "VOG_marker_table.txt" to remove "Caudovirales" from the tax column
-* Update the IMG/VR v3 to v4
-* Update the KEGG metabolism calculation issue (denominator sometimes could be "0") in the function "generate_result_visualization_inputs" within the "module.py" script
-* Update the vs virus identifying method - delete the 2nd vs and CheckV steps and add a pre-check step for input scaffold length limit when using vs method
+* Update "VOG_marker_table.txt" to remove "Caudovirales" from the tax column.
+* Update the IMG/VR v3 to v4.
+* Update the KEGG metabolism calculation issue (denominator sometimes could be "0") in the function "generate_result_visualization_inputs" within the "module.py" script.
+* Update the vs virus identifying method - delete the 2nd vs and CheckV steps and add a pre-check step for input scaffold length limit when using vs method; update Section Settings at the same time.
 * Update the pre-check contents for the requirements for the usage of options "custom_MAGs_dir" and "iPHoP_db_custom", as well as "iPHoP_db_custom_pre"; update the input restrictions when dealing with host prediction by iPHoP by adding custom MAGs to host db (two circumstances: ***1*** using custom MAGs, ***2*** using custom MAGs and using iPHoP db custom provided by the previous run).
 
 ## Updates for v1.2.0 (Oct 2022): <a name="updates"></a>
@@ -69,7 +69,7 @@ ______
 * Provide flowchart.
 * Provide "scf2lytic_or_lyso.summary.txt" for the VIBRANT result, "vRhyme_best_bin_lytic_and_lysogenic_info.txt" and 
   "vRhyme_best_bin_scaffold_complete_info.txt" for vRhyme generated vRhyme_best_bins. Then, based on the formulas of "Lytic and lysogenic viruses/scaffolds" (See "Notes - Lytic and lysogenic viruses can bin together" in "Output Explanations"), make modified vRhyme_best_bins (some bins are split into scaffolds). The corresponding downstream analysis has also been changed accordingly.
-* Add visualization output directory
+* Add visualization output directory.
 
 
 
@@ -269,11 +269,7 @@ It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the
 
   | Command                                          | option                    | explanation                                                  | setting                           |
   | ------------------------------------------------ | ------------------------- | ------------------------------------------------------------ | --------------------------------- |
-  | run_virsorter2_1st                               | --keep-original-seq       | keep the original sequences instead of trimmed               | N/A                               |
-  |                                                  | --min-score               | minimal score to be identified as viral                      | 0.5                               |
-  | run_virsorter2_2nd                               | --seqname-suffix-off      | turn off adding suffix to sequence names                     | N/A                               |
-  |                                                  | --viral-gene-enrich-off   | turn off the requirement of more viral than cellular genes for calling full sequence viral | N/A                               |
-  |                                                  | --prep-for-dramv          | turn on generating viral seqfile and viral-affi-contigs.tab for DRAMv | N/A                               |
+  | run_virsorter2                                   | --keep-original-seq       | keep the original sequences instead of trimmed               | N/A                               |
   |                                                  | --min-score               | minimal score to be identified as viral                      | 0.5                               |
   | filter_sorted_bam (coverm)                       | --min-read-aligned-length | exclude reads with smaller numbers of aligned bases          | 50 (short reads) 500 (long reads) |
   | run_vrhyme                                       | --red                     | maximum number of redundant proteins per bin                 | 2                                 |
@@ -297,7 +293,7 @@ It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the
   |                                                  | -k                        | maximum number of target sequences to report alignments for  | 10000                             |
   | run_hmmsearch_to_marker_VOG_HMM_db (hmmsearch)   | -E                        | report sequences <= this E-value threshold in output         | 0.01                              |
   | run_iphop (iphop predict)                        | --no_qc                   | bypass the automated QC that filters out input sequences with > 10% Ns or with characters other than ATCGN | N/A                               |
-
+  
   
 
 ______
