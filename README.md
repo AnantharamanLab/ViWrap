@@ -91,7 +91,11 @@ ______
 
 ViWrap is a wrapper to identify, bin, classify, and predict host-viral relationships for viruses from metagenomes. It leverages the advantages of currently available virus analyzing tools and provides a quick, intuitive, one-step pipeline to get viral sequences and corresponding properties.
 
-*Note*: ViWrap is built for studying viruses identified and reconstructed from metagenomes. It is suggested to be only used for viruses with hosts as bacteria, archaea, and microeukaryotes.
+***Note*:** 
+
+- ViWrap is built for studying viruses identified and reconstructed from metagenomes. It is suggested to be only used for viruses with hosts as bacteria, archaea, and microeukaryotes.
+
+- ViWrap was reported to generate many false positive vMAGs for identifying potential giant viruses (or nucleocytoviruses). Many identified giant viruses do not contain any typical GV markers.
 
 ViWrap is an integrated wrapper/pipeline, the main contributors of each virus identifying, binning, classifying, and viral host predicting software within it should be acknowledged (Citations and links are provided):
 
