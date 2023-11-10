@@ -64,7 +64,12 @@ def main(args):
     print("### Welcome to ViWrap ###\n") 
 
 	## Set up the logger
-    os.mkdir(args['out_dir'])
+    # Check if the output directory already exists
+    if os.path.exists(args['out_dir']):
+        sys.exit(f"Error: The output directory '{args['out_dir']}' already exists. Please specify a different directory or remove the existing one.")
+    else:
+        # Create the output directory since it does not exist
+        os.mkdir(args['out_dir'])
     log_file = os.path.join(args['out_dir'],'ViWrap_run.log')
     logging.basicConfig(
         level=logging.INFO,
