@@ -106,7 +106,7 @@ def main(args):
     # Give requirements for the usage of options "custom_MAGs_dir" and "iPHoP_db_custom"
     if args['custom_MAGs_dir'] != 'none' and not os.path.exists(args['custom_MAGs_dir']):
         sys.exit(f"Could not find custom MAGs directory {args['custom_MAGs_dir']}. Maybe the directory is not correct")
-    elif args['custom_MAGs_dir'] != 'none' and not os.path.isabs(args['custom_MAGs_dir'])
+    elif args['custom_MAGs_dir'] != 'none' and not os.path.isabs(args['custom_MAGs_dir']):
         sys.exit(f"The input custom MAGs directory {args['custom_MAGs_dir']} is not an absolute address, please change it to an absolute address")
     elif args['custom_MAGs_dir'] != 'none' and os.path.exists(args['custom_MAGs_dir']):   
         for file in glob(f"os.path.join(args['custom_MAGs_dir'],'*.fasta')"):
