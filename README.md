@@ -58,6 +58,7 @@ ______
 * Update the vs virus identifying method - delete the 2nd vs and CheckV steps and add a pre-check step for input scaffold length limit when using vs method; update Section Settings at the same time.
 * Update the pre-check contents for the requirements for the usage of options "custom_MAGs_dir" and "iPHoP_db_custom", as well as "iPHoP_db_custom_pre"; update the input restrictions when dealing with host prediction by iPHoP by adding custom MAGs to host db (two circumstances: ***1*** using custom MAGs, ***2*** using custom MAGs and using iPHoP db custom provided by the previous run).
 * Correct the code errors during the pre-check and input restriction update in the above step; Correct my mistake in generating "IMGVR_high-quality_phage_vOTU_representatives.tar.gz" file (I have mistakenly written all the tax into Class Megaviricetes (a class of giant virus)!!! huge mistake! I missed a variable replacement though)
+* Update master_downloader.py script ("wget => wget -c"); Add custom MAG dir to example_data directory for TEST 2.  Updated on Nov 26, 2023
 
 ## Updates for v1.2.0 (Oct 2022): <a name="updates"></a>
 
