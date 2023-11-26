@@ -1,4 +1,4 @@
-This folder contains pair-ended reads, metagenomic assembly, and custom MAGs for testing:
+ This folder contains paired-end reads, metagenomic assemblies, and custom metagenome-assembled genomes (MAGs) for testing. All the datasets are subsets derived from the original ones.
 
 ```bash
 # TEST 1: Only use reads and metagenomic assembly
