@@ -134,7 +134,7 @@ def main(args):
     
     
     # Step 5 Make iPHoP db
-    os.system(f"wget https://portal.nersc.gov/cfs/m342/iphop/db/iPHoP.latest.tar.gz -O {os.path.join(args['db_dir'], 'iPHoP.latest.tar.gz')}") 
+    os.system(f"wget -c https://portal.nersc.gov/cfs/m342/iphop/db/iPHoP.latest.tar.gz -O {os.path.join(args['db_dir'], 'iPHoP.latest.tar.gz')}") 
     os.mkdir(os.path.join(args['db_dir'], 'iPHoP_db'))
     os.system(f"tar xzf {os.path.join(args['db_dir'], 'iPHoP.latest.tar.gz')} --directory {os.path.join(args['db_dir'], 'iPHoP_db')}")
     os.system(f"mv {os.path.join(args['db_dir'], 'iPHoP_db/*_pub')} {args['iPHoP_db']}")
@@ -145,7 +145,7 @@ def main(args):
     
 
     # Step 6 Make GTDB-Tk db (v2.1.1) and release 207 v2
-    os.system(f"wget https://data.gtdb.ecogenomic.org/releases/release207/207.0/auxillary_files/gtdbtk_r207_v2_data.tar.gz -O {os.path.join(args['db_dir'], 'gtdbtk_r207_v2_data.tar.gz')} --no-check-certificate")
+    os.system(f"wget -c https://data.gtdb.ecogenomic.org/releases/release207/207.0/auxillary_files/gtdbtk_r207_v2_data.tar.gz -O {os.path.join(args['db_dir'], 'gtdbtk_r207_v2_data.tar.gz')} --no-check-certificate")
     os.mkdir(args['GTDB_db'])     
     os.system(f"tar xzf {os.path.join(args['db_dir'], 'gtdbtk_r207_v2_data.tar.gz')} --directory {args['GTDB_db']}")
     os.system(f"mv {os.path.join(args['GTDB_db'], 'release207_v2')} {os.path.join(args['GTDB_db'], 'GTDB_db')}")  
