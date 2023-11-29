@@ -248,7 +248,7 @@ The following 11 conda environments will be set up, the **estimated running time
 ViWrap download --db_dir /path/to/ViWrap_db  --conda_env_dir /path/to/ViWrap_conda_environments
 ```
 
-`/path/to/ViWrap_db` is the place you store the ViWrap database. Please make sure there is enough space to store the database (~280G at least). It will **take** **~3-4 hours** to set up well depending on your current internet speed. This is kind of tedious, however, you will only need to do this one time.
+`/path/to/ViWrap_db` is the place you store the ViWrap database. Please make sure there is enough space to store the database (~430G at least). It will **take** **~4 hours** to set up well depending on your current internet speed. This is kind of tedious, however, you will only need to do this one time.
 
 It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the directory of "ViWrap_db"): 
 
@@ -256,10 +256,10 @@ It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the
 11G	./VIBRANT_db
 6.4G	./CheckV_db
 114M	./DVF_db
-581M	./Tax_classification_db
-199G	./iPHoP_db
+829M	./Tax_classification_db
+318G	./iPHoP_db
 11G	./VirSorter2_db
-49G	./GTDB_db
+82G	./GTDB_db
 ```
 
 ***Notes:*** 
@@ -287,19 +287,19 @@ It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the
   | ---------- | ------- | ------------------------------- | ----------- |
   | VIBRANT    | v1.2.1  | dRep                            | v3.4.0      |
   | vRhyme     | v1.1.0  | DIAMOND (within ViWrap-Tax)     | v2.0.15     |
-  | vContact2  | v0.11.0 | iPHoP                           | v1.2.0      |
-  | CheckV     | v1.0.1  | GTDB-Tk                         | v2.1.1      |
+  | vContact2  | v0.11.0 | iPHoP                           | v1.3.3      |
+  | CheckV     | v1.0.1  | GTDB-Tk                         | v2.3.2      |
   | VirSorter2 | v2.2.3  | Bowtie2 (within ViWrap-Mapping) | v2.4.5      |
   | Minimap2   | v2.24   | DeepVirFinder                   | v2020.11.21 |
 
 - **db:**
 
-  | db                          | Versio | db                          | Version        |
-  | --------------------------- | ------ | --------------------------- | -------------- |
-  | NCBI RefSeq viral sequences | latest | ICTV Master Species List    | 2021 v3        |
-  | VOG HMM                     | VOG 97 | IMGVR high-quality vOTU rep | v4.1           |
-  | iPHoP db                    | latest | GTDB-Tk db                  | release 207 v2 |
-  | VirSorter2 db               | latest | DVF db (models)             | v1.0           |
+  | db                          | Versio            | db                          | Version       |
+  | --------------------------- | ----------------- | --------------------------- | ------------- |
+  | NCBI RefSeq viral sequences | latest            | ICTV Master Species List    | 2022 MSL38.v3 |
+  | VOG HMM                     | VOG 97            | IMGVR high-quality vOTU rep | v4.1          |
+  | iPHoP db                    | iPHoP_db_Aug23_rw | GTDB-Tk db                  | release 214   |
+  | VirSorter2 db               | latest            | DVF db (models)             | v1.0          |
 
 - **Running setting**
 
