@@ -42,23 +42,55 @@ ______
 ## Updates for v1.2.1 (Jan 2023): <a name="updates"></a>
 
 * Provide "AMG_results" in "ViWrap_summary_outdir" to include AMG statistics, AMG protein details, and AMG protein sequences.
+
 * Check and update the vContact2 conda environment.
+
 * Correct function "get_virus_genome_annotation_result" in "module.py" ("==" changed to "in" in outside elif).
+
 * Correct thread number mistake in "run_CheckV.py" script.
+
 * Add long reads mapping function (for nanopore or pacbio reads).
+
 * Solve VirSorter 2 conda environment and database issues (set numpy to v1.20).
+
 * Update bam filtering steps.
+
 * Update GTDB-Tk to v2.1.1 and db to release 207 v2.
+
 * Change the output place of "iPHoP_db_custom".
+
 * Update the "master_downloader.py" to add checkV DB setting up command line.
+
 * Update the "module.py" to change long headers into short headers in the output virus faa files (within the folders of "02_vRhyme_outdir/vRhyme_best_bins_fasta_modified" and "08_ViWrap_summary_outdir/Virus_genomes_files"). And correct the ffn files error.
+
 * Update "VOG_marker_table.txt" to remove "Caudovirales" from the tax column.
+
 * Update the IMG/VR v3 to v4.
+
 * Update the KEGG metabolism calculation issue (denominator sometimes could be "0") in the function "generate_result_visualization_inputs" within the "module.py" script.
+
 * Update the vs virus identifying method - delete the 2nd vs and CheckV steps and add a pre-check step for input scaffold length limit when using vs method; update Section Settings at the same time.
+
 * Update the pre-check contents for the requirements for the usage of options "custom_MAGs_dir" and "iPHoP_db_custom", as well as "iPHoP_db_custom_pre"; update the input restrictions when dealing with host prediction by iPHoP by adding custom MAGs to host db (two circumstances: ***1*** using custom MAGs, ***2*** using custom MAGs and using iPHoP db custom provided by the previous run).
+
 * Correct the code errors during the pre-check and input restriction update in the above step; correct my mistake in generating "IMGVR_high-quality_phage_vOTU_representatives.tar.gz" file (I have mistakenly written all the tax into Class Megaviricetes (a class of giant virus)!!! huge mistake! I missed a variable replacement though).
+
 * Update master_downloader.py script ("wget => wget -c"); add custom MAG dir to example_data directory for TEST 2; update master_run_wo_reads.py with new vs virus identifying method, pre-check contents, and input restrictions mentioned above. Updated on Nov 26, 2023.
+
+* The following file, software, and corresponding database have been updated:
+
+  (1) The version of "ICTV_Master_Species_List.txt" ICTV_Master_Species_List_2021_v3 => ICTV_Master_Species_List_2022_MSL38_v3
+
+  (2) iPHoP v1.2.0 => iPHoP v1.3.3
+
+  ​     iPHoP_db_Sept21 => iPHoP_db_Aug23_rw
+
+  (3) GTDB-Tk v2.1.1 => GTDB-Tk v2.3.2
+       GTDB-Tk reference data release 207 v2 => GTDB-Tk reference data release 214
+
+  I found the mistakes in generating "IMGVR_high-quality_phage_vOTU_representatives.tar.gz" (within the database directory). I re-generated the three "IMGVR_high-quality_phage_vOTU_representatives.tar.a*" files and updated accordingly.
+
+  Updated on Nov 28, 2023.
 
 ## Updates for v1.2.0 (Oct 2022): <a name="updates"></a>
 
@@ -156,7 +188,7 @@ ______
 
 #### **Set up the conda environment for ViWrap**
 
-Since ViWrap has many dependencies to be installed, it would be much easier to set up a conda environment instead of installing all dependencies in the global environment (make sure you have upfront conda installed on your server, i.e., [miniconda3](https://docs.conda.io/en/latest/miniconda.html) or anaconda3; we only suggest to run in version 3.0+ conda). There are 12 conda envs associated with ViWrap, so it may be useful to keep these associated together in a directory separate from your normal conda installation, which will be referred to as `/path/to/ViWrap_conda_environments`. **Note: ensure that wherever you install the ViWrap conda envs has at least 5-6 Gb of storage available.** ViWrap was tested extensively with an environment installed separately from the normal conda installation.
+Since ViWrap has many dependencies to be installed, it would be much easier to set up a conda environment instead of installing all dependencies in the global environment (make sure you have upfront conda installed on your server, i.e., [miniconda3](https://docs.conda.io/en/latest/miniconda.html) or anaconda3; we only suggest to run in version 3.0+ conda). There are 12 conda envs associated with ViWrap, so it may be useful to keep these associated together in a directory separate from your normal conda installation, which will be referred to as `/path/to/ViWrap_conda_environments`. **Note: ensure that wherever you install the ViWrap conda envs has at least 17 Gb of storage available.** ViWrap was tested extensively with an environment installed separately from the normal conda installation.
 
 Choose one:
 1. Install in separate directory:
@@ -192,20 +224,20 @@ ViWrap will use the "-p" or "--prefix" option to specify where to write the envi
 For example,`conda create --prefix /tmp/test-env python=3.8`
 will create the environment named `/tmp/test-env` which resides in `/tmp/` instead of the default `.conda`.
 
-The following 11 conda environments will be set up, the **estimated running time will be 20-30 minutes**, depending on your current internet speed:
+The following 11 conda environments will be set up, the **estimated running time will be ~10 minutes**, depending on your current internet speed:
 
 ```
-121M	./ViWrap-VIBRANT
-265M	./ViWrap-vContact2
-100M	./ViWrap-dRep
-75M	./ViWrap-Tax
-205M	./ViWrap-iPHoP
-1.9G	./ViWrap-vs2
-272M	./ViWrap-vRhyme
-76M	./ViWrap-CheckV
-83M	./ViWrap-GTDBTk
-155M	./ViWrap-Mapping
-2.1G	./ViWrap-DVF
+625M	./ViWrap-Mapping
+772M	./ViWrap-vRhyme
+4.0G	./ViWrap-iPHoP
+1.7G	./ViWrap-DVF
+271M	./ViWrap-vs2
+390M	./ViWrap-GTDBTk
+540M	./ViWrap-dRep
+102M	./ViWrap-CheckV
+1.6G	./ViWrap-vContact2
+88M	./ViWrap-Tax
+153M	./ViWrap-VIBRANT
 ```
 
 **Note:**  We have fixed the versions of Python modules to prevent potential errors caused by version upgrades. If you encounter any issues with these conda environments, please verify the module versions set in "scripts/master_set_up_env.py". 

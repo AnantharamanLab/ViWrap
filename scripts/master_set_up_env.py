@@ -45,9 +45,9 @@ def main(args):
         logger.info(f"{time_current} | ViWrap-VIBRANT conda env path is not present!")
     
     os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-vRhyme')} python=3.8 networkx=3.1 pandas=1.0.0 numpy=1.20.3 numba=0.56.4 scikit-learn=0.23.0 pysam=0.21.0 samtools=1.17 mash=2.3 mummer=3.23 mmseqs2=14.7e284 prodigal=2.6.3 bowtie2=2.5.1 bwa=0.7.17 vrhyme=1.1.0 -y >/dev/null 2>&1")
-    os.system(f"wget https://github.com/AnantharamanLab/vRhyme/raw/master/vRhyme/models/vRhyme_machine_model_ET.sav.gz -q")
-    os.system(f"mv vRhyme_machine_model_ET.sav.gz {os.path.join(args['conda_env_dir'], 'ViWrap-vRhyme/lib/python3.8/site-packages/vRhyme/models')}")
-    os.system(f"gzip -d {os.path.join(args['conda_env_dir'], 'ViWrap-vRhyme/lib/python3.8/site-packages/vRhyme/models/vRhyme_machine_model_ET.sav.gz')}")
+    #os.system(f"wget https://github.com/AnantharamanLab/vRhyme/raw/master/vRhyme/models/vRhyme_machine_model_ET.sav.gz -q")
+    #os.system(f"mv vRhyme_machine_model_ET.sav.gz {os.path.join(args['conda_env_dir'], 'ViWrap-vRhyme/lib/python3.8/site-packages/vRhyme/models')}")
+    #os.system(f"gzip -d {os.path.join(args['conda_env_dir'], 'ViWrap-vRhyme/lib/python3.8/site-packages/vRhyme/models/vRhyme_machine_model_ET.sav.gz')}")
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-vRhyme/bin')):
         logger.info(f"{time_current} | ViWrap-vRhyme conda env has been installed")
@@ -85,14 +85,14 @@ def main(args):
     else:
         logger.info(f"{time_current} | ViWrap-Tax conda env path is not present!") 
     
-    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP')} python=3.8 iphop=1.2.0 -y >/dev/null 2>&1") 
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP')} python=3.8 iphop=1.3.3 -y >/dev/null 2>&1") 
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP/bin')):
         logger.info(f"{time_current} | ViWrap-iPHoP conda env has been installed")
     else:
         logger.info(f"{time_current} | ViWrap-iPHoP conda env path is not present!")     
     
-    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-GTDBTk')} gtdbtk=2.1.1 numpy=1.20.0 -y >/dev/null 2>&1")
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-GTDBTk')} gtdbtk=2.3.2 numpy=1.20.0 -y >/dev/null 2>&1")
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-GTDBTk/bin')):
         logger.info(f"{time_current} | ViWrap-GTDBTk conda env has been installed")
