@@ -85,7 +85,7 @@ def main(args):
     else:
         logger.info(f"{time_current} | ViWrap-Tax conda env path is not present!") 
     
-    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP')} python=3.8 iphop=1.3.3 perl-data-dumper -y >/dev/null 2>&1") 
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP')} python=3.8 iphop=1.3.3 perl-data-dumper perl=5.22.0 -y >/dev/null 2>&1") 
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP/bin')):
         logger.info(f"{time_current} | ViWrap-iPHoP conda env has been installed")
