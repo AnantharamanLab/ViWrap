@@ -91,6 +91,8 @@ ______
   I found the mistakes in generating "IMGVR_high-quality_phage_vOTU_representatives.tar.gz" (within the database directory). I re-generated the three "IMGVR_high-quality_phage_vOTU_representatives.tar.a*" files and updated accordingly.
 
   Updated on Nov 28, 2023.
+  
+* Solve the iPHoP perl and rafah issue by fixing the perl version to 5.22.0 when setting up the ViWrap-iPHoP conda environment. Updated on Nov 30, 2023.
 
 ## Updates for v1.2.0 (Oct 2022): <a name="updates"></a>
 
