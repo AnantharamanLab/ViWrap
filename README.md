@@ -94,6 +94,8 @@ ______
   
 * Solve the iPHoP perl and rafah issue by fixing the perl version to 5.22.0 when setting up the ViWrap-iPHoP conda environment. Updated on Nov 30, 2023.
 
+* Add "--no-check-certificate" to wget command in "master_set_up_env.py" and "master_downloader.py" for some special cases when downloading database; Correct the gtdb db release 214 text in "master_downloader.py". Updated on Dec 6, 2023.
+
 ## Updates for v1.2.0 (Oct 2022): <a name="updates"></a>
 
 * Modify "parse_dRep" function (module.py) so that it can also process the result even though dRep running is not successful.

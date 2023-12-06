@@ -55,7 +55,7 @@ def main(args):
         logger.info(f"{time_current} | ViWrap-vRhyme conda env path is not present!")
         
     os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-vContact2')} python=3.7 vcontact2=0.11.0 pytables=3.7.0 biopython=1.79 networkx=2.5.1 numpy=1.19.0 pandas=0.25.3 scipy=1.6.1 scikit-learn=0.24.1 psutil=5.9.3 pyparsing=3.0.9 hdf5=1.12.1 clusterone=1.0 mcl=14.137 blast=2.13.0 diamond=2.0.15 -y >/dev/null 2>&1")
-    os.system("wget https://paccanarolab.org/static_content/clusterone/cluster_one-1.0.jar -q")
+    os.system("wget -c https://paccanarolab.org/static_content/clusterone/cluster_one-1.0.jar -q --no-check-certificate")
     
     os.system(f"mv cluster_one-1.0.jar {os.path.join(args['conda_env_dir'], 'ViWrap-vContact2/bin')}")    
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
