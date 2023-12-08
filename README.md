@@ -96,6 +96,8 @@ ______
 
 * Add "--no-check-certificate" to wget command in "master_set_up_env.py" and "master_downloader.py" for some special cases when downloading database; Correct the gtdb db release 214 text in "master_downloader.py". Updated on Dec 6, 2023.
 
+* Update VirSorter2 db download and configuration part in script "master_downloader.py". Updated on Dec 8, 2023
+
 ## Updates for v1.2.0 (Oct 2022): <a name="updates"></a>
 
 * Modify "parse_dRep" function (module.py) so that it can also process the result even though dRep running is not successful.
