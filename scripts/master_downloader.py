@@ -157,7 +157,11 @@ def main(args):
     
 
     # Step 7 Download VirSorter2 db
-    os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} virsorter setup -d {args['VirSorter2_db']} -j {args['threads']} >/dev/null 2>&1")
+    os.system(f"wget -c https://osf.io/v46sc/download -O {os.path.join(args['db_dir'], 'db.tgz')} --no-check-certificate")
+    os.system(f"tar -xzf {os.path.join(args['db_dir'], 'db.tgz')} -C {args['db_dir']}")
+    os.system(f"mv {os.path.join(args['db_dir'], 'db')} {args['VirSorter2_db']}")
+    os.system(f"rm {os.path.join(args['db_dir'], 'db.tgz')}")
+    os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} virsorter config --init-source --db-dir={args['VirSorter2_db']} >/dev/null 2>&1")
     
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | VirSorter2 db has been set up")     
