@@ -314,7 +314,7 @@ It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the
   | run_virsorter2                                   | --keep-original-seq       | keep the original sequences instead of trimmed               | N/A                               |
   |                                                  | --min-score               | minimal score to be identified as viral                      | 0.5                               |
   | filter_sorted_bam (coverm)                       | --min-read-aligned-length | exclude reads with smaller numbers of aligned bases          | 50 (short reads) 500 (long reads) |
-  | run_vrhyme                                       | --red                     | maximum number of redundant proteins per bin                 | 2                                 |
+  | run_vrhyme                                       | --red                     | maximum number of redundant proteins per bin                 | 5                                 |
   | run_vcontact2                                    | --rel-mode                | method to use to create the protein-protein similarity edge file | Diamond                           |
   |                                                  | --db                      | select a reference database to de novo cluster proteins against | None                              |
   |                                                  | --pcs-mode                | whether to use ClusterONE or MCL for Protein Cluster (PC) generation | MCL                               |
