@@ -19,7 +19,7 @@ def fetch_arguments(parser,root_dir,db_path_default):
     parser.add_argument('--skip_long_reads_correction', dest='skip_long_reads_correction', action='store_true', required=False, default=False, help=r"when using long reads that have been corrected by CONSENT, use this option to skip long reads correction")
     parser.add_argument('--out_dir','-o', dest='out_dir', required=False, default='./ViWrap_outdir', help=r'(required) output directory to deposit all results (default = ./ViWrap_outdir) output folder to deposit all results. ViWrap will exit if the folder already exists')
     parser.add_argument('--db_dir','-d', dest='db_dir', required=False, default=db_path_default, help=f'(required) database directory; default = {db_path_default}')
-    parser.add_argument('--identify_method', dest='identify_method', required=False, default='vb-vs',help=r'(required) the virus identifying method to choose: vb - VIBRANT; vs - VirSorter2 and CheckV; dvf - DeepVirFinder; vb-vs - Use VIBRANT and VirSorter2 to get the overlapped viruses (default); vb-vs-dvf - Use all these three methods and get the overlapped viruses')
+    parser.add_argument('--identify_method', dest='identify_method', required=False, default='vb-vs',help=r'(required) the virus identifying method to choose: vb - VIBRANT; vs - VirSorter2 and CheckV; dvf - DeepVirFinder; vb-vs - Use VIBRANT and VirSorter2 to get the overlapped viruses (default); vb-vs-dvf - Use all these three methods and get the overlapped viruses; genomad - Use geNomad')
     parser.add_argument('--conda_env_dir', dest='conda_env_dir', required=True, default='none', help=r'(required) the directory where you put your conda environment files. It is the parent directory that contains all the conda environment folders')
     parser.add_argument('--threads','-t', dest='threads', required=False, default=10, help=r'number of threads (default = 10)')
     parser.add_argument('--virome','-v', dest='virome', action='store_true', required=False, default=False, help=r"edit VIBRANT's sensitivity if the input dataset is a virome. It is suggested to use it if you know that the input assembly is virome or metagenome")
@@ -41,6 +41,7 @@ def set_defaults(args):
     args['VIBRANT_db'] = os.path.join(args['db_dir'],'VIBRANT_db')
     args['VirSorter2_db'] = os.path.join(args['db_dir'],'VirSorter2_db')
     args['DVF_db'] = os.path.join(args['db_dir'],'DVF_db')
+    args['geNomad_db'] = os.path.join(args['db_dir'],'genomad_db')
     
     ## Store outdirs 
     args['vibrant_outdir'] = os.path.join(args['out_dir'],f"00_VIBRANT_{Path(args['input_metagenome']).stem}")
@@ -48,6 +49,7 @@ def set_defaults(args):
     args['dvf_outdir'] = os.path.join(args['out_dir'],f"00_DeepVirFinder_{Path(args['input_metagenome']).stem}")
     args['vb_vs_dvf_outdir'] = os.path.join(args['out_dir'],f"00_VIBRANT_VirSorter_DeepVirFinder_{Path(args['input_metagenome']).stem}")
     args['vb_vs_outdir'] = os.path.join(args['out_dir'],f"00_VIBRANT_VirSorter_{Path(args['input_metagenome']).stem}")
+    args['genomad_outdir'] = os.path.join(args['out_dir'],f"00_geNomad_{Path(args['input_metagenome']).stem}")
     args['mapping_outdir'] = os.path.join(args['out_dir'],'01_Mapping_result_outdir')
     args['vrhyme_outdir'] = os.path.join(args['out_dir'],'02_vRhyme_outdir')
     args['vcontact2_outdir'] = os.path.join(args['out_dir'],'03_vConTACT2_outdir')
@@ -143,7 +145,7 @@ def main(args):
     logger.info(f"{time_current} | Looks like the input metagenome and reads, database, and custom MAGs dir (if option used) are now set up well, start up to run ViWrap pipeline")
          
 
-    # Step 2 Run VIBRANT or VirSorter2 or DVF
+    # Step 2 Run VIBRANT or VirSorter2 or DVF or geNomad
     if args['identify_method'] == 'vb':
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT to identify and annotate virus from input metagenome. In processing...")
@@ -202,6 +204,7 @@ def main(args):
         logger.info(f"{time_current} | Run VIBRANT to check \"keep2\" and \"manual_check\" groups and get the final VirSorter2 virus sequences. Finished")  
 
         os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_annotate_by_VIBRANT_db.py')} {args['VIBRANT_db']} {args['identify_method']} {args['virsorter_outdir']} {args['dvf_outdir']} {args['out_dir']} {args['threads']}")
+        scripts.module.parse_virsorter_lytic_and_lysogenic_info(args['virsorter_outdir'], Path(args['input_metagenome']).stem)
 
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Use KEGG, Pfam, and VOG HMMs to annotate viruses. Finished") 
@@ -360,8 +363,20 @@ def main(args):
         final_vb_virus_annotation_file = os.path.join(inner_vb_outdir, f"VIBRANT_results_{Path(args['input_metagenome']).stem}", f"VIBRANT_annotations_{Path(args['input_metagenome']).stem}.tsv")
         scripts.module.get_overlapped_viral_scaffolds(final_vb_virus_fasta_file, final_vs2_virus_fasta_file, '', final_vb_virus_annotation_file, overlap_outdir)
     
+    elif args['identify_method'] == 'genomad': 
+        time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
+        logger.info(f"{time_current} | Run geNomad to identify and annotate virus from input metagenome. In processing...")
+    
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-geNomad')} python {os.path.join(args['root_dir'],'scripts/run_geNomad.py')} {args['input_metagenome']} {args['out_dir']} {args['threads']} {args['db_dir']} >/dev/null 2>&1")
+        default_genomad_outdir = os.path.join(args['out_dir'], 'genomad_output')
+        os.system(f"mv {default_genomad_outdir} {args['genomad_outdir']}")
+        scripts.module.parse_genomad_lytic_and_lysogenic_info(args['genomad_outdir'], Path(args['input_metagenome']).stem)
+    
+        time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
+        logger.info(f"{time_current} | Run geNomad to identify and annotate viruses from input metagenome. Finished")              
+    
     else:
-        sys.exit(f"Please make sure your input for --identify_method option is one of these: \"vb-vs\", \"vb-vs-dvf\", \"vb\", \"vs\", and \"dvf\"; you can also omit this in the command line, the default is \"vb\"")
+        sys.exit(f"Please make sure your input for --identify_method option is one of these: \"vb-vs\", \"vb-vs-dvf\", \"vb\", \"vs\", \"dvf\", and \"genomad\"; you can also omit this in the command line, the default is \"vb-vs\"")
 
 
     # Step 3 Metagenomic mapping

@@ -777,6 +777,110 @@ def parse_vibrant_lytic_and_lysogenic_info(vibrant_outdir, metagenomic_scaffold_
         f.write(line)
     f.close()     
 
+def parse_virsorter_lytic_and_lysogenic_info(virsorter_outdir, metagenomic_scaffold_stem_name):
+    # Step 1 Get scf 2 lytic or lysogenic dict
+    virsorter_annotation = os.path.join(virsorter_outdir, 'final_vs2_virus.annotation.txt')
+    vs2_virus_file = os.path.join(virsorter_outdir, 'final_vs2_virus.fasta')
+    
+    scf2lytic_or_lyso = {} # scf => [lytic_or_lyso_or_integrated_prophage, integrase_presence_or_absence]
+    # lytic_or_lyso_or_integrated_prophage can contain: lytic_scaffold, integrated_prophage (parent scaffold), and lysogenic_scaffold
+    # integrase_presence_or_absence can contain: integrase_present and integrase_absent
+    vs2_virus_fasta_seq = store_seq(vs2_virus_file)
+    
+    scf2lytic_or_integrated_prophage = {} # scf => 'lytic_scaffold' or 'integrated_prophage (parent scaffold)'    
+    for header in vs2_virus_fasta_seq:
+        scf = header.replace('>', '', 1)
+        if '||full' in scf or '||lt2gene' in scf:
+            scf2lytic_or_integrated_prophage[scf] = 'lytic_scaffold'
+        elif re.search(r'\|\|\d+_partial', scf):
+            parent_scaffold = scf.rsplit('||', 1)[0]
+            scf2lytic_or_integrated_prophage[scf] = f"integrated_prophage ({parent_scaffold})"        
+                
+    scf2integrase_presence = {} # scf => integrase_presence_or_absence
+    integrase = ['VOG00041', 'VOG15133', 'VOG20969', 'VOG02658', 'VOG04024', 'VOG01778', 'VOG02371']
+    with open(virsorter_annotation, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            tmp = line.split('\t')
+            if tmp[0] != 'protein':
+                scf, VOG = tmp[1], tmp[13]
+                scf2integrase_presence[scf] = 'integrase_absent'
+                if VOG in integrase:
+                    scf2integrase_presence[scf] = 'integrase_present'    
+    
+    for scf in scf2integrase_presence:
+        lytic_or_lyso_or_integrated_prophage = ''
+                
+        if scf in scf2lytic_or_integrated_prophage and 'integrated_prophage' in scf2lytic_or_integrated_prophage[scf]:
+            lytic_or_lyso_or_integrated_prophage = scf2lytic_or_integrated_prophage[scf]
+        elif scf in scf2lytic_or_integrated_prophage and scf2lytic_or_integrated_prophage[scf] == 'lytic_scaffold':
+            if scf2integrase_presence[scf] == 'integrase_absent':
+                lytic_or_lyso_or_integrated_prophage = 'lytic_scaffold'
+            elif scf2integrase_presence[scf] == 'integrase_present':    
+                lytic_or_lyso_or_integrated_prophage = 'lysogenic_scaffold'
+               
+        integrase_presence_or_absence = scf2integrase_presence[scf]     
+        scf2lytic_or_lyso[scf] = [lytic_or_lyso_or_integrated_prophage, integrase_presence_or_absence]
+    
+    # Step 2 Write down scf2lytic_or_lyso result
+    f = open(os.path.join(virsorter_outdir, 'scf2lytic_or_lyso.summary.txt'),'w')
+    f.write('scaffold\tlytic_or_lyso_or_integrated_prophage\tintegrase_presence_or_absence\n')
+    for scf in scf2lytic_or_lyso:
+        line = scf + '\t' + '\t'.join(scf2lytic_or_lyso[scf]) + '\n'
+        f.write(line)
+    f.close()  
+    
+def parse_genomad_lytic_and_lysogenic_info(genomad_outdir, metagenomic_scaffold_stem_name):
+    # Step 1 Get scf 2 lytic or lysogenic dict
+    virus_summary_file_addr = f"{genomad_outdir}/{metagenomic_scaffold_stem_name}_summary/{metagenomic_scaffold_stem_name}_virus_summary.tsv"
+    integrase_result_file_addr = f"{genomad_outdir}/integrase_result_dir/{metagenomic_scaffold_stem_name}_virus_proteins_integrase_mmseqs2.tsv"
+    
+    scf2lytic_or_lyso = {} # scf => [lytic_or_lyso_or_integrated_prophage, integrase_presence_or_absence]
+    # lytic_or_lyso_or_integrated_prophage can contain: lytic_scaffold, integrated_prophage (parent scaffold), and lysogenic_scaffold
+    # integrase_presence_or_absence can contain: integrase_present and integrase_absent
+    scf2topology = {} # scf => Provirus or other
+    with open(virus_summary_file_addr, 'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            if not line.startswith('seq_name'):
+                scf, topology = line.split('\t')[0], line.split('\t')[2]
+                if topology == 'Provirus':
+                    scf2topology[scf] = 'Provirus'
+                else:
+                    scf2topology[scf] = 'other'
+                    
+    scf2integrase_presence = {} # scf => integrase_present; only store scfs that have integrases       
+    with open(integrase_result_file_addr, 'r') as lines:            
+        for line in lines:
+            line = line.rstrip('\n')
+            integrase_hit = line.split('\t')[0].split(' ', 1)[0]
+            scf = integrase_hit.rsplit('_', 1)[0]
+            scf2integrase_presence[scf] = 'integrase_present'
+     
+    for scf in scf2topology:
+        lytic_or_lyso_or_integrated_prophage = ''
+        if scf2topology[scf] == 'other' and scf not in scf2integrase_presence:
+            lytic_or_lyso_or_integrated_prophage = 'lytic_scaffold'
+        if scf2topology[scf] == 'other' and scf in scf2integrase_presence:       
+            lytic_or_lyso_or_integrated_prophage = 'lysogenic_scaffold'
+        if scf2topology[scf] == 'Provirus':        
+            parent_scaffold = scf.split('|', 1)[0]
+            lytic_or_lyso_or_integrated_prophage = f"integrated_prophage ({parent_scaffold})"
+        integrase_presence_or_absence = ''
+        if scf in scf2integrase_presence:
+            integrase_presence_or_absence = 'integrase_present'
+        else:
+            integrase_presence_or_absence = 'integrase_absent'
+        scf2lytic_or_lyso[scf] = [lytic_or_lyso_or_integrated_prophage, integrase_presence_or_absence]                
+            
+    # Step 2 Write down scf2lytic_or_lyso result
+    f = open(os.path.join(genomad_outdir, 'scf2lytic_or_lyso.summary.txt'),'w')
+    f.write('scaffold\tlytic_or_lyso_or_integrated_prophage\tintegrase_presence_or_absence\n')
+    for scf in scf2lytic_or_lyso:
+        line = scf + '\t' + '\t'.join(scf2lytic_or_lyso[scf]) + '\n'
+        f.write(line)
+    f.close()         
+
 def get_vRhyme_best_bin_lytic_and_lysogenic_info(vRhyme_best_bin_dir, vrhyme_outdir, scf2lytic_or_lyso_summary):
     # Step 1 Get vRhyme_bin2scf dict
     vRhyme_bin2scf = {} # vRhyme_bin => [scfs]; scf here is the short scf name
@@ -1573,30 +1677,44 @@ def screen_virsorter2_result(virsorter_outdir, keep1_list_file, keep2_list_file,
     for seq in seq2info:
         if seq not in keep1_list and seq not in keep2_list and seq not in manual_check_list:
             discard_list[seq] = seq2info[seq]
-        
-            
+    
+    # Replace the seq name after CheckV trimming
+    all_seq = store_seq(os.path.join(virsorter_outdir, 'CheckV_result/combined.fna')) # all the seq after CheckV trimming
+    seq_map = {} # seq1 (seq name before CheckV trimming) => seq2 (seq name after CheckV trimming; can contain "_{i}" at the end)  
+    for header in all_seq:
+        seq2 = header.replace('>', '', 1)
+        pattern = r'_\d+$' # Delete the _{i} pattern at the end of the scaffold
+        seq1 = seq2
+        if re.search(pattern, seq1):
+            seq1 = re.sub(pattern, '', seq1)
+        seq_map[seq1] = seq2           
+    
     f = open(keep1_list_file, 'w')
     f.write('#seq\tlength\tscore\thallmark\tviral_gene\thost_gene' + '\n')
     for seq in keep1_list:
-        f.write(seq + '\t' + '\t'.join(str(item) for item in keep1_list[seq]) + '\n')
+        seq2 = seq_map[seq]
+        f.write(seq2 + '\t' + '\t'.join(str(item) for item in keep1_list[seq]) + '\n')
     f.close()  
     
     f = open(keep2_list_file, 'w')
     f.write('#seq\tlength\tscore\thallmark\tviral_gene\thost_gene' + '\n')
     for seq in keep2_list:
-        f.write(seq + '\t' + '\t'.join(str(item) for item in keep2_list[seq]) + '\n')
+        seq2 = seq_map[seq]
+        f.write(seq2 + '\t' + '\t'.join(str(item) for item in keep2_list[seq]) + '\n')
     f.close()      
 
     f = open(discard_list_file, 'w')
     f.write('#seq\tlength\tscore\thallmark\tviral_gene\thost_gene' + '\n')
     for seq in discard_list:
-        f.write(seq + '\t' + '\t'.join(str(item) for item in discard_list[seq]) + '\n')
+        seq2 = seq_map[seq]
+        f.write(seq2 + '\t' + '\t'.join(str(item) for item in discard_list[seq]) + '\n')
     f.close() 
 
     f = open(manual_check_list_file, 'w')
     f.write('#seq\tlength\tscore\thallmark\tviral_gene\thost_gene' + '\n')
     for seq in manual_check_list:
-        f.write(seq + '\t' + '\t'.join(str(item) for item in manual_check_list[seq]) + '\n')
+        seq2 = seq_map[seq]
+        f.write(seq2 + '\t' + '\t'.join(str(item) for item in manual_check_list[seq]) + '\n')
     f.close()     
     
 def get_keep2_mc_seq(virsorter_outdir, keep2_list_file, manual_check_list_file, keep2_fasta, manual_check_fasta):
@@ -1622,17 +1740,17 @@ def get_keep2_mc_seq(virsorter_outdir, keep2_list_file, manual_check_list_file, 
     lines.close()  
 
     # Step 2 Make keep2_fasta, manual_check_fasta
-    all_seq = store_seq(os.path.join(virsorter_outdir, 'pass/final-viral-combined.fa'))
+    all_seq = store_seq(os.path.join(virsorter_outdir, 'CheckV_result/combined.fna'))
     
     all_seq_keep2 = {}
     for header in all_seq:
-        header_wo_array = header.replace('>', '', 1)
+        header_wo_array = header.replace('>', '', 1)               
         if header_wo_array in keep2_list:
             all_seq_keep2[header] = all_seq[header]
             
     all_seq_manual_check = {}
     for header in all_seq:
-        header_wo_array = header.replace('>', '', 1)
+        header_wo_array = header.replace('>', '', 1)                 
         if header_wo_array in manual_check_list:
             all_seq_manual_check[header] = all_seq[header] 
             
@@ -1658,7 +1776,7 @@ def get_keep2_vb_passed_list(virsorter_outdir, keep2_vb_result, keep2_list_vb_pa
     for header in keep2_vb_result_seq:
         header_wo_array = header.replace('>', '', 1)
         if '_fragment' in header_wo_array:
-            header_wo_array = header_wo_array.rsplit('_fragment', 1)[0]
+            header_wo_array = header_wo_array.rsplit('_fragment', 1)[0]            
         keep2_list_vb_passed[header_wo_array] = keep2_list[header_wo_array]
         
     f = open(keep2_list_vb_passed_file, 'w')
@@ -1730,8 +1848,8 @@ def get_final_vs2_virus(virsorter_outdir, keep1_list_file, keep2_list_vb_passed_
         lines.close()  
 
     # Step 2 Make final_vs2_virus.fasta
-    all_seq = store_seq(os.path.join(virsorter_outdir, 'pass/final-viral-combined.fa'))
-    
+    all_seq = store_seq(os.path.join(virsorter_outdir, 'CheckV_result/combined.fna'))
+        
     all_seq_final = {}
     for header in all_seq:
         header_wo_array = header.replace('>', '', 1)

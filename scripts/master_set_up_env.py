@@ -44,6 +44,13 @@ def main(args):
     else:
         logger.info(f"{time_current} | ViWrap-VIBRANT conda env path is not present!")
     
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-geNomad')} genomad=1.7.3 -y >/dev/null 2>&1")
+    time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
+    if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-geNomad/bin')):
+        logger.info(f"{time_current} | ViWrap-geNomad conda env has been installed")  
+    else:
+        logger.info(f"{time_current} | ViWrap-geNomad conda env path is not present!")    
+        
     os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-vRhyme')} python=3.8 networkx=3.1 pandas=1.0.0 numpy=1.20.3 numba=0.56.4 scikit-learn=0.23.0 pysam=0.21.0 samtools=1.17 mash=2.3 mummer=3.23 mmseqs2=14.7e284 prodigal=2.6.3 bowtie2=2.5.1 bwa=0.7.17 vrhyme=1.1.0 -y >/dev/null 2>&1")
     #os.system(f"wget https://github.com/AnantharamanLab/vRhyme/raw/master/vRhyme/models/vRhyme_machine_model_ET.sav.gz -q")
     #os.system(f"mv vRhyme_machine_model_ET.sav.gz {os.path.join(args['conda_env_dir'], 'ViWrap-vRhyme/lib/python3.8/site-packages/vRhyme/models')}")

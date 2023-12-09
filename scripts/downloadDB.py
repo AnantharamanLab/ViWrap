@@ -21,7 +21,7 @@ def store_seq(input_seq_file): # The input sequence file should be a file with f
         for line in seq_lines:
             line = line.rstrip("\n") # Remove "\n" in the end
             if ">" in line:
-                if (" " or "\t") in line: # Break at the first " " or "\t"
+                if " " in line or "\t" in line: # Break at the first " " or "\t"
                     spliter = ""
                     for i in range(len(line)):
                         if line[i] == " " or line[i] == "\t":

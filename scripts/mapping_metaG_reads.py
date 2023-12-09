@@ -71,7 +71,7 @@ def store_seq(input_seq_file): # The input sequence file should be a file with f
         for line in seq_lines:
             line = line.rstrip("\n") # Remove "\n" in the end
             if ">" in line:
-                if (" " or "\t") in line: # Break at the first " " or "\t"
+                if " " in line or "\t" in line: # Break at the first " " or "\t"
                     spliter = ""
                     for i in range(len(line)):
                         if line[i] == " " or line[i] == "\t":
@@ -116,7 +116,7 @@ def filter_sorted_bam(out_sorted_bam_file, filtered_bam_file, reads_mapping_iden
     filter_cmd = f'coverm filter --bam-files {out_sorted_bam_file} --output-bam-files {filtered_bam_file} --min-read-aligned-length {aligned_length} --min-read-percent-identity {reads_mapping_identity_cutoff} --threads {threads}'
     os.system(filter_cmd)
         
-def mapping_metaG_reads(viral_scaffold, metagenomic_scaffold, metaG_reads, mapping_result_dir, input_reads_type, reads_mapping_identity_cutoff, threads):
+def mapping_metaG_reads(viral_scaffold, metagenomic_scaffold, metaG_reads, mapping_result_dir, input_reads_type, reads_mapping_identity_cutoff, threads, skip_long_reads_correction):
     threads = int(threads)
     if input_reads_type == 'illumina':
         # Step 1 Run Bowtie2
@@ -164,7 +164,8 @@ def mapping_metaG_reads(viral_scaffold, metagenomic_scaffold, metaG_reads, mappi
         coverm_raw_table = pd.read_csv(f'{mapping_result_dir}/all_coverm_raw_result.txt', sep = '\t')
         coverm_raw_table_subset = coverm_raw_table.drop(['contigLen', 'totalAvgDepth'], axis = 1)
         
-        dict_virus_rename = {} # old_name => new_name
+        dict_virus_rename = {} # old_name => new_name; old name here is the scaffold name from the original metagenomic_scaffold
+                               # new_name is the viral scaffold name
         viral_seq = store_seq(viral_scaffold)
         for header in viral_seq:
             new_name = header.replace('>', '', 1)
@@ -177,7 +178,8 @@ def mapping_metaG_reads(viral_scaffold, metagenomic_scaffold, metaG_reads, mappi
                 old_name = new_name
             dict_virus_rename[old_name] = new_name   
         
-        coverm_raw_table_subset.replace({"contigName": dict_virus_rename},inplace = True)
+        coverm_raw_table_subset = coverm_raw_table_subset[coverm_raw_table_subset['contigName'].isin(dict_virus_rename.keys())] # Filter the DataFrame to keep only rows where 'contigName' is a key in dict_virus_rename
+        coverm_raw_table_subset.replace({"contigName": dict_virus_rename}, inplace=True) # Replace the 'contigName' values based on dict_virus_rename
         coverm_raw_table_subset.to_csv(f'{mapping_result_dir}/vRhyme_input_coverage.txt', sep='\t', index=False)
     elif input_reads_type == 'pacbio' or input_reads_type == 'pacbio_hifi' or input_reads_type == 'pacbio_asm20' or input_reads_type == 'nanopore':
         # Step 1 Run minimap2
@@ -192,13 +194,16 @@ def mapping_metaG_reads(viral_scaffold, metagenomic_scaffold, metaG_reads, mappi
         for each_read in metaG_reads_list:
             sam_name = Path(each_read).stem
             sam_names.append(sam_name)
-            run_consent(each_read, input_reads_type, threads)
-            corrected_fasta_file = ''
-            if '.gz' not in each_read:
-                corrected_fasta_file = each_read.replace('.fastq', '.corrected.fasta', 1)
-            elif '.gz' in each_read:
-                corrected_fasta_file = each_read.replace('.fastq.gz', '.corrected.fasta', 1)
-            run_minimap2(metagenomic_scaffold, corrected_fasta_file, mapping_result_dir, sam_name, input_reads_type, threads)
+            if not skip_long_reads_correction:
+                run_consent(each_read, input_reads_type, threads)
+                corrected_fasta_file = ''
+                if '.gz' not in each_read:
+                    corrected_fasta_file = each_read.replace('.fastq', '.corrected.fasta', 1)
+                elif '.gz' in each_read:
+                    corrected_fasta_file = each_read.replace('.fastq.gz', '.corrected.fasta', 1)
+                run_minimap2(metagenomic_scaffold, corrected_fasta_file, mapping_result_dir, sam_name, input_reads_type, threads)
+            else:
+                run_minimap2(metagenomic_scaffold, each_read, mapping_result_dir, sam_name, input_reads_type, threads)
 
         # Step 2 Filter sam file
         for sam_name in sam_names:
@@ -237,12 +242,12 @@ def mapping_metaG_reads(viral_scaffold, metagenomic_scaffold, metaG_reads, mappi
                 old_name = new_name
             dict_virus_rename[old_name] = new_name   
         
-        coverm_raw_table_subset.replace({"contigName": dict_virus_rename},inplace = True)
-        coverm_raw_table_subset.to_csv(f'{mapping_result_dir}/vRhyme_input_coverage.txt', sep='\t', index=False)        
+        coverm_raw_table_subset = coverm_raw_table_subset[coverm_raw_table_subset['contigName'].isin(dict_virus_rename.keys())] # Filter the DataFrame to keep only rows where 'contigName' is a key in dict_virus_rename
+        coverm_raw_table_subset.replace({"contigName": dict_virus_rename}, inplace=True) # Replace the 'contigName' values based on dict_virus_rename
+        coverm_raw_table_subset.to_csv(f'{mapping_result_dir}/vRhyme_input_coverage.txt', sep='\t', index=False)            
     
-    
-viral_scaffold, metagenomic_scaffold, metaG_reads, mapping_result_dir, input_reads_type, reads_mapping_identity_cutoff, threads = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7]
-mapping_metaG_reads(viral_scaffold, metagenomic_scaffold, metaG_reads, mapping_result_dir, input_reads_type, reads_mapping_identity_cutoff, threads)       
+viral_scaffold, metagenomic_scaffold, metaG_reads, mapping_result_dir, input_reads_type, reads_mapping_identity_cutoff, threads, skip_long_reads_correction = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7], sys.argv[8]
+mapping_metaG_reads(viral_scaffold, metagenomic_scaffold, metaG_reads, mapping_result_dir, input_reads_type, reads_mapping_identity_cutoff, threads, skip_long_reads_correction)       
     
     
     

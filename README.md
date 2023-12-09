@@ -39,6 +39,18 @@ ______
 7. [Contact](#contact)
 
 ______
+## Updates for v1.3.0 (Dec 2023): <a name="updates"></a>
+
+* **[Correction]**
+
+  (1) Correct the VirSorter2 + CheckV pipeline to get viral scaffolds. Use the "combined.fna" from CheckV result dir.
+
+  (2) Add the "scf2lytic_or_lyso.summary.txt" in the VirSorter resulting dir to facilitate the downstream "modified vRhyme_best_bins" generation. 
+
+  (3) Correct the `if " " in line or "\t" in line: # Break at the first " " or "\t"` line in multiple scripts to ensure the break at the first " " or "\t" of the headers
+
+  Updated on Dec 9, 2023
+
 ## Updates for v1.2.1 (Jan 2023): <a name="updates"></a>
 
 * Provide "AMG_results" in "ViWrap_summary_outdir" to include AMG statistics, AMG protein details, and AMG protein sequences.
