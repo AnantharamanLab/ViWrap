@@ -47,8 +47,10 @@ ______
 
   (2) Add the "scf2lytic_or_lyso.summary.txt" in the VirSorter resulting dir to facilitate the downstream "modified vRhyme_best_bins" generation. 
 
-  (3) Correct the `if " " in line or "\t" in line: # Break at the first " " or "\t"` line in multiple scripts to ensure the break at the first " " or "\t" of the headers
+  (3) Delete the scaffolds that are not related to virus in "vRhyme_input_coverage.txt".
 
+  (4) Correct the `if " " in line or "\t" in line: # Break at the first " " or "\t"` line in multiple scripts to ensure the break at the first " " or "\t" of the headers
+  
   Updated on Dec 9, 2023
 
 ## Updates for v1.2.1 (Jan 2023): <a name="updates"></a>
