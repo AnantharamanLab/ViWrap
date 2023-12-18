@@ -174,6 +174,8 @@ def mapping_metaG_reads(viral_scaffold, metagenomic_scaffold, metaG_reads, mappi
                 old_name = new_name.rsplit('||', 1)[0]
             elif '_fragment_' in new_name:
                 old_name = new_name.rsplit('_fragment_', 1)[0]
+            elif '|provirus_' in new_name:
+                old_name = new_name.rsplit('|provirus_', 1)[0]
             else:
                 old_name = new_name
             dict_virus_rename[old_name] = new_name   
@@ -238,6 +240,8 @@ def mapping_metaG_reads(viral_scaffold, metagenomic_scaffold, metaG_reads, mappi
                 old_name = new_name.rsplit('||', 1)[0]
             elif '_fragment_' in new_name:
                 old_name = new_name.rsplit('_fragment_', 1)[0]
+            elif '|provirus_' in new_name:
+                old_name = new_name.rsplit('|provirus_', 1)[0]    
             else:
                 old_name = new_name
             dict_virus_rename[old_name] = new_name   

@@ -6,6 +6,7 @@ try:
     import os
     import re
     warnings.filterwarnings("ignore")
+    from collections import defaultdict
 except Exception as e:
     sys.stderr.write(str(e) + "\n\n")
     exit(1) 
@@ -23,18 +24,15 @@ def get_tax_from_vcontact2_result(genome_by_genome_file, IMGVR_db_map, output):
     lines.close()
     
     # Step 2 Store VC2gns 
-    VC2gns = {} # VC => [gns]
-    with open(genome_by_genome_file, 'r') as lines:
-        for line in lines:
+    VC2gns = defaultdict(list)  # VC => [gns]
+    with open(genome_by_genome_file, 'r') as file:
+        next(file)  # Skip the header line
+        for line in file:
             line = line.rstrip('\n')
-            if not line.startswith('Genome,'):
-                VC, gn = line.split(',')[3], line.split(',')[0]
-                if VC != '':
-                    if VC not in VC2gns:
-                        VC2gns[VC] = [gn]
-                    else:
-                        VC2gns[VC].append(gn)
-    lines.close()                    
+            split_line = line.split(',')
+            VC, gn, genus_confidence_score = split_line[3], split_line[0], split_line[9] # gn here is actually the old name - the scaffold header
+            if VC and gn != 'contig_id' and genus_confidence_score != '' and float(genus_confidence_score) >= 0.9:
+                VC2gns[VC].append(gn)                   
                         
     # Step 3 Get consensus tax
     bin2consensus_tax = {} # bin => consensus_tax
@@ -50,9 +48,8 @@ def get_tax_from_vcontact2_result(genome_by_genome_file, IMGVR_db_map, output):
             consensus_tax = list(tax_set)[0]
             
         if consensus_tax != '':
-            for gn in gns:
-                if 'vRhyme' in gn:
-                    bin2consensus_tax[gn] = consensus_tax
+            for gn in gns and gn not in ref_gn2tax:
+                bin2consensus_tax[gn] = consensus_tax
                 
     # Step 4 Write to output
     f = open(output, 'w')

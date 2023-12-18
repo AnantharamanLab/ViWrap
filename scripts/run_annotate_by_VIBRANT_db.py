@@ -10,7 +10,8 @@ try:
     from collections import defaultdict  
     from glob import glob    
     import subprocess
-    from subprocess import DEVNULL, STDOUT, check_call    
+    from subprocess import DEVNULL, STDOUT, check_call  
+    from Bio import SeqIO    
     warnings.filterwarnings("ignore")
 except Exception as e:
     sys.stderr.write(str(e) + "\n\n")
@@ -106,9 +107,53 @@ def get_hmmsearch_result(hmmsearch_result):
                 pro, query, query_accession, evalue, score = tmp[0], tmp[2], tmp[3], tmp[4], tmp[5]
                 pro2info[pro] = [query, query_accession, evalue, score]
     lines.close()            
-    return pro2info         
+    return pro2info   
+
+## The function for obtaining geNomad ffn file 
+def extract_genes(fasta_file, faa_file, output_file):
+    # Parse the gene coordinates, strand information, and full headers from the faa file
+    gene_info = {}
+    with open(faa_file, 'r') as faa:
+        for record in SeqIO.parse(faa, "fasta"):
+            parts = record.description.split('#')
+            if len(parts) >= 4:
+                start = int(parts[1].strip())
+                end = int(parts[2].strip())
+                strand = int(parts[3].strip())
+                full_header = record.description
+                gene_id = record.id
+                gene_info[gene_id] = (start, end, strand)
+
+    # Extract gene sequences from the fasta file using the coordinates and strand information
+    extracted_genes = []
+    with open(fasta_file, 'r') as fasta:
+        for record in SeqIO.parse(fasta, "fasta"):
+            for gene_id, (start, end, strand) in gene_info.items():
+                # Compare the modified gene_id with the record.id
+                if gene_id.rsplit('_', 1)[0] == record.id:
+                    if '|provirus_' in record.id: # Dealing with provirus coordinates - the coordinates are from the original scaffold
+                        provirus_start = int(record.id.split(' ')[0].split('|provirus_')[1].split('_', 1)[0])
+                        start_real = start - provirus_start + 1
+                        end_real = end - provirus_start + 1
+                        if strand == 1:
+                            gene_sequence = record.seq[start_real-1:end_real]
+                        else:
+                            # For reverse strand, reverse complement the sequence
+                            gene_sequence = record.seq[start_real-1:end_real].reverse_complement()                        
+                    else:
+                        if strand == 1:
+                            gene_sequence = record.seq[start-1:end]
+                        else:
+                            # For reverse strand, reverse complement the sequence
+                            gene_sequence = record.seq[start-1:end].reverse_complement()
+                    extracted_genes.append((gene_id, gene_sequence))
+
+    # Write the extracted gene sequences to the output file with the original headers
+    with open(output_file, 'w') as output:
+        for gene_id, gene in extracted_genes:
+            output.write(f">{gene_id}\n{gene}\n")
     
-def run_annotate_by_vibrant_db(VIBRANT_db, identify_method, virsorter_outdir, dvf_outdir, out_dir, threads):
+def run_annotate_by_vibrant_db(VIBRANT_db, identify_method, virsorter_outdir, dvf_outdir, genomad_outdir, out_dir, threads):
     final_virus_fasta_file = ''
     KEGG_hmm_file = os.path.join(VIBRANT_db, 'databases/KEGG_profiles_prokaryotes.HMM')
     Pfam_hmm_file = os.path.join(VIBRANT_db, 'databases/Pfam-A_v32.HMM')
@@ -118,29 +163,21 @@ def run_annotate_by_vibrant_db(VIBRANT_db, identify_method, virsorter_outdir, dv
         final_virus_fasta_file = os.path.join(virsorter_outdir, 'final_vs2_virus.fasta')
     elif identify_method == 'dvf':
         final_virus_fasta_file = os.path.join(dvf_outdir, 'final_dvf_virus.fasta')
+    elif identify_method == 'genomad':
+        final_virus_fasta_file = os.path.join(genomad_outdir, 'final_genomad_virus.fasta')        
 
-    # Step 1 Get all split fasta addresses
-    output_seq_folder = os.path.join(out_dir, 'tmp_dir_split_fasta')
-    split_seq(final_virus_fasta_file, threads, output_seq_folder)
-    all_fasta_addrs = glob(os.path.join(output_seq_folder, '*.fasta'))  
-    
-    # Step 2 Prodigal annotate all fasta files
-    prodigal_cmds = []
-    for fasta_addr in all_fasta_addrs:
-        if os.path.getsize(fasta_addr):
-            fasta_stem = Path(fasta_addr).stem
-            faa_addr = fasta_addr.replace('.fasta', '.faa', 1)
-            ffn_addr = fasta_addr.replace('.fasta', '.ffn', 1)
-            temp_addr = fasta_addr.replace('.fasta', '_temp.txt', 1)
-            each_cmd = f"prodigal -i {fasta_addr} -a {faa_addr} -d {ffn_addr} -p meta -q -o {temp_addr}"
-            prodigal_cmds.append(each_cmd)
-
-    n = int(threads) # The number of parallel processes
-    for j in range(max(int(len(prodigal_cmds)/n + 1), 1)):
-        procs = [subprocess.Popen(i, shell=True, stdout=DEVNULL) for i in prodigal_cmds[j*n: min((j+1)*n, len(prodigal_cmds))] ]
-        for p in procs:
-            p.wait() 
-    
+    # Step 1 Prodigal annotate fasta file to get faa and ffn files or extract ffn from fasta by faa
+    final_virus_faa_file = final_virus_fasta_file.replace('.fasta', '.faa', 1)
+    final_virus_ffn_file = final_virus_fasta_file.replace('.fasta', '.ffn', 1)
+    if identify_method == 'vs' or identify_method == 'dvf':
+        prodigal_cmd = f"prodigal -i {final_virus_fasta_file} -a {final_virus_faa_file} -d {final_virus_ffn_file} -p meta -q -o /dev/null"
+        os.system(prodigal_cmd) 
+    elif identify_method == 'genomad':     
+        extract_genes(final_virus_fasta_file, final_virus_faa_file, final_virus_ffn_file)        
+        
+    # Step 2 Get all split faa addresses
+    output_seq_folder = os.path.join(out_dir, 'tmp_dir_split_faa')
+    split_seq(final_virus_faa_file, threads, output_seq_folder)    
     all_faa_addrs = glob(f"{output_seq_folder}/*.faa")
 
     # Step 3 Run hmmsearch against KEGG database
@@ -155,7 +192,7 @@ def run_annotate_by_vibrant_db(VIBRANT_db, identify_method, virsorter_outdir, dv
         faa_stem = Path(faa_addr).stem
         kegg_hmmtbl = os.path.join(tmp_dir_kegg_hmmsearch_results, f"{faa_stem}.KEGG.hmmtbl")
         kegg_temp = os.path.join(tmp_dir_kegg_hmmsearch_results, f"{faa_stem}_temp.txt")
-        each_cmd = f"hmmsearch --tblout {kegg_hmmtbl} --noali -T 40 --cpu {int(threads)} -o {kegg_temp} {KEGG_hmm_file} {faa_addr}"
+        each_cmd = f"hmmsearch --tblout {kegg_hmmtbl} --noali -T 40 --cpu 1 -o {kegg_temp} {KEGG_hmm_file} {faa_addr}"
         kegg_hmmsearch_cmds.append(each_cmd)
     
     n = int(threads) # The number of parallel processes
@@ -176,7 +213,7 @@ def run_annotate_by_vibrant_db(VIBRANT_db, identify_method, virsorter_outdir, dv
         faa_stem = Path(faa_addr).stem
         pfam_hmmtbl = os.path.join(tmp_dir_pfam_hmmsearch_results, f"{faa_stem}.Pfam.hmmtbl")
         pfam_temp = os.path.join(tmp_dir_pfam_hmmsearch_results, f"{faa_stem}_temp.txt")
-        each_cmd = f"hmmsearch --tblout {pfam_hmmtbl} --noali -T 40 --cpu {int(threads)} -o {pfam_temp} {Pfam_hmm_file} {faa_addr}"
+        each_cmd = f"hmmsearch --tblout {pfam_hmmtbl} --noali -T 40 --cpu 1 -o {pfam_temp} {Pfam_hmm_file} {faa_addr}"
         pfam_hmmsearch_cmds.append(each_cmd)
     
     n = int(threads) # The number of parallel processes
@@ -197,7 +234,7 @@ def run_annotate_by_vibrant_db(VIBRANT_db, identify_method, virsorter_outdir, dv
         faa_stem = Path(faa_addr).stem
         vog_hmmtbl = os.path.join(tmp_dir_vog_hmmsearch_results, f"{faa_stem}.VOG.hmmtbl")
         vog_temp = os.path.join(tmp_dir_vog_hmmsearch_results, f"{faa_stem}_temp.txt")
-        each_cmd = f"hmmsearch --tblout {vog_hmmtbl} --noali -T 40 --cpu {int(threads)} -o {vog_temp} {VOG_hmm_file} {faa_addr}"
+        each_cmd = f"hmmsearch --tblout {vog_hmmtbl} --noali -T 40 --cpu 1 -o {vog_temp} {VOG_hmm_file} {faa_addr}"
         vog_hmmsearch_cmds.append(each_cmd)
     
     n = int(threads) # The number of parallel processes
@@ -207,7 +244,7 @@ def run_annotate_by_vibrant_db(VIBRANT_db, identify_method, virsorter_outdir, dv
             p.wait()  
             
     # Step 6 Parse hmmsearch results
-        #KEGG-> query
+        #KEGG -> query
         #Pfam -> query_accession
         #VOG -> query  
     ## Step 6.1 Parse KEGG hmmsearch results
@@ -238,9 +275,10 @@ def run_annotate_by_vibrant_db(VIBRANT_db, identify_method, virsorter_outdir, dv
             VOG_hmm_result[pro] = [query, evalue, score]            
             
     ## Step 6.4 Store KO, Pfam, VOG info
-    KO2info = {} # KO => [AMG, KO name]
-    Pfam2info = {} # Pfam => Pfam name
-    VOG2info = {} # VOG => VOG name
+    KO2info = {} # KO => [AMG, KO name, v_score]
+    Pfam2info = {} # Pfam => [Pfam name, v_score]
+    VOG2info = {} # VOG => [VOG name, v_score]
+    
     AMG_KO = [] # [KO] Store the AMG KOs
     with open(os.path.join(VIBRANT_db, 'files/VIBRANT_AMGs.tsv'),'r') as lines:
         for line in lines:
@@ -249,20 +287,41 @@ def run_annotate_by_vibrant_db(VIBRANT_db, identify_method, virsorter_outdir, dv
                 KO = line
                 AMG_KO.append(KO)
     lines.close()
+    
+    ## Store "VIBRANT_categories.tsv" to get vscore for KO, Pfam, and VOG
+    hmm2v_score = {} # hmm => v_score (hmm is either KO, Pfam, or VOG)
+    with open(os.path.join(VIBRANT_db, 'files/VIBRANT_categories.tsv'),'r') as lines:
+        for line in lines:
+            line = line.rstrip('\n')
+            if not line.startswith('id'):
+                tmp = line.split('\t')
+                hmm = tmp[0]
+                v_score = float(tmp[1]) / 100
+                hmm2v_score[hmm] = str(v_score)
 
     with open(os.path.join(VIBRANT_db, 'files/VIBRANT_names.tsv'),'r') as lines:
         for line in lines:
             line = line.rstrip('\n')
             tmp = line.split('\t')
-            if tmp[0].startswith('VOG'):
-                VOG2info[tmp[0]] = tmp[1]
-            elif tmp[0].startswith('K'):
-                if tmp[0] in AMG_KO:
-                    KO2info[tmp[0]] = ['AMG', tmp[1]]
+            hmm, name = tmp[0], tmp[1]
+            if hmm.startswith('VOG'):
+                v_score = ''
+                if hmm in hmm2v_score:
+                    v_score = hmm2v_score[hmm]
+                VOG2info[hmm] = [name, v_score]                
+            elif hmm.startswith('K'):
+                v_score = ''
+                if hmm in hmm2v_score:
+                    v_score = hmm2v_score[hmm]                                
+                if hmm in AMG_KO:
+                    KO2info[hmm] = ['AMG', name, v_score]
                 else:
-                    KO2info[tmp[0]] = ['', tmp[1]]
+                    KO2info[hmm] = ['', name, v_score]
             else:
-                Pfam2info[tmp[0]] = tmp[1]
+                v_score = ''
+                if hmm in hmm2v_score:
+                    v_score = hmm2v_score[hmm]                    
+                Pfam2info[hmm] = [name, v_score]     
     lines.close()            
                 
     # Step 7 Write down annotation result
@@ -271,9 +330,11 @@ def run_annotate_by_vibrant_db(VIBRANT_db, identify_method, virsorter_outdir, dv
         annotation_file = os.path.join(virsorter_outdir, 'final_vs2_virus.annotation.txt')
     elif identify_method == 'dvf':
         annotation_file = os.path.join(dvf_outdir, 'final_dvf_virus.annotation.txt')
+    elif identify_method == 'genomad':
+        annotation_file = os.path.join(genomad_outdir, 'final_genomad_virus.annotation.txt')
         
     f = open(annotation_file, 'w')
-    header_list = ['protein', 'scaffold', 'KO', 'AMG', 'KO name', 'KO evalue', 'KO score', 'Pfam', 'Pfam name', 'Pfam evalue', 'Pfam score', 'VOG', 'VOG name', 'VOG evalue', 'VOG score']    
+    header_list = ['protein', 'scaffold', 'KO', 'AMG', 'KO name', 'KO evalue', 'KO score', 'KO v-score', 'Pfam', 'Pfam name', 'Pfam evalue', 'Pfam score', 'Pfam v-score', 'VOG', 'VOG name', 'VOG evalue', 'VOG score', 'VOG v-score']    
     header = '\t'.join(header_list)
     f.write(header + '\n')
     all_pro_seq = {}
@@ -284,50 +345,26 @@ def run_annotate_by_vibrant_db(VIBRANT_db, identify_method, virsorter_outdir, dv
     for pro_w_array in all_pro_seq:
         pro = pro_w_array.replace('>', '' , 1)
         scf = pro.rsplit('_', 1)[0]
-        KO, AMG, KO_name, KO_evalue, KO_score = '', '', '', '', ''
+        KO, AMG, KO_name, KO_evalue, KO_score, KO_v_score = '', '', '', '', '', ''
         if pro in KEGG_hmm_result:
             KO, KO_evalue, KO_score = KEGG_hmm_result[pro][0], KEGG_hmm_result[pro][1], KEGG_hmm_result[pro][2]
-            AMG, KO_name = KO2info[KO][0], KO2info[KO][1]
-        Pfam, Pfam_name, Pfam_evalue, Pfam_score = '', '', '', ''
+            AMG, KO_name, KO_v_score = KO2info[KO][0], KO2info[KO][1], KO2info[KO][2]
+        Pfam, Pfam_name, Pfam_evalue, Pfam_score, Pfam_v_score = '', '', '', '', ''
         if pro in Pfam_hmm_result:
             Pfam, Pfam_evalue, Pfam_score = Pfam_hmm_result[pro][0], Pfam_hmm_result[pro][1], Pfam_hmm_result[pro][2]
-            Pfam_name = Pfam2info[Pfam]
-        VOG, VOG_name, VOG_evalue, VOG_score = '', '', '', ''
+            Pfam_name, Pfam_v_score = Pfam2info[Pfam][0], Pfam2info[Pfam][1]
+        VOG, VOG_name, VOG_evalue, VOG_score, VOG_v_score = '', '', '', '', ''
         if pro in VOG_hmm_result:
             VOG, VOG_evalue, VOG_score = VOG_hmm_result[pro][0], VOG_hmm_result[pro][1], VOG_hmm_result[pro][2]
-            VOG_name = VOG2info[VOG]
-        line_list =  [pro, scf, KO, AMG, KO_name, KO_evalue, KO_score, Pfam, Pfam_name, Pfam_evalue, Pfam_score, VOG, VOG_name, VOG_evalue, VOG_score]
+            VOG_name, VOG_v_score = VOG2info[VOG][0], VOG2info[VOG][1]
+        line_list =  [pro, scf, KO, AMG, KO_name, KO_evalue, KO_score, KO_v_score, Pfam, Pfam_name, Pfam_evalue, Pfam_score, Pfam_v_score, VOG, VOG_name, VOG_evalue, VOG_score, VOG_v_score]
         line = '\t'.join(line_list) 
         f.write(line + '\n')  
     f.close()   
 
-    # Step 7 Make the final virus faa and ffn files and remove all tmp dirs
-    all_ffn_addrs = glob(f"{output_seq_folder}/*.ffn")
-    all_faa_seq = {}
-    all_faa_seq_addr = ''
-    all_ffn_seq = {}
-    all_ffn_seq_addr = ''
-    
-    if identify_method == 'vs':
-        all_faa_seq_addr = os.path.join(virsorter_outdir, 'final_vs2_virus.faa')
-        all_ffn_seq_addr = os.path.join(virsorter_outdir, 'final_vs2_virus.ffn')
-    elif identify_method == 'dvf':
-        all_faa_seq_addr = os.path.join(dvf_outdir, 'final_dvf_virus.faa')
-        all_ffn_seq_addr = os.path.join(dvf_outdir, 'final_dvf_virus.ffn')
-    
-    for faa_addr in all_faa_addrs:
-        faa_addr_seq = store_seq(faa_addr)
-        all_faa_seq.update(faa_addr_seq)
-
-    for ffn_addr in all_ffn_addrs:
-        ffn_addr_seq = store_seq(ffn_addr)
-        all_ffn_seq.update(ffn_addr_seq)   
-
-    write_down_seq(all_faa_seq, all_faa_seq_addr)
-    write_down_seq(all_ffn_seq, all_ffn_seq_addr)    
-    
+    # Step 7 Remove all tmp dirs    
     os.system(f"rm -rf {output_seq_folder} {tmp_dir_kegg_hmmsearch_results} {tmp_dir_pfam_hmmsearch_results} {tmp_dir_vog_hmmsearch_results}")
                
     
-VIBRANT_db, identify_method, virsorter_outdir, dvf_outdir, out_dir, threads = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6]
-run_annotate_by_vibrant_db(VIBRANT_db, identify_method, virsorter_outdir, dvf_outdir, out_dir, threads)       
+VIBRANT_db, identify_method, virsorter_outdir, dvf_outdir, genomad_outdir, out_dir, threads = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7]
+run_annotate_by_vibrant_db(VIBRANT_db, identify_method, virsorter_outdir, dvf_outdir, genomad_outdir, out_dir, threads)       

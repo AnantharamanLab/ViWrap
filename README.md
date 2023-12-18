@@ -15,7 +15,7 @@ University of Wisconsin-Madison
 ```
 
 ## Current Version
-ViWrap v1.2.1 
+ViWrap v1.3.0 
 
 <img src="https://github.com/AnantharamanLab/ViWrap/blob/main/images/ViWrap-Flowchart.jpg">
 
@@ -41,17 +41,41 @@ ______
 ______
 ## Updates for v1.3.0 (Dec 2023): <a name="updates"></a>
 
-* **[Correction]**
+**--Updated on Dec 9, 2023**
 
-  (1) Correct the VirSorter2 + CheckV pipeline to get viral scaffolds. Use the "combined.fna" from CheckV result dir.
+**[Correction]**
 
-  (2) Add the "scf2lytic_or_lyso.summary.txt" in the VirSorter resulting dir to facilitate the downstream "modified vRhyme_best_bins" generation. 
+(1) Correct the VirSorter2 + CheckV pipeline to get viral scaffolds. Use the "combined.fna" from CheckV result dir.
 
-  (3) Delete the scaffolds that are not related to virus in "vRhyme_input_coverage.txt".
+(2) Add the "scf2lytic_or_lyso.summary.txt" in the VirSorter resulting dir to facilitate the downstream "modified vRhyme_best_bins" generation. 
 
-  (4) Correct the `if " " in line or "\t" in line: # Break at the first " " or "\t"` line in multiple scripts to ensure the break at the first " " or "\t" of the headers
-  
-  Updated on Dec 9, 2023
+(3) Delete the scaffolds that are not related to virus in "vRhyme_input_coverage.txt".
+
+(4) Correct the `if " " in line or "\t" in line: # Break at the first " " or "\t"` line in multiple scripts to ensure the break at the first " " or "\t" of the headers.
+
+**--Updated on Dec 11 and 12, 2023**
+
+**[Improvement]**
+
+(1) Do not split fasta file, but split faa file in "run_annotate_by_VIBRANT_db.py" script (for virus identifying method of 'vs' and 'dvf').
+
+(2) For virus identifying method of 'genomad', the faa file was the pyrodigal-gv annotated one by geNomad. The ffn file was also based on this faa file.
+
+(3) Add AMG filtering step to the script.
+
+**--Updated on Dec 13 and 14, 2023**
+
+**[Improvement]**
+
+(1) Update combine_iphop_results function in module.py to store only one host prediction result with the highest confidence score among all potential results.
+
+**[correction]**
+
+(1) Add "Unclassified metabolism" to the calculation of step 4 KO metabolism relative abundance (in function "generate_result_visualization_inputs"), since that some KOs might not have corresponding KO metabolisms according to the db.
+
+(2) Add custom MAG viral scaffold filtering steps into "master_run.py".  There are two filtering criteria: 1. Viral scaffolds from MAGs that are identified by geNomad were removed from the MAGs. 2. Viral scaffolds that contain proviruses with total region length >= 85% of the whole scaffold were removed from the MAGs since that they are very likely to be mistakenly-binned viral scaffolds.
+
+
 
 ## Updates for v1.2.1 (Jan 2023): <a name="updates"></a>
 
@@ -112,6 +136,8 @@ ______
 
 * Update VirSorter2 db download and configuration part in script "master_downloader.py". Updated on Dec 8, 2023
 
+  
+
 ## Updates for v1.2.0 (Oct 2022): <a name="updates"></a>
 
 * Modify "parse_dRep" function (module.py) so that it can also process the result even though dRep running is not successful.
@@ -130,13 +156,20 @@ ______
 ## Updates for v1.1.0 (Sep 2022): <a name="updates"></a>
 
 * Add two additional bypasses for identifying viruses from metagenomes: vs - VirSorter2 and CheckV; dvf - DeepVirFinder besides the default pass of vb - VIBRANT.
+
 * set up the VirSorter2, CheckV, and VIBRANT virus identification, curation, and annotation bypass mainly according to the SOP provided by Matthew Sullivan's group (OSU); the 'manual check' step changed to be 'automatic' with stringent criteria.
+
 * Complete GitHub README.
+
+  
 
 
 ## Updates for v1.0.0 (Sep 2022): <a name="updates"></a>
 * Change the construction of scripts.
+
 * Change the methods to feed arguments and run scripts in individual conda environments.
+
+  
 
 ______
 ## Program Description <a name="program"></a>
@@ -152,6 +185,12 @@ ViWrap is a wrapper to identify, bin, classify, and predict host-viral relations
 - ViWrap was reported to generate many false positive vMAGs for identifying potential giant viruses (or nucleocytoviruses). Many identified giant viruses do not contain any typical GV markers.
 
 ViWrap is an integrated wrapper/pipeline, the main contributors of each virus identifying, binning, classifying, and viral host predicting software within it should be acknowledged (Citations and links are provided):
+
+[geNomad](https://github.com/apcamargo/genomad): [link to online paper](https://www.nature.com/articles/s41587-023-01953-y)
+
+```
+Camargo, Antonio Pedro, Simon Roux, Frederik Schulz, Michal Babinski, Yan Xu, Bin Hu, Patrick SG Chain, Stephen Nayfach, and Nikos C. Kyrpides. "Identification of mobile genetic elements with geNomad." Nature Biotechnology (2023): 1-10. 
+```
 
 [VIBRANT](https://github.com/AnantharamanLab/VIBRANT): [link to online paper](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-020-00867-0)
 
@@ -193,7 +232,7 @@ Roux, Simon, Antonio Pedro Camargo, Felipe Hernandes Coutinho, Shareef M. Dabdou
 
 
 #### **ViWrap Features**
-* Identify and annotate viruses by VIBRANT, VirSorter2, or DeepVirFinder
+* Identify and annotate viruses by geNomad, VIBRANT, VirSorter2, or DeepVirFinder
 * Map reads (support both short and long reads) onto all input metagenome assemblies to get scaffold depth
 * Bin vMAGs using vRhyme
 * Classify vMAGs into genus using vContact2, into species using dRep
@@ -299,7 +338,7 @@ It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the
 
 ## Settings <a name="settings"></a>
 
-#### Settings for v1.2.1
+#### Settings for v1.3.0
 
 - **Conda env:**
 
@@ -311,15 +350,17 @@ It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the
   | CheckV     | v1.0.1  | GTDB-Tk                         | v2.3.2      |
   | VirSorter2 | v2.2.3  | Bowtie2 (within ViWrap-Mapping) | v2.4.5      |
   | Minimap2   | v2.24   | DeepVirFinder                   | v2020.11.21 |
+  | geNomad    | v1.7.4  |                                 |             |
 
 - **db:**
 
-  | db                          | Versio            | db                          | Version       |
+  | db                          | Version           | db                          | Version       |
   | --------------------------- | ----------------- | --------------------------- | ------------- |
-  | NCBI RefSeq viral sequences | latest            | ICTV Master Species List    | 2022 MSL38.v3 |
+  | NCBI RefSeq viral sequences | the latest        | ICTV Master Species List    | 2022 MSL38.v3 |
   | VOG HMM                     | VOG 97            | IMGVR high-quality vOTU rep | v4.1          |
   | iPHoP db                    | iPHoP_db_Aug23_rw | GTDB-Tk db                  | release 214   |
-  | VirSorter2 db               | latest            | DVF db (models)             | v1.0          |
+  | VirSorter2 db               | the latest        | DVF db (models)             | v1.0          |
+  | geNomad db                  | the latest        |                             |               |
 
 - **Running setting**
 
@@ -351,6 +392,7 @@ It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the
   |                                                  | -k                        | maximum number of target sequences to report alignments for  | 10000                             |
   | run_hmmsearch_to_marker_VOG_HMM_db (hmmsearch)   | -E                        | report sequences <= this E-value threshold in output         | 0.01                              |
   | run_iphop (iphop predict)                        | --no_qc                   | bypass the automated QC that filters out input sequences with > 10% Ns or with characters other than ATCGN | N/A                               |
+  | run_geNomad (geNomad virus identifying)          | --conservative-taxonomy   | being conservative on taxonomical classification             | N/A                               |
   
   
 
@@ -433,7 +475,7 @@ ______
 
 * `--db_dir/-d`: (***required***) database directory (default = $current_dir/ViWrap_db).
 
-* `--identify_method`: (***required***) the virus identifying method to choose: vb - VIBRANT; vs - VirSorter2 and CheckV; dvf - DeepVirFinder; vb-vs - Use VIBRANT and VirSorter2 to get the overlapped viruses (default); vb-vs-dvf - Use all these three methods and get the overlapped viruses. "vb-vs" is recommended by us since overlapped virus identification will provide more confident results. "vb-vs-dvf" would be too stringent to provide comprehensive virus identification results.
+* `--identify_method`: (***required***) the virus identifying method to choose: vb - VIBRANT; vs - VirSorter2 and CheckV; dvf - DeepVirFinder; genomad - geNomad (default, fast with good virus identification performance); vb-vs - Use VIBRANT and VirSorter2 to get the overlapped viruses; vb-vs-dvf - Use all these three methods and get the overlapped viruses. "vb-vs" is recommended by us since overlapped virus identification will provide more confident results. "vb-vs-dvf" would be too stringent to provide comprehensive virus identification results.
 
 * `--conda_env_dir`: (***required***) the directory where you put your conda environment files. It is the parent directory that contains all the conda environment folders.
 
@@ -441,7 +483,7 @@ ______
 
 * `--virome/-v`: edit VIBRANT's sensitivity if the input dataset is a virome. It is suggested to use it if you know that the input assembly is virome or metagenome. 
 
-* `--input_length_limit`: length in base pairs (bps) to limit input sequences (default=2000, can increase but not decrease); 2000 at least suggested for VIBRANT (vb)-based pipeline, 5000 at least suggested for VirSorter2 (vs)-based pipeline.
+* `--input_length_limit`: length in base pairs (bps) to limit input sequences (default=2000, can increase but not decrease); 2000 at least suggested for VIBRANT (vb)/geNomad (genomad)-based pipeline, 5000 at least suggested for VirSorter2 (vs)-based pipeline.
 
 * `--custom_MAGs_dir`: custom MAGs dir that contains only *.fasta files for MAGs reconstructed from the same metagenome, this will be used in iPHoP for further host prediction; note that it should be the absolute address path.
 
@@ -566,7 +608,7 @@ ______
 
 - **Using VIBRANT or VirSorter2 to get prophage information**
 
-  If you want to have prophage information in your final results, we will avoid solely using DVF to identify viruses. You can use "vb", ''vs", "vb-vs" (default), or "vb-vs-dvf" identification methods to get final results that will include prophage information.
+  If you want to have prophage information in your final results, we will avoid solely using DVF to identify viruses. You can use "vb", ''vs", "vb-vs", "genomad" (default), or "vb-vs-dvf" identification methods to get final results that will include prophage information.
 
 - **Using "run_wo_reads" will only provide viral scaffold results**
 

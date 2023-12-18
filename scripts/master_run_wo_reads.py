@@ -7,6 +7,7 @@ from scripts import module
 from datetime import datetime
 from pathlib import Path
 from glob import glob
+import json
 
 
 def fetch_arguments(parser,root_dir,db_path_default):
@@ -15,7 +16,7 @@ def fetch_arguments(parser,root_dir,db_path_default):
     parser.add_argument('--input_metagenome','-i', dest='input_metagenome', required=True, default='none', help=r'(required) input metagenome assembly. It can be a metagenome or entire virome assembly. The extension of the input nucleotide sequence should be ".fasta"')
     parser.add_argument('--out_dir','-o', dest='out_dir', required=False, default='./ViWrap_outdir', help=r'(required) output directory to deposit all results (default = ./ViWrap_outdir) output folder to deposit all results. ViWrap will exit if the folder already exists')
     parser.add_argument('--db_dir','-d', dest='db_dir', required=False, default=db_path_default, help=f'(required) database directory; default = {db_path_default}')
-    parser.add_argument('--identify_method', dest='identify_method', required=False, default='vb-vs',help=r'(required) the virus identifying method to choose: vb - VIBRANT; vs - VirSorter2 and CheckV; dvf - DeepVirFinder; vb-vs - Use VIBRANT and VirSorter2 to get the overlapped viruses (default); vb-vs-dvf - Use all these three methods and get the overlapped viruses')
+    parser.add_argument('--identify_method', dest='identify_method', required=False, default='genomad',help=r'(required) the virus identifying method to choose: vb - VIBRANT; vs - VirSorter2 and CheckV; dvf - DeepVirFinder; vb-vs - Use VIBRANT and VirSorter2 to get the overlapped viruses (default); vb-vs-dvf - Use all these three methods and get the overlapped viruses; genomad - Use geNomad')
     parser.add_argument('--conda_env_dir', dest='conda_env_dir', required=True, default='none', help=r'(required) the directory where you put your conda environment files. It is the parent directory that contains all the conda environment folders')
     parser.add_argument('--threads','-t', dest='threads', required=False, default=10, help=r'number of threads (default = 10)')
     parser.add_argument('--virome','-v', dest='virome', action='store_true', required=False, default=False, help=r"edit VIBRANT's sensitivity if the input dataset is a virome. It is suggested to use it if you know that the input assembly is virome or metagenome")
@@ -37,11 +38,13 @@ def set_defaults(args):
     args['VIBRANT_db'] = os.path.join(args['db_dir'],'VIBRANT_db')
     args['VirSorter2_db'] = os.path.join(args['db_dir'],'VirSorter2_db')
     args['DVF_db'] = os.path.join(args['db_dir'],'DVF_db')
+    args['geNomad_db'] = os.path.join(args['db_dir'],'genomad_db')
     
     ## Store outdirs 
     args['vibrant_outdir'] = os.path.join(args['out_dir'],f"00_VIBRANT_{Path(args['input_metagenome']).stem}")
     args['virsorter_outdir'] = os.path.join(args['out_dir'],f"00_VirSorter_{Path(args['input_metagenome']).stem}")
     args['dvf_outdir'] = os.path.join(args['out_dir'],f"00_DeepVirFinder_{Path(args['input_metagenome']).stem}")
+    args['genomad_outdir'] = os.path.join(args['out_dir'],f"00_geNomad_{Path(args['input_metagenome']).stem}")
     args['vb_vs_dvf_outdir'] = os.path.join(args['out_dir'],f"00_VIBRANT_VirSorter_DeepVirFinder_{Path(args['input_metagenome']).stem}")
     args['vb_vs_outdir'] = os.path.join(args['out_dir'],f"00_VIBRANT_VirSorter_{Path(args['input_metagenome']).stem}")
     args['vcontact2_outdir'] = os.path.join(args['out_dir'],'01_vConTACT2_outdir')
@@ -125,10 +128,10 @@ def main(args):
     logger.info(f"{time_current} | Looks like the input metagenome and reads, database, and custom MAGs dir (if option used) are now set up well, start up to run ViWrap pipeline")
          
        
-    # Step 2 Run VIBRANT or VirSorter2 or DVF
+    # Step 2 Run VIBRANT or VirSorter2 or DVF or geNomad
     if args['identify_method'] == 'vb':
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-        logger.info(f"{time_current} | Run VIBRANT to identify and annotate virus from input metagenome. In processing...")
+        logger.info(f"{time_current} | Run VIBRANT to identify and annotate viruses from input metagenome. In processing...")
     
         os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_VIBRANT.py')} {args['input_metagenome']} {args['out_dir']} {args['threads']} {args['virome']} {args['input_length_limit']} {args['db_dir']} >/dev/null 2>&1")
         default_vibrant_outdir = os.path.join(args['out_dir'],f"VIBRANT_{Path(args['input_metagenome']).stem}")
@@ -183,7 +186,7 @@ def main(args):
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT to check \"keep2\" and \"manual_check\" groups and get the final VirSorter2 virus sequences. Finished")  
 
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_annotate_by_VIBRANT_db.py')} {args['VIBRANT_db']} {args['identify_method']} {args['virsorter_outdir']} {args['dvf_outdir']} {args['out_dir']} {args['threads']}")
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_annotate_by_VIBRANT_db.py')} {args['VIBRANT_db']} {args['identify_method']} {args['virsorter_outdir']} {args['dvf_outdir']} {args['genomad_outdir']} {args['out_dir']} {args['threads']}")
         scripts.module.parse_virsorter_lytic_and_lysogenic_info(args['virsorter_outdir'], Path(args['input_metagenome']).stem)
         
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
@@ -197,7 +200,7 @@ def main(args):
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run DeepVirFinder to identify viruses from input metagenome. Finished")   
 
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_annotate_by_VIBRANT_db.py')} {args['VIBRANT_db']} {args['identify_method']} {args['virsorter_outdir']} {args['dvf_outdir']} {args['out_dir']} {args['threads']}") 
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_annotate_by_VIBRANT_db.py')} {args['VIBRANT_db']} {args['identify_method']} {args['virsorter_outdir']} {args['dvf_outdir']} {args['genomad_outdir']} {args['out_dir']} {args['threads']}") 
         
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Use KEGG, Pfam, and VOG HMMs to annotate viruses. Finished") 
@@ -211,7 +214,7 @@ def main(args):
         ## Firstly, run VIBRANT 
         
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-        logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run VIBRANT to identify and annotate virus from input metagenome. In processing...")
+        logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run VIBRANT to identify and annotate viruses from input metagenome. In processing...")
         os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_VIBRANT.py')} {args['input_metagenome']} {args['vb_vs_dvf_outdir']} {args['threads']} {args['virome']} {args['input_length_limit']} {args['db_dir']} >/dev/null 2>&1")
         scripts.module.parse_vibrant_lytic_and_lysogenic_info(inner_vb_outdir, Path(args['input_metagenome']).stem)
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
@@ -285,7 +288,7 @@ def main(args):
         
         ## Firstly, run VIBRANT 
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-        logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run VIBRANT to identify and annotate virus from input metagenome. In processing...")
+        logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run VIBRANT to identify and annotate viruses from input metagenome. In processing...")
         os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_VIBRANT.py')} {args['input_metagenome']} {args['vb_vs_outdir']} {args['threads']} {args['virome']} {args['input_length_limit']} {args['db_dir']} >/dev/null 2>&1")
         scripts.module.parse_vibrant_lytic_and_lysogenic_info(inner_vb_outdir, Path(args['input_metagenome']).stem)
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
@@ -342,9 +345,29 @@ def main(args):
         final_vs2_virus_fasta_file = os.path.join(inner_vs_outdir, 'final_vs2_virus.fasta')
         final_vb_virus_annotation_file = os.path.join(inner_vb_outdir, f"VIBRANT_results_{Path(args['input_metagenome']).stem}", f"VIBRANT_annotations_{Path(args['input_metagenome']).stem}.tsv")
         scripts.module.get_overlapped_viral_scaffolds(final_vb_virus_fasta_file, final_vs2_virus_fasta_file, '', final_vb_virus_annotation_file, overlap_outdir)
+
+    elif args['identify_method'] == 'genomad': 
+        time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
+        logger.info(f"{time_current} | Run geNomad to identify and annotate virus from input metagenome. In processing...")
+    
+        length_filtered_input_metagenome = os.path.join(args['out_dir'], f"{Path(args['input_metagenome']).stem}.fasta")
+        scripts.module.filter_fasta_by_length(args['input_metagenome'], length_filtered_input_metagenome, args['input_length_limit'])
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-geNomad')} python {os.path.join(args['root_dir'],'scripts/run_geNomad.py')} {length_filtered_input_metagenome} {args['out_dir']} {args['threads']} {args['db_dir']} >/dev/null 2>&1")
+        default_genomad_outdir = os.path.join(args['out_dir'], 'genomad_output')
+        os.system(f"mv {default_genomad_outdir} {args['genomad_outdir']}; rm {length_filtered_input_metagenome}")
+        scripts.module.parse_genomad_lytic_and_lysogenic_info(args['genomad_outdir'], Path(args['input_metagenome']).stem)
+        # Copy resulted fna and faa files
+        genomad_virus_fna = f"{args['genomad_outdir']}/{Path(args['input_metagenome']).stem}_summary/{Path(args['input_metagenome']).stem}_virus.fna"
+        genomad_virus_faa = f"{args['genomad_outdir']}/{Path(args['input_metagenome']).stem}_summary/{Path(args['input_metagenome']).stem}_virus_proteins.faa"
+        os.system(f"cp {genomad_virus_fna} {args['genomad_outdir']}/final_genomad_virus.fasta; cp {genomad_virus_faa} {args['genomad_outdir']}/final_genomad_virus.faa")
+        
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_annotate_by_VIBRANT_db.py')} {args['VIBRANT_db']} {args['identify_method']} {args['virsorter_outdir']} {args['dvf_outdir']} {args['genomad_outdir']} {args['out_dir']} {args['threads']}")
+
+        time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
+        logger.info(f"{time_current} | Run geNomad to identify and annotate viruses from input metagenome. Finished")  
     
     else:
-        sys.exit(f"Please make sure your input for --identify_method option is one of these: \"vb-vs\", \"vb-vs-dvf\", \"vb\", \"vs\", \"dvf\", and \"genomad\"; you can also omit this in the command line, the default is \"vb-vs\"")
+        sys.exit(f"Please make sure your input for --identify_method option is one of these: \"vb-vs\", \"vb-vs-dvf\", \"vb\", \"vs\", \"dvf\", and \"genomad\"; you can also omit this in the command line, the default is \"genomad\"")
     
 
     # Step 3 Run vContact2
@@ -384,7 +407,7 @@ def main(args):
     ## Step 4.1 Make temporary folder to contain split viral genomes
     final_virus_fasta_file = os.path.join(args['viwrap_summary_outdir'], 'final_virus.fasta')
     split_viral_gn_dir = os.path.join(args['viwrap_summary_outdir'], 'split_viral_gn_dir')
-    scripts.module.get_split_viral_gn(final_virus_fasta_file, split_viral_gn_dir)    
+    viral_seq_header_map = scripts.module.get_split_viral_gn_for_single_scaffold_virus(final_virus_fasta_file, split_viral_gn_dir) # old_name => new_name; name (with '|') => name (without '|')   
 
     ## Step 4.2 Run CheckV in parallel and parse the result
     os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-CheckV')} python {os.path.join(args['root_dir'],'scripts/run_CheckV.py')} {split_viral_gn_dir} {args['checkv_outdir']} {args['threads']} {args['CheckV_db']} >/dev/null 2>&1")
@@ -400,13 +423,13 @@ def main(args):
     logger.info(f"{time_current} | Run dRep to cluster virus species. In processing...") 
         
     ## Step 5.1 Make gn list for each genus
-    scripts.module.get_gn_list_for_genus_for_wo_reads(genus_cluster_info, args['drep_outdir'], split_viral_gn_dir)  
+    scripts.module.get_gn_list_for_genus_for_wo_reads(genus_cluster_info, args['drep_outdir'], split_viral_gn_dir, viral_seq_header_map)  
 
     ## Step 5.2 Run dRep
     viral_genus_genome_list_dir = os.path.join(args['drep_outdir'], 'viral_genus_genome_list')
     os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-dRep')} python {os.path.join(args['root_dir'],'scripts/run_dRep.py')} {args['drep_outdir']} {viral_genus_genome_list_dir} {args['threads']} 2000 >/dev/null 2>&1")
     species_cluster_info = os.path.join(args['out_dir'], 'Species_cluster_info.txt')
-    scripts.module.parse_dRep(args['out_dir'], args['drep_outdir'], species_cluster_info, genus_cluster_info, viral_genus_genome_list_dir)
+    scripts.module.parse_dRep_for_wo_reads(args['out_dir'], args['drep_outdir'], species_cluster_info, genus_cluster_info, viral_genus_genome_list_dir, viral_seq_header_map)
     
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Run dRep to cluster virus species. Finished") 
@@ -430,10 +453,22 @@ def main(args):
     IMGVR_db_map = os.path.join(args['Tax_classification_db'], 'IMGVR_high-quality_phage_vOTU_representatives_pro2viral_gn_map.csv') 
     os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-Tax')} python {os.path.join(args['root_dir'],'scripts/run_Tax_vContact2.py')} {genome_by_genome_file} {IMGVR_db_map} {tax_vcontact2_output}")
 
-    ## Step 6.4 Integrate all taxonomical results
+    ## Step 6.4 Get taxonomy information from geNomad result    
+    if args['identify_method'] == 'genomad':
+        tax_genomad_tax_output = os.path.join(args['out_dir'], 'tax_genomad_tax_output.txt')
+        genomad_summary_file = os.path.join(args['genomad_outdir'], f"{Path(args['input_metagenome']).stem}_summary", f"{Path(args['input_metagenome']).stem}_virus_summary.tsv") 
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-Tax')} python {os.path.join(args['root_dir'],'scripts/run_Tax_geNomad.py')} {genomad_summary_file} {split_viral_gn_dir} {split_viral_gn_dir} {tax_genomad_tax_output}")
+        
+    ## Step 6.5 Integrate all taxonomical results
     tax_classification_result = os.path.join(args['out_dir'], 'Tax_classification_result.txt')
-    os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-Tax')} python {os.path.join(args['root_dir'],'scripts/run_Tax_combine.py')} {args['out_dir']} {genus_cluster_info} {tax_classification_result}")
-    os.system(f"rm {tax_refseq_output} {tax_vog_output} {tax_vcontact2_output}")    
+    viral_seq_header_map_json = json.dumps(viral_seq_header_map)
+    os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-Tax')} python {os.path.join(args['root_dir'],'scripts/run_Tax_combine.wo_reads.py')} {args['identify_method']} {args['out_dir']} {genus_cluster_info} {tax_classification_result} '{viral_seq_header_map_json}'")
+    '''
+    if args['identify_method'] == 'genomad':
+        os.system(f"rm {tax_refseq_output} {tax_vog_output} {tax_vcontact2_output} {tax_genomad_tax_output}") 
+    else:
+        os.system(f"rm {tax_refseq_output} {tax_vog_output} {tax_vcontact2_output}")     
+    '''
     
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Conduct taxonomic charaterization. Finished")  
@@ -441,7 +476,8 @@ def main(args):
     
     # Step 7 Host prediction
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
-    logger.info(f"{time_current} | Conduct Host prediction by iPHoP. In processing...")      
+    logger.info(f"{time_current} | Conduct Host prediction by iPHoP. In processing...")   
+    
     ## Step 7.1 Host prediction by iPHoP
     os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP')} python {os.path.join(args['root_dir'],'scripts/run_iPHoP.py')} {final_virus_fasta_file} {args['iphop_outdir']} {args['iPHoP_db']} {args['threads']} >/dev/null 2>&1")
 
@@ -453,9 +489,19 @@ def main(args):
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Conduct Host prediction by iPHoP using custom MAGs. In processing...")   
     
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-GTDBTk')} python {os.path.join(args['root_dir'],'scripts/add_custom_MAGs_to_host_db__make_gtdbtk_results.py')} {args['out_dir']} {args['custom_MAGs_dir']} {args['threads']} >/dev/null 2>&1")
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP')} python {os.path.join(args['root_dir'],'scripts/add_custom_MAGs_to_host_db__add_to_db.py')} {args['out_dir']} {args['custom_MAGs_dir']} {args['iPHoP_db']} {args['iPHoP_db_custom']} >/dev/null 2>&1")    
+        all_custom_MAGs_combined_fasta_file = os.path.join(args['iphop_outdir'], 'all_custom_MAGs_combined.fasta')
+        scaffold2MAG_map = scripts.module.make_all_custom_MAGs_combined_fasta_file_and_scaffold2MAG_map(args['custom_MAGs_dir'], all_custom_MAGs_combined_fasta_file)
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-geNomad')} python {os.path.join(args['root_dir'],'scripts/run_geNomad.py')} {all_custom_MAGs_combined_fasta_file} {args['iphop_outdir']} {args['threads']} {args['db_dir']} >/dev/null 2>&1")
+        scaffold2MAG_map = scripts.module.update_scaffold2MAG_map_according_to_geNomad_result_and_make_filtered_MAGs(args['iphop_outdir'], scaffold2MAG_map)
+        custom_MAGs_filtered_dir  = os.path.join(args['iphop_outdir'], 'custom_MAGs_filtered_dir')
+        
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-GTDBTk')} python {os.path.join(args['root_dir'],'scripts/add_custom_MAGs_to_host_db__make_gtdbtk_results.py')} {args['out_dir']} {custom_MAGs_filtered_dir} {args['threads']} >/dev/null 2>&1")
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP')} python {os.path.join(args['root_dir'],'scripts/add_custom_MAGs_to_host_db__add_to_db.py')} {args['out_dir']} {custom_MAGs_filtered_dir} {args['iPHoP_db']} {args['iPHoP_db_custom']} >/dev/null 2>&1")    
         os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-iPHoP')} python {os.path.join(args['root_dir'],'scripts/run_iPHoP.py')} {final_virus_fasta_file} {args['iphop_custom_outdir']} {args['iPHoP_db_custom']} {args['threads']} >/dev/null 2>&1")   
+
+        scaffold2MAG_map_file = os.path.join(args['iphop_outdir'], 'custom_MAGs_scaffold_filtering_map.txt')
+        scripts.module.write_down_scaffold2MAG_map_file(scaffold2MAG_map_file, scaffold2MAG_map)
+        #os.system(f"rm -rf {custom_MAGs_filtered_dir} {os.path.join(args['iphop_outdir'], 'genomad_output')}; rm {all_custom_MAGs_combined_fasta_file}")
 
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Conduct Host prediction by iPHoP using custom MAGs. Finished") 
@@ -468,47 +514,52 @@ def main(args):
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Conduct Host prediction by iPHoP using custom MAGs. Finished")   
         
-        
-    # Step 8 Get all virus sequence information    
-    ## Step 8.1 Get VIBRANT lytic and lysogenic information and genome information
-    checkv_dict = scripts.module.get_checkv_useful_info(os.path.join(args['checkv_outdir'], 'CheckV_quality_summary.txt'))
-    scf2lytic_or_lyso_summary = ''
-    if args['identify_method'] == 'vb':
-        scf2lytic_or_lyso_summary = os.path.join(args['vibrant_outdir'], 'scf2lytic_or_lyso.summary.txt')
-    elif args['identify_method'] == 'vb-vs-dvf':
-        scf2lytic_or_lyso_summary = os.path.join(args['vb_vs_dvf_outdir'],f"VIBRANT_{Path(args['input_metagenome']).stem}", 'scf2lytic_or_lyso.summary.txt')
-    elif args['identify_method'] == 'vb-vs':        
-        scf2lytic_or_lyso_summary = os.path.join(args['vb_vs_outdir'],f"VIBRANT_{Path(args['input_metagenome']).stem}", 'scf2lytic_or_lyso.summary.txt')    
-    gn2lyso_lytic_result = {}
-    if args['identify_method'] == 'vb' or args['identify_method'] == 'vb-vs-dvf' or args['identify_method'] == 'vb-vs':
-        gn2lyso_lytic_result = scripts.module.get_gn_lyso_lytic_result_for_wo_reads(scf2lytic_or_lyso_summary, final_virus_fasta_file)
-    gn2size_and_scf_no_and_pro_count = scripts.module.get_viral_gn_size_and_scf_no_and_pro_count_for_wo_reads(final_virus_fasta_file)
-    gn2amg_statistics = scripts.module.get_amg_statistics_for_wo_reads(os.path.join(args['viwrap_summary_outdir'], 'final_virus.annotation.txt'))
-    virus_summary_info = os.path.join(args['viwrap_summary_outdir'],'Virus_summary_info.txt')
-    scripts.module.get_virus_summary_info(checkv_dict, gn2lyso_lytic_result, gn2size_and_scf_no_and_pro_count, gn2amg_statistics, virus_summary_info) 
-    
+       
+    # Step 8 Get all virus sequence information  
+    ## Step 8.1 Delete split_viral_gn_dir folder and move files into viwrap_summary_outdir
+    os.system(f"rm -rf {split_viral_gn_dir}")
+    os.system(f"mv {args['out_dir']}/*.txt {args['viwrap_summary_outdir']}")
+
     ## Step 8.2 Combine host prediction result
     combined_host_pred_to_genome_result = os.path.join(args['viwrap_summary_outdir'],'Host_prediction_to_genome_m90.csv')
     combined_host_pred_to_genus_result = os.path.join(args['viwrap_summary_outdir'],'Host_prediction_to_genus_m90.csv')
     scripts.module.combine_iphop_results(args, combined_host_pred_to_genome_result, combined_host_pred_to_genus_result)
     
-    ## Step 8.3 Delete split_viral_gn_dir folder and move files into viwrap_summary_outdir
-    os.system(f"rm -rf {split_viral_gn_dir}")
-    os.system(f"mv {args['out_dir']}/*.txt {args['viwrap_summary_outdir']}")
-    
-    ## Step 8.4 Get AMG results
+    ## Step 8.3 Get AMG results
     AMG_dir = os.path.join(args['viwrap_summary_outdir'],'AMG_results')
     os.mkdir(AMG_dir)
-    scripts.module.write_down_gn2amg_statistics(AMG_dir, gn2amg_statistics) # Write down the gn2amg_statistics dict      
     virus_annotation_result_file = os.path.join(args['viwrap_summary_outdir'],'final_virus.annotation.txt')
-    amg_pro2info = scripts.module.get_amg_pro_info_for_wo_reads(AMG_dir, virus_annotation_result_file, args['VIBRANT_db']) # Get the amg_pro2info dict 
-    scripts.module.write_down_amg_pro2info_for_wo_reads(AMG_dir, amg_pro2info) # Write down the amg_pro2info dict    
+    amg_pro2info = scripts.module.get_amg_pro_info_for_wo_reads(AMG_dir, virus_annotation_result_file, args['viwrap_summary_outdir'], args['VIBRANT_db']) # Get the amg_pro2info dict (amg here is filtered)    
+    scripts.module.write_down_amg_pro2info_for_wo_reads(AMG_dir, amg_pro2info) # Write down the amg_pro2info dict
     final_virus_faa_file = os.path.join(args['viwrap_summary_outdir'],'final_virus.faa') 
-    scripts.module.pick_amg_pro_for_wo_reads(AMG_dir, amg_pro2info, final_virus_faa_file) # Pick the AMG proteins and write down the AMG proteins
+    scripts.module.pick_amg_pro_for_wo_reads(AMG_dir, amg_pro2info, final_virus_faa_file) # Pick the AMG proteins and write down the AMG proteins        
+    gn2amg_statistics = scripts.module.get_amg_statistics_for_wo_reads(amg_pro2info) # Get the gn2amg_statistics dict 
+    scripts.module.write_down_gn2amg_statistics(AMG_dir, gn2amg_statistics) # Write down the gn2amg_statistics dict  
     
+    ## Step 8.4 Get VIBRANT lytic and lysogenic information and genome information
+    checkv_dict = scripts.module.get_checkv_useful_info(os.path.join(args['checkv_outdir'], 'CheckV_quality_summary.txt'))
+    scf2lytic_or_lyso_summary = ''
+    if args['identify_method'] == 'vb':
+        scf2lytic_or_lyso_summary = os.path.join(args['vibrant_outdir'], 'scf2lytic_or_lyso.summary.txt')
+    elif args['identify_method'] == 'vs':
+        scf2lytic_or_lyso_summary = os.path.join(args['virsorter_outdir'], 'scf2lytic_or_lyso.summary.txt') 
+    elif args['identify_method'] == 'genomad':
+        scf2lytic_or_lyso_summary = os.path.join(args['genomad_outdir'], 'scf2lytic_or_lyso.summary.txt')           
+    elif args['identify_method'] == 'vb-vs-dvf':
+        scf2lytic_or_lyso_summary = os.path.join(args['vb_vs_dvf_outdir'],f"VIBRANT_{Path(args['input_metagenome']).stem}", 'scf2lytic_or_lyso.summary.txt')
+    elif args['identify_method'] == 'vb-vs':        
+        scf2lytic_or_lyso_summary = os.path.join(args['vb_vs_outdir'],f"VIBRANT_{Path(args['input_metagenome']).stem}", 'scf2lytic_or_lyso.summary.txt')        
+    
+    gn2lyso_lytic_result = {}
+    if args['identify_method'] == 'vb' or args['identify_method'] == 'vb-vs-dvf' or args['identify_method'] == 'vb-vs'or args['identify_method'] == 'genomad' or args['identify_method'] == 'vs':
+        gn2lyso_lytic_result = scripts.module.get_gn_lyso_lytic_result_for_wo_reads(scf2lytic_or_lyso_summary, final_virus_fasta_file)
+    gn2size_and_scf_no_and_pro_count = scripts.module.get_viral_gn_size_and_scf_no_and_pro_count_for_wo_reads(final_virus_fasta_file)
+    virus_summary_info = os.path.join(args['viwrap_summary_outdir'],'Virus_summary_info.txt')
+    scripts.module.get_virus_summary_info(checkv_dict, gn2lyso_lytic_result, gn2size_and_scf_no_and_pro_count, gn2amg_statistics, virus_summary_info) 
+        
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Get virus sequence information. Finished")  
-   
+  
 
     end_time = datetime.now().replace(microsecond=0)
     duration = end_time - start_time

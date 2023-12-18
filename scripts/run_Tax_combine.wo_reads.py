@@ -5,6 +5,7 @@ try:
     import sys
     import os
     import re
+    import json
     warnings.filterwarnings("ignore")
 except Exception as e:
     sys.stderr.write(str(e) + "\n\n")
@@ -72,9 +73,24 @@ def store_tax_output(input_file):
             tmp = line.split('\t')
             gn, tax = tmp[0], tmp[1]
             tax_output[gn] = tax
-    return tax_output        
+    return tax_output   
+
+def replace_new_gn_name_to_old_gn_name(input_dict, viral_seq_header_map_json):
+    input_dict_replaced = {} # old_gn_name => tax
+    # Parse the JSON string into a dictionary
+    viral_seq_header_map = json.loads(viral_seq_header_map_json)    
+    viral_seq_header_map_reverse = {v: k for k, v in viral_seq_header_map.items()} # new_name => old_name
+    
+    for gn_new_name, tax in input_dict.items():
+        if gn_new_name not in viral_seq_header_map_reverse:
+            sys.exit("The input dict should contain new genome name in the keys!")
+        
+        gn_old_name = viral_seq_header_map_reverse[gn_new_name]
+        input_dict_replaced[gn_old_name] = tax
+    return input_dict_replaced    
+        
                 
-def integrate_all_taxonomical_results(identify_method, viwrap_outdir, genus_cluster_info, tax_classification_result):        
+def integrate_all_taxonomical_results(identify_method, viwrap_outdir, genus_cluster_info, tax_classification_result, viral_seq_header_map_json):        
     tax_refseq_output = f'{viwrap_outdir}/tax_refseq_output.txt'
     tax_vog_output = f'{viwrap_outdir}/tax_vog_output.txt'
     tax_vcontact2_output = f'{viwrap_outdir}/tax_vcontact2_output.txt'
@@ -86,6 +102,10 @@ def integrate_all_taxonomical_results(identify_method, viwrap_outdir, genus_clus
     tax_genomad = {}
     if identify_method == 'genomad':
         tax_genomad = store_tax_output(tax_genomad_output)
+        tax_genomad = replace_new_gn_name_to_old_gn_name(tax_genomad, viral_seq_header_map_json) 
+        
+    tax_refseq = replace_new_gn_name_to_old_gn_name(tax_refseq, viral_seq_header_map_json)    
+    tax_vog = replace_new_gn_name_to_old_gn_name(tax_vog, viral_seq_header_map_json)     
     
     gn2tax = {} # gn => [tax, method]
     # Step 1 Store taxonomic classification result from four methods
@@ -156,13 +176,12 @@ def integrate_all_taxonomical_results(identify_method, viwrap_outdir, genus_clus
                         gn2tax_by_genus[gn] = [lca, 'Genus LCA assigning']
                         
     # Step 4 Write down final taxonomic classification result                   
-    f = open(tax_classification_result, 'w')
-    for gn in gn2tax:
-        f.write(f'{gn}\t{gn2tax[gn][0]}\t{gn2tax[gn][1]}\n')
-    for gn in gn2tax_by_genus:
-        f.write(f'{gn}\t{gn2tax_by_genus[gn][0]}\t{gn2tax_by_genus[gn][1]}\n')
-    f.close()   
+    with open(tax_classification_result, 'w') as f:
+        for gn in gn2tax:
+            f.write(f'{gn}\t{gn2tax[gn][0]}\t{gn2tax[gn][1]}\n')
+        for gn in gn2tax_by_genus:
+            f.write(f'{gn}\t{gn2tax_by_genus[gn][0]}\t{gn2tax_by_genus[gn][1]}\n')  
 
 
-identify_method, viwrap_outdir, genus_cluster_info, tax_classification_result = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
-integrate_all_taxonomical_results(identify_method, viwrap_outdir, genus_cluster_info, tax_classification_result)    
+identify_method, viwrap_outdir, genus_cluster_info, tax_classification_result, viral_seq_header_map_json = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5]
+integrate_all_taxonomical_results(identify_method, viwrap_outdir, genus_cluster_info, tax_classification_result, viral_seq_header_map_json)    

@@ -60,9 +60,9 @@ metagenomic_scaffold, viwrap_outdir, threads, db_dir = sys.argv[1], sys.argv[2],
 run_genomad(metagenomic_scaffold, viwrap_outdir, threads, db_dir)    
 
 # Call the function to identify integrases
-input_path = f"{viwrap_outdir}/genomad_output/{Path(metagenomic_scaffold).stem}_summary/{Path(metagenomic_scaffold).stem}_virus_proteins.faa"
-output_path = f"{viwrap_outdir}/genomad_output/integrase_result_dir"
-database_path = f"{db_dir}/genomad_db"
+input_path = Path(f"{viwrap_outdir}/genomad_output/{Path(metagenomic_scaffold).stem}_summary/{Path(metagenomic_scaffold).stem}_virus_proteins.faa")
+output_path = Path(f"{viwrap_outdir}/genomad_output/integrase_result_dir")
+database_path = Path(f"{db_dir}/genomad_db")
 sensitivity = 8.2  # Sensitivity for MMseqs2
 evalue = 0.001  # E-value threshold for MMseqs2
 identify_integrases(input_path, output_path, database_path, threads, sensitivity, evalue)
