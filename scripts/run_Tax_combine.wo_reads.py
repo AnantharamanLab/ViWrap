@@ -88,7 +88,14 @@ def replace_new_gn_name_to_old_gn_name(input_dict, viral_seq_header_map_json):
         gn_old_name = viral_seq_header_map_reverse[gn_new_name]
         input_dict_replaced[gn_old_name] = tax
     return input_dict_replaced    
-        
+
+def get_lowest_non_na_rank(tax):
+    # Split the taxonomy string and reverse it to start checking from the lowest rank
+    tax_ranks = tax.split(';')[::-1]
+    for i, rank in enumerate(tax_ranks):
+        if rank != 'NA':
+            return i  # Return the index of the lowest non-NA rank
+    return float('inf')  # Return infinity if all ranks are 'NA'         
                 
 def integrate_all_taxonomical_results(identify_method, viwrap_outdir, genus_cluster_info, tax_classification_result, viral_seq_header_map_json):        
     tax_refseq_output = f'{viwrap_outdir}/tax_refseq_output.txt'
@@ -105,42 +112,50 @@ def integrate_all_taxonomical_results(identify_method, viwrap_outdir, genus_clus
         if len(tax_genomad) > 0:
             tax_genomad = replace_new_gn_name_to_old_gn_name(tax_genomad, viral_seq_header_map_json)      
     
-    gn2tax = {} # gn => [tax, method]
-    # Step 1 Store taxonomic classification result from four methods
-    for gn in tax_refseq:
-        tax =  tax_refseq[gn]
-        method = 'NCBI RefSeq viral protein searching'
-        taxs = tax.split(';')
-        for i in range(len(taxs)):
-            if taxs[i] == '':
-                taxs[i] = 'NA'
-                
-        tax = ';'.join(taxs)
-        gn2tax[gn] = [tax, method]
-        
-    for gn in tax_vog:    
-        tax = tax_vog[gn]
-        method = 'marker VOG HMM searching'
-        if gn not in gn2tax: # marker VOG HMM searching method has the 2nd high priority
-            # Add genus and species into the tax (of course both are 'NA')
+    if len(tax_refseq) > 0: # Modify the tax of tax_refseq 
+        for gn in tax_refseq:
+            tax = tax_refseq[gn]
+            taxs = tax.split(';')
+            for i in range(len(taxs)):
+                if taxs[i] == '':
+                    taxs[i] = 'NA'                
+            tax = ';'.join(taxs)
+            tax_refseq[gn] = tax
+
+    if len(tax_vog) > 0: # Modify the tax of tax_vog     
+        for gn in tax_vog:    
+            tax = tax_vog[gn]
             taxs = tax.split(';')
             taxs.append('NA')
             taxs.append('NA')
             tax = ';'.join(taxs)
-            gn2tax[gn] = [tax, method]  
+            tax_vog[gn] = tax
 
-    for gn in tax_vcontact2:    
-        tax = tax_vcontact2[gn]
-        method = 'vContact2 clustering'
-        if gn not in gn2tax: # vContact2 clustering method has the 3rd high priority
-            gn2tax[gn] = [tax, method]  
+    # Step 1 Get gn2tax dict
+    ## Initialize the dictionary if it's not already present
+    gn2tax = {}
 
-    if identify_method == 'genomad':
-        for gn in tax_genomad:    
-            tax = tax_genomad[gn]
-            method = 'geNomad taxonomy'
-            if gn not in gn2tax: # geNomad taxonomy has the lowest priority
-                gn2tax[gn] = [tax, method]              
+    ## Process each genome name for each method and update the dictionary based on the new priority logic
+    all_gns = set(tax_refseq.keys()) | set(tax_vog.keys()) | set(tax_vcontact2.keys()) | set(tax_genomad.keys())
+    for gn in all_gns:
+        best_method = None
+        best_rank = float('inf')
+
+        ### Check each method
+        for method, tax_dict in [('NCBI RefSeq viral protein searching', tax_refseq),
+                                 ('marker VOG HMM searching', tax_vog),
+                                 ('vContact2 clustering', tax_vcontact2),
+                                 ('geNomad taxonomy', tax_genomad)]:
+            tax = tax_dict.get(gn, 'NA;NA;NA;NA;NA;NA;NA;NA')  # Default to 'NA' for all ranks if not found
+            rank = get_lowest_non_na_rank(tax)
+            if rank < best_rank:
+                best_rank = rank
+                best_method = method
+                best_tax = tax
+
+        ### Update the gn2tax dictionary with the best method
+        if best_method:
+            gn2tax[gn] = [best_tax, best_method]            
                 
     # Step 2 Store genus info
     genus2gns = {} # genus => [gns]

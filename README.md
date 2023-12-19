@@ -75,6 +75,20 @@ ______
 
 (2) Add custom MAG viral scaffold filtering steps into "master_run.py".  There are two filtering criteria: 1. Viral scaffolds from MAGs that are identified by geNomad were removed from the MAGs. 2. Viral scaffolds that contain proviruses with total region length >= 85% of the whole scaffold were removed from the MAGs since that they are very likely to be mistakenly-binned viral scaffolds.
 
+**--Updated on Dec 18, 2023**
+
+**[Improvement]**
+
+(1) Update the taxonomical classification method:
+
+Modify the script to adjust the priority based on the lowest rank of taxonomy not being 'NA' additionally. Currently, the script sets the priority as follows:
+
+NCBI RefSeq viral protein searching
+Marker VOG HMM searching
+vContact2 clustering
+geNomad taxonomy
+However, if there are multiple hits by different methods, the method with the lowest taxonomic rank not being 'NA' should be used. 
+
 
 
 ## Updates for v1.2.1 (Jan 2023): <a name="updates"></a>

@@ -20,7 +20,8 @@ def find_best_hits(input_diamond_outfile):
 
     with open(input_diamond_outfile, "r") as file:
         for line in file:
-            pro, hit, bit_score = line.rstrip("\n").split("\t")
+            tmp = line.rstrip("\n").split("\t")
+            pro, hit, bit_score = tmp[0], tmp[1], tmp[-1]
             bit_score = float(bit_score)
 
             if pro not in pro2best_hit or bit_score >= pro2best_hit[pro][1]:
