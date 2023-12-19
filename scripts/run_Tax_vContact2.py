@@ -21,7 +21,6 @@ def get_tax_from_vcontact2_result(genome_by_genome_file, IMGVR_db_map, output):
             gn, tax = line.split(',')[1], line.split(',')[2]
             if gn not in ref_gn2tax:
                 ref_gn2tax[gn] = tax
-    lines.close()
     
     # Step 2 Store VC2gns 
     VC2gns = defaultdict(list)  # VC => [gns]
@@ -31,7 +30,7 @@ def get_tax_from_vcontact2_result(genome_by_genome_file, IMGVR_db_map, output):
             line = line.rstrip('\n')
             split_line = line.split(',')
             VC, gn, genus_confidence_score = split_line[3], split_line[0], split_line[9] # gn here is actually the old name - the scaffold header
-            if VC and gn != 'contig_id' and genus_confidence_score != '' and float(genus_confidence_score) >= 0.9:
+            if VC != '' and gn != 'contig_id' and genus_confidence_score != '' and float(genus_confidence_score) >= 0.9:
                 VC2gns[VC].append(gn)                   
                         
     # Step 3 Get consensus tax
@@ -48,8 +47,9 @@ def get_tax_from_vcontact2_result(genome_by_genome_file, IMGVR_db_map, output):
             consensus_tax = list(tax_set)[0]
             
         if consensus_tax != '':
-            for gn in gns and gn not in ref_gn2tax:
-                bin2consensus_tax[gn] = consensus_tax
+            for gn in gns:
+                if gn not in ref_gn2tax:
+                    bin2consensus_tax[gn] = consensus_tax
                 
     # Step 4 Write to output
     f = open(output, 'w')

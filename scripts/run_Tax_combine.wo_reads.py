@@ -102,10 +102,8 @@ def integrate_all_taxonomical_results(identify_method, viwrap_outdir, genus_clus
     tax_genomad = {}
     if identify_method == 'genomad':
         tax_genomad = store_tax_output(tax_genomad_output)
-        tax_genomad = replace_new_gn_name_to_old_gn_name(tax_genomad, viral_seq_header_map_json) 
-        
-    tax_refseq = replace_new_gn_name_to_old_gn_name(tax_refseq, viral_seq_header_map_json)    
-    tax_vog = replace_new_gn_name_to_old_gn_name(tax_vog, viral_seq_header_map_json)     
+        if len(tax_genomad) > 0:
+            tax_genomad = replace_new_gn_name_to_old_gn_name(tax_genomad, viral_seq_header_map_json)      
     
     gn2tax = {} # gn => [tax, method]
     # Step 1 Store taxonomic classification result from four methods

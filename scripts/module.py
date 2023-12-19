@@ -416,7 +416,7 @@ def get_genus_cluster_info(genome_by_genome_file, genus_cluster_info, ref_pro2vi
                     all_gns.add(gn)
                     genus_confidence_score = line.split(",")[9]
                     VC = line.split(",")[3]
-                    if genus_confidence_score != '':
+                    if genus_confidence_score != '' and VC != '':
                         if float(genus_confidence_score) >= 0.9:
                             clustered_gn.add(gn)
                             if VC not in genus_cluster_dict:
