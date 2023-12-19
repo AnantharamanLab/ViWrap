@@ -9,32 +9,24 @@ try:
     import subprocess
     from subprocess import DEVNULL, STDOUT, check_call  
     warnings.filterwarnings("ignore")
+    from collections import defaultdict
 except Exception as e:
     sys.stderr.write(str(e) + "\n\n")
     exit(1) 
     
     
 def find_best_hits(input_diamond_outfile):
-    # Feasible even if the diamond out file is not ordered by bit score
-    pro2best_hit = {} # pro => [best_hit, bit_score]
-    
-    with open(input_diamond_outfile, "r") as lines:
-        for line in lines:
-            line = line.rstrip("\n")
-            pro, hit, bit_score = line.split("\t")[0], line.split("\t")[1], line.split("\t")[-1]
-            
-            if pro not in pro2best_hit:
-                pro2best_hit[pro] = [hit, bit_score]
-            else:
-                if float(bit_score) >= float(pro2best_hit[pro][1]):
-                    pro2best_hit[pro] = [hit, bit_score]
-    lines.close()
+    pro2best_hit = {}
 
-    result = {} # pro => best_hit
-    for pro in pro2best_hit:
-        result[pro] = pro2best_hit[pro][0]
-        
-    return result    
+    with open(input_diamond_outfile, "r") as file:
+        for line in file:
+            pro, hit, bit_score = line.rstrip("\n").split("\t")
+            bit_score = float(bit_score)
+
+            if pro not in pro2best_hit or bit_score >= pro2best_hit[pro][1]:
+                pro2best_hit[pro] = [hit, bit_score]
+
+    return {pro: hit for pro, (hit, _) in pro2best_hit.items()}
    
 def run_diamond_to_RefSeq_viral_protein_db(viwrap_outdir, vRhyme_best_bin_dir, vRhyme_unbinned_viral_gn_dir, NCBI_RefSeq_viral_protein_db_dir, pro2viral_gn_map, threads, output):
     tmp_outdir = f'{viwrap_outdir}/tmp_dir_refseq'
@@ -93,16 +85,16 @@ def run_diamond_to_RefSeq_viral_protein_db(viwrap_outdir, vRhyme_best_bin_dir, v
             NCBI_RefSeq_viral_protein2tax[pro] = tax
 
     # Store 2.3 Store the best hits and to see whether >= 30% of the proteins for a bin have a hit to Viral RefSeq
-    bin2best_hits = {} # bin_name => [best_hits]
+    bin2best_hits = defaultdict(list) # bin_name => [best_hits]
     # Only record this if >= 30% of the proteins for a faa have a hit to Viral RefSeq
     for bin_name in bin2addr:
         diamond_out = f'{tmp_outdir}/{bin_name}.diamond_out.txt'
         if os.path.exists(diamond_out):
             pro2best_hit = find_best_hits(f'{tmp_outdir}/{bin_name}.diamond_out.txt')
-            bin_involved = set() # Store the bin that have sequences inside have the best hit
+            bin_involved = set() # Store the bin that have sequences inside have the best hit; now the bin is the old name
             for pro in pro2best_hit:
-                bin_name = pro2bin[pro]
-                bin_involved.add(bin_name)
+                bin_name3 = pro2bin[pro] # the bin_name3 is the old name
+                bin_involved.add(bin_name3)
                 
             # Split the best hit result into each bin
             for bin_name2 in bin_involved: # This bin_name2 is the subset, only for bin_involved
@@ -115,11 +107,9 @@ def run_diamond_to_RefSeq_viral_protein_db(viwrap_outdir, vRhyme_best_bin_dir, v
                 pro_num_w_best_hit = len(pro2best_hit_in_this_bin) # The number of proteins within in bin have the best hits
                 bin_pro_num = bin2pro_num[bin_name2] # The total protein name from this bin
                 if float(pro_num_w_best_hit/bin_pro_num) >= 0.3: # To see if >=30% of the proteins for a bin have a hit to Viral RefSeq
-                    best_hits = []
                     for pro in pro2best_hit_in_this_bin:
                         best_hit = pro2best_hit_in_this_bin[pro]
-                        best_hits.append(best_hit)
-                        bin2best_hits[bin_name2] = best_hits
+                        bin2best_hits[bin_name2].append(best_hit)
                 
     # Store 2.4 Get the consensus affiliation based on the best hits of individual proteins (>= 50 majority rule)
     bin2consensus_tax = {} # bin => consensus_tax
