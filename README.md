@@ -251,7 +251,7 @@ Roux, Simon, Antonio Pedro Camargo, Felipe Hernandes Coutinho, Shareef M. Dabdou
 * Bin vMAGs using vRhyme
 * Classify vMAGs into genus using vContact2, into species using dRep
 * Get virus quality using CheckV
-* Get virus taxonomy using three approaches
+* Get virus taxonomy using four approaches
 * Get viral hosts using iPHoP 
 * Get virus genome abundance
 * Get all virus genome information
@@ -297,7 +297,7 @@ ViWrap will use the "-p" or "--prefix" option to specify where to write the envi
 For example,`conda create --prefix /tmp/test-env python=3.8`
 will create the environment named `/tmp/test-env` which resides in `/tmp/` instead of the default `.conda`.
 
-The following 11 conda environments will be set up, the **estimated running time will be ~10 minutes**, depending on your current internet speed:
+The following 12 conda environments will be set up, the **estimated running time will be ~10 minutes**, depending on your current internet speed:
 
 ```
 625M	./ViWrap-Mapping
@@ -311,6 +311,7 @@ The following 11 conda environments will be set up, the **estimated running time
 1.6G	./ViWrap-vContact2
 88M	./ViWrap-Tax
 153M	./ViWrap-VIBRANT
+1.6G	./ViWrap-geNomad
 ```
 
 **Note:**  We have fixed the versions of Python modules to prevent potential errors caused by version upgrades. If you encounter any issues with these conda environments, please verify the module versions set in "scripts/master_set_up_env.py". 
@@ -323,7 +324,7 @@ ViWrap download --db_dir /path/to/ViWrap_db  --conda_env_dir /path/to/ViWrap_con
 
 `/path/to/ViWrap_db` is the place you store the ViWrap database. Please make sure there is enough space to store the database (~430G at least). It will **take** **~4 hours** to set up well depending on your current internet speed. This is kind of tedious, however, you will only need to do this one time.
 
-It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the directory of "ViWrap_db"): 
+It contains the following 8 folders (call by `du -h --max-depth=1 ./` within the directory of "ViWrap_db"): 
 
 ```
 11G	./VIBRANT_db
@@ -333,6 +334,7 @@ It contains the following 7 folders (call by `du -h --max-depth=1 ./` within the
 318G	./iPHoP_db
 11G	./VirSorter2_db
 82G	./GTDB_db
+1.4G	./genomad_db
 ```
 
 ***Notes:*** 
