@@ -463,12 +463,12 @@ def main(args):
     tax_classification_result = os.path.join(args['out_dir'], 'Tax_classification_result.txt')
     viral_seq_header_map_json = json.dumps(viral_seq_header_map)
     os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-Tax')} python {os.path.join(args['root_dir'],'scripts/run_Tax_combine.wo_reads.py')} {args['identify_method']} {args['out_dir']} {genus_cluster_info} {tax_classification_result} '{viral_seq_header_map_json}'")
-    '''
+    
     if args['identify_method'] == 'genomad':
         os.system(f"rm {tax_refseq_output} {tax_vog_output} {tax_vcontact2_output} {tax_genomad_tax_output}") 
     else:
         os.system(f"rm {tax_refseq_output} {tax_vog_output} {tax_vcontact2_output}")     
-    '''
+    
     
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | Conduct taxonomic charaterization. Finished")  
