@@ -151,7 +151,7 @@ def main(args):
     
 
     # Step 7 Make GTDB-Tk db release 214
-    os.system(f"wget -c https://data.gtdb.ecogenomic.org/releases/release214/214.1/auxillary_files/gtdbtk_r214_data.tar.gz -O {os.path.join(args['db_dir'], 'gtdbtk_r214_data.tar.gz')} --no-check-certificate")   
+    os.system(f"wget -c ftp://download.nmdc.cn/tools/meta/gtdb/gtdbtk_r214_data.tar.gz -O {os.path.join(args['db_dir'], 'gtdbtk_r214_data.tar.gz')} --no-check-certificate")   
     os.mkdir(args['GTDB_db'])     
     os.system(f"tar xzf {os.path.join(args['db_dir'], 'gtdbtk_r214_data.tar.gz')} --directory {args['GTDB_db']}")
     os.system(f"mv {os.path.join(args['GTDB_db'], 'release214')} {os.path.join(args['GTDB_db'], 'GTDB_db')}")  
