@@ -26,7 +26,7 @@ def cli():
     db_path_default = os.path.join(current_dir, "ViWrap_db") # Set the default ViWrap_db dir under the current directory 
     
     parser = argparse.ArgumentParser(usage = argparse.SUPPRESS, formatter_class=argparse.RawDescriptionHelpFormatter,
-        description = """ViWrap v1.2.1: Analyzing wrapper for virus from metagenome 
+        description = """ViWrap v1.3.0: Analyzing wrapper for virus from metagenome 
 
 Usage: ViWrap <task> [options]
 
