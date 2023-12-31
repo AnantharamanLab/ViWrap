@@ -94,7 +94,8 @@ def split_seq(input_seq, split_num, output_seq_folder):
         j = i + 1
         seq_dict = list_of_seq_dicts[i]
         output_seq_file = os.path.join(output_seq_folder, f"{stem_name}.chunk_{j}{suffix}")
-        write_down_seq(seq_dict, output_seq_file)
+        if len(seq_dict) > 0:
+            write_down_seq(seq_dict, output_seq_file)
         
 def get_hmmsearch_result(hmmsearch_result):
     pro2info = {} # pro => [query, query_accession, evalue, score]

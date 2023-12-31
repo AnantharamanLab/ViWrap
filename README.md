@@ -259,7 +259,7 @@ Roux, Simon, Antonio Pedro Camargo, Felipe Hernandes Coutinho, Shareef M. Dabdou
 ______
 ## Installation <a name="install"></a>
 
-#### **Set up the conda environment for ViWrap**
+#### **Step 1 Set up the conda environment for ViWrap**
 
 Since ViWrap has many dependencies to be installed, it would be much easier to set up a conda environment instead of installing all dependencies in the global environment (make sure you have upfront conda installed on your server, i.e., [miniconda3](https://docs.conda.io/en/latest/miniconda.html) or anaconda3; we only suggest to run in version 3.0+ conda). There are 12 conda envs associated with ViWrap, so it may be useful to keep these associated together in a directory separate from your normal conda installation, which will be referred to as `/path/to/ViWrap_conda_environments`. **Note: ensure that wherever you install the ViWrap conda envs has at least 17 Gb of storage available.** ViWrap was tested extensively with an environment installed separately from the normal conda installation.
 
@@ -269,20 +269,42 @@ Choose one:
    2. `conda activate /path/to/ViWrap_conda_environments/ViWrap`
 
    Note: `/path/to/conda_environments` indicates the directory that you will need to use to store all conda environments for ViWrap
+   
 2. Install in normal conda folder
    1. `conda create -c bioconda -c conda-forge -n ViWrap python=3.8 biopython=1.80 mamba=1.3.0 numpy=1.24.2 pandas=1.5.3 pyfastx=0.8.4 matplotlib=3.6.3 seaborn=0.12.2 diamond=2.0.15 hmmer=3.3.2`
    2. `conda activate ViWrap`
    
    If you choose to proceed this route, you will just need to use the path to your ViWrap conda installation. It will look something like this: `/path/to/miniconda3/envs/ViWrap/`
+   
+   
 
-#### GitHub installation
+#### Step 2 GitHub installation
 
 1. `git clone https://github.com/AnantharamanLab/ViWrap`
+
 2. `cd ViWrap`
+
 3. `chmod +x ViWrap scripts/*.py # Make all python scripts to be executable`
+
 4. ``PATH=`pwd`:$PATH # Add ViWrap to the PATH, so it can be called elsewhere in a terminal``
 
-#### Set up the other conda environments required by ViWrap
+   
+
+#### Step 2 Download ViWrap package and install (*alternatively*)
+
+1. `wget -c https://github.com/AnantharamanLab/ViWrap/archive/refs/tags/v1.3.0.tar.gz` 
+
+2. `tar xzf v1.3.0.tar.gz;rm v1.3.0.tar.gz`
+
+3. `cd ViWrap-1.3.0;chmod +x ViWrap scripts/*.py # Make all python scripts to be executable`
+
+4. ``PATH=`pwd`:$PATH # Add ViWrap to the PATH, so it can be called elsewhere in a terminal``
+
+   ("v1.3.0" should be replaced to the latest version)
+
+   
+
+#### Step 3 Set up the other conda environments required by ViWrap
 
 `ViWrap set_up_env --conda_env_dir /path/to/ViWrap_conda_environments`
 
@@ -316,7 +338,7 @@ The following 12 conda environments will be set up, the **estimated running time
 
 **Note:**  We have fixed the versions of Python modules to prevent potential errors caused by version upgrades. If you encounter any issues with these conda environments, please verify the module versions set in "scripts/master_set_up_env.py". 
 
-#### Set up ViWrap database
+#### Step 4 Set up ViWrap database
 
 ```shell
 ViWrap download --db_dir /path/to/ViWrap_db  --conda_env_dir /path/to/ViWrap_conda_environments
@@ -345,7 +367,7 @@ It contains the following 8 folders (call by `du -h --max-depth=1 ./` within the
 
 3) Since some db folders are restricted within the creator's rights, if anyone else in the group who wants to use ViWrap, the db folder rights should be opened by using`chmod -R 777 ./`
 
-#### See ViWrap help
+#### Step 5 See ViWrap help
 
 1. `ViWrap -h`
 2. `ViWrap run -h`
