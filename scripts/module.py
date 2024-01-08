@@ -43,7 +43,7 @@ def store_seq_with_full_head(input_seq_file): # The input sequence file should b
     with open(input_seq_file, "r") as seq_lines:
         for line in seq_lines:
             line = line.replace("\n","") # Remove "\n"
-            if line[0] == ">":
+            if line.startswith('>'):
                 head = line
                 seq_dict[head] = ""
             else:
