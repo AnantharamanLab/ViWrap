@@ -78,7 +78,7 @@ def main(args):
     else:
         logger.info(f"{time_current} | ViWrap-CheckV conda env path is not present!")         
     
-    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-dRep')} python=3.11.0 drep=3.4.0 mash=2.3 mummer=3.23 -y >/dev/null 2>&1")
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-dRep')} python=3.11.0 drep=3.4.0 mash=1.1 mummer=3.23 -y >/dev/null 2>&1")
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-dRep/bin')):
         logger.info(f"{time_current} | ViWrap-dRep conda env has been installed")
