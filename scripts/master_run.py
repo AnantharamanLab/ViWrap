@@ -35,7 +35,7 @@ def set_defaults(args):
     args['CheckV_db'] = os.path.join(args['db_dir'],'CheckV_db')
     args['DRAM_db'] = os.path.join(args['db_dir'],'DRAM_db')
     args['GTDB_db'] = os.path.join(args['db_dir'],'GTDB_db')
-    args['iPHoP_db'] = os.path.join(args['db_dir'],'iPHoP_db/iPHoP_db')
+    args['iPHoP_db'] = os.path.join(args['db_dir'],'iPHoP_db')
     args['Kofam_db'] = os.path.join(args['db_dir'],'Kofam_db')
     args['Tax_classification_db'] = os.path.join(args['db_dir'],'Tax_classification_db')
     args['VIBRANT_db'] = os.path.join(args['db_dir'],'VIBRANT_db')

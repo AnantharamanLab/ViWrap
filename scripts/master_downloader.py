@@ -24,7 +24,7 @@ def set_defaults(args):
     args['CheckV_db'] = os.path.join(args['db_dir'],'CheckV_db')
     args['DRAM_db'] = os.path.join(args['db_dir'],'DRAM_db')
     args['GTDB_db'] = os.path.join(args['db_dir'],'GTDB_db')
-    args['iPHoP_db'] = os.path.join(args['db_dir'],'iPHoP_db/iPHoP_db')
+    args['iPHoP_db'] = os.path.join(args['db_dir'],'iPHoP_db')
     args['iPHoP_db_custom'] = os.path.join(args['db_dir'],'iPHoP_db_custom') 
     args['Kofam_db'] = os.path.join(args['db_dir'],'Kofam_db')
     args['Tax_classification_db'] = os.path.join(args['db_dir'],'Tax_classification_db')
@@ -50,7 +50,7 @@ def main(args):
 
     # Step 1 Pre-check inputs
     start_time = datetime.now().replace(microsecond=0)
-
+    
     if not os.path.exists(args['conda_env_dir']):
         sys.exit(f"Could not find conda env dirs within {args['conda_env_dir']}") 
     
@@ -140,11 +140,12 @@ def main(args):
     
     
     # Step 6 Make iPHoP db
-    os.system(f"wget -c ftp://download.nmdc.cn/tools/meta/viwrap/iPHoP.latest_rw.tar.gz --no-check-certificate -O {os.path.join(args['db_dir'], 'iPHoP.latest_rw.tar.gz')}") 
-    os.mkdir(os.path.join(args['db_dir'], 'iPHoP_db'))
-    os.system(f"tar xzf {os.path.join(args['db_dir'], 'iPHoP.latest_rw.tar.gz')} --directory {os.path.join(args['db_dir'], 'iPHoP_db')}")
-    os.system(f"mv {os.path.join(args['db_dir'], 'iPHoP_db/*_pub_rw')} {args['iPHoP_db']}")
+    #os.system(f"wget -c https://portal.nersc.gov/cfs/m342/iphop/db/iPHoP.latest_rw.tar.gz --no-check-certificate -O {os.path.join(args['db_dir'], 'iPHoP.latest_rw.tar.gz')}") 
+    os.mkdir(args['iPHoP_db'])
+    os.system(f"tar xzf {os.path.join(args['db_dir'], 'iPHoP.latest_rw.tar.gz')} --directory {args['iPHoP_db']}")
+    os.system(f"mv {os.path.join(args['db_dir'], 'iPHoP_db/*_pub_rw/*')} {args['iPHoP_db']}")
     os.system(f"rm {os.path.join(args['db_dir'], 'iPHoP.latest_rw.tar.gz')}")
+    os.system(f"rmdir {os.path.join(args['db_dir'], 'iPHoP_db/*_pub_rw/')}")
     
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     logger.info(f"{time_current} | iPHoP db has been set up")     
