@@ -265,7 +265,7 @@ Since ViWrap has many dependencies to be installed, it would be much easier to s
 
 Choose one:
 1. Install in separate directory:
-   1. `conda create -c bioconda -c conda-forge -p /path/to/ViWrap_conda_environments/ViWrap python=3.8 biopython=1.80 mamba=1.3.0 numpy=1.24.2 pandas=1.5.3 pyfastx=0.8.4 matplotlib=3.6.3 seaborn=0.12.2 diamond=2.0.15 hmmer=3.3.2`
+   1. `conda create -c bioconda -c conda-forge -p /path/to/ViWrap_conda_environments/ViWrap python=3.8 biopython=1.80 mamba=1.3.0 numpy=1.24.2 pandas=1.5.3 pyfastx=0.8.4 matplotlib=3.6.3 seaborn=0.12.2 diamond=2.0.15 hmmer=3.3.2 pyparsing=2.4.7`
    2. `conda activate /path/to/ViWrap_conda_environments/ViWrap`
 
    Note: `/path/to/conda_environments` indicates the directory that you will need to use to store all conda environments for ViWrap
