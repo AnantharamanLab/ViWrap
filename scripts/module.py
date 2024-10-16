@@ -88,7 +88,7 @@ def write_down_seq(seq_dict, path_to_file):
     seq_file.close() 
 
 def filter_fasta_by_length(input_fasta, output_fasta, length_limit): # Filter sequences in a FASTA file based on sequence length
-    input_fasta_seq = store_seq_with_full_head(input_fasta)
+    input_fasta_seq = store_seq(input_fasta)
     
     output_fasta_seq = {}
     for header in input_fasta_seq:
@@ -445,10 +445,6 @@ def Nlinker(infolder, outdir, extension, n):
     files = os.listdir(infolder)
     len_ext = len(extension)
     files = [i for i in files if i[-len_ext:] == extension]
-
-    if len(files) == 0:
-        sys.stderr.write("\nError: No input files were identified. Verify that the input folder and extension are correct. Exiting.\n\n")
-        exit()
 
     N_string = ''.join("N" * n)
     for f in files:

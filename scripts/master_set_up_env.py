@@ -44,7 +44,7 @@ def main(args):
     else:
         logger.info(f"{time_current} | ViWrap-VIBRANT conda env path is not present!")
     
-    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-geNomad')} genomad=1.7.4 -y >/dev/null 2>&1")
+    os.system(f"mamba create -c bioconda -c conda-forge -p {os.path.join(args['conda_env_dir'], 'ViWrap-geNomad')} python=3.9 genomad=1.7.4 tensorflow=2.11 keras=2.11 -y >/dev/null 2>&1")
     time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
     if os.path.exists(os.path.join(args['conda_env_dir'], 'ViWrap-geNomad/bin')):
         logger.info(f"{time_current} | ViWrap-geNomad conda env has been installed")  
