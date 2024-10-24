@@ -15,7 +15,7 @@ University of Wisconsin-Madison
 ```
 
 ## Current Version
-ViWrap v1.3.0 
+ViWrap v1.3.1 
 
 <img src="https://github.com/AnantharamanLab/ViWrap/blob/main/images/ViWrap-Flowchart.jpg">
 
@@ -39,6 +39,18 @@ ______
 7. [Contact](#contact)
 
 ______
+## Updates for v1.3.1 (Oct 2024): <a name="updates"></a>
+
+**--Updated on Oct 24, 2024**
+
+**[Improvement]**
+
+(1) Add one step to only use short fasta headers for vb/vs/dvf fasta inputs.
+
+(2) Update the conda env step script to use fixed yml files.
+
+
+
 ## Updates for v1.3.0 (Dec 2023): <a name="updates"></a>
 
 **--Updated on Dec 9, 2023**
@@ -273,15 +285,15 @@ ______
 
 #### Step 1 (*alternatively*) Download ViWrap package and install 
 
-1. `wget -c https://github.com/AnantharamanLab/ViWrap/archive/refs/tags/v1.3.0.tar.gz` 
+1. `wget -c https://github.com/AnantharamanLab/ViWrap/archive/refs/tags/v1.3.1.tar.gz` 
 
-2. `tar xzf v1.3.0.tar.gz;rm v1.3.0.tar.gz`
+2. `tar xzf v1.3.1.tar.gz;rm v1.3.1.tar.gz`
 
-3. `cd ViWrap-1.3.0;chmod +x ViWrap scripts/*.py # Make all python scripts to be executable`
+3. `cd ViWrap-1.3.1;chmod +x ViWrap scripts/*.py # Make all python scripts to be executable`
 
 4. ``PATH=`pwd`:$PATH # Add ViWrap to the PATH, so it can be called elsewhere in a terminal``
 
-   ("v1.3.0" should be replaced to the latest version)
+   ("v1.3.1" should be replaced to the latest version)
 
 
 
@@ -394,7 +406,7 @@ It contains the following 8 folders (call by `du -h --max-depth=1 ./` within the
 
 ## Settings <a name="settings"></a>
 
-#### Settings for v1.3.0
+#### Settings for v1.3.1
 
 - **Conda env:**
 
