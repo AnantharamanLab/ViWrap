@@ -96,8 +96,17 @@ def filter_fasta_by_length(input_fasta, output_fasta, length_limit): # Filter se
         if len(seq) >= int(length_limit):
             output_fasta_seq[header] = seq    
     
-    write_down_seq(output_fasta_seq ,output_fasta)
+    write_down_seq(output_fasta_seq, output_fasta)
     
+def make_short_headers_fasta(input_fasta, output_fasta): # Remove spaces or '\t' in fasta headers and make a new fasta file
+    input_fasta_seq = store_seq(input_fasta)    
+    
+    output_fasta_seq = {}
+    for header in input_fasta_seq:
+        seq = input_fasta_seq[header]
+        output_fasta_seq[header] = seq    
+    
+    write_down_seq(output_fasta_seq, output_fasta)
     
 def make_unbinned_viral_gn(viral_scaffold, vRhyme_best_bin_dir, vRhyme_unbinned_viral_gn_dir):
     viral_scaffold_faa = viral_scaffold.rsplit(".", 1)[0] + ".faa"

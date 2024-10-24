@@ -149,10 +149,12 @@ def main(args):
     if args['identify_method'] == 'vb':
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT to identify and annotate viruses from input metagenome. In processing...")
-    
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_VIBRANT.py')} {args['input_metagenome']} {args['out_dir']} {args['threads']} {args['virome']} {args['input_length_limit']} {args['db_dir']} >/dev/null 2>&1")
+        
+        header_replaced_input_metagenome = os.path.join(args['out_dir'], f"{Path(args['input_metagenome']).stem}.fasta")
+        scripts.module.make_short_headers_fasta(args['input_metagenome'], header_replaced_input_metagenome)              
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_VIBRANT.py')} {header_replaced_input_metagenome} {args['out_dir']} {args['threads']} {args['virome']} {args['input_length_limit']} {args['db_dir']} >/dev/null 2>&1")
         default_vibrant_outdir = os.path.join(args['out_dir'],f"VIBRANT_{Path(args['input_metagenome']).stem}")
-        os.system(f"mv {default_vibrant_outdir} {args['vibrant_outdir']}")
+        os.system(f"mv {default_vibrant_outdir} {args['vibrant_outdir']}; rm {header_replaced_input_metagenome}")
         scripts.module.parse_vibrant_lytic_and_lysogenic_info(args['vibrant_outdir'], Path(args['input_metagenome']).stem)
     
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
@@ -162,8 +164,10 @@ def main(args):
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VirSorter2 to identify viruses from input metagenome. Also plus CheckV to QC and trim, and KEGG, Pfam, and VOG HMMs to annotate viruses. In processing...")    
     
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2.py')} {args['input_metagenome']} {args['virsorter_outdir']} {args['threads']} {args['input_length_limit']} >/dev/null 2>&1")
-    
+        header_replaced_input_metagenome = os.path.join(args['out_dir'], f"{Path(args['input_metagenome']).stem}.fasta")
+        scripts.module.make_short_headers_fasta(args['input_metagenome'], header_replaced_input_metagenome)           
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2.py')} {header_replaced_input_metagenome} {args['virsorter_outdir']} {args['threads']} {args['input_length_limit']} >/dev/null 2>&1")
+        os.system(f"rm {header_replaced_input_metagenome}")  
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VirSorter2 to identify viruses from input metagenome. Finished")    
 
@@ -210,7 +214,11 @@ def main(args):
         logger.info(f"{time_current} | Use KEGG, Pfam, and VOG HMMs to annotate viruses. Finished") 
         
     elif args['identify_method'] == 'dvf':
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-DVF')} python {os.path.join(args['root_dir'],'scripts/run_DVF.py')} {args['input_metagenome']} {args['dvf_outdir']} {args['input_length_limit']} {args['DVF_db']} >/dev/null 2>&1")
+        header_replaced_input_metagenome = os.path.join(args['out_dir'], f"{Path(args['input_metagenome']).stem}.fasta")
+        scripts.module.make_short_headers_fasta(args['input_metagenome'], header_replaced_input_metagenome)    
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-DVF')} python {os.path.join(args['root_dir'],'scripts/run_DVF.py')} {header_replaced_input_metagenome} {args['dvf_outdir']} {args['input_length_limit']} {args['DVF_db']} >/dev/null 2>&1")
+        os.system(f"rm {header_replaced_input_metagenome}")  
+        
         final_dvf_virus_fasta_file = os.path.join(args['dvf_outdir'], 'final_dvf_virus.fasta')
         scripts.module.get_dvf_result_seq(args, args['dvf_outdir'], final_dvf_virus_fasta_file)
         
@@ -232,7 +240,9 @@ def main(args):
         
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run VIBRANT to identify and annotate viruses from input metagenome. In processing...")
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_VIBRANT.py')} {args['input_metagenome']} {args['vb_vs_dvf_outdir']} {args['threads']} {args['virome']} {args['input_length_limit']} {args['db_dir']} >/dev/null 2>&1")
+        header_replaced_input_metagenome = os.path.join(args['out_dir'], f"{Path(args['input_metagenome']).stem}.fasta")
+        scripts.module.make_short_headers_fasta(args['input_metagenome'], header_replaced_input_metagenome)  
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_VIBRANT.py')} {header_replaced_input_metagenome} {args['vb_vs_dvf_outdir']} {args['threads']} {args['virome']} {args['input_length_limit']} {args['db_dir']} >/dev/null 2>&1")
         scripts.module.parse_vibrant_lytic_and_lysogenic_info(inner_vb_outdir, Path(args['input_metagenome']).stem)
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run VIBRANT to identify and annotate viruses from input metagenome. Finished") 
@@ -241,7 +251,7 @@ def main(args):
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run VirSorter2 to identify viruses from input metagenome. Also plus CheckV to QC and trim, and KEGG, Pfam, and VOG HMMs to annotate viruses. In processing...")    
     
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2.py')} {args['input_metagenome']} {inner_vs_outdir} {args['threads']} {args['input_length_limit']} >/dev/null 2>&1")
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2.py')} {header_replaced_input_metagenome} {inner_vs_outdir} {args['threads']} {args['input_length_limit']} >/dev/null 2>&1")
     
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run VirSorter2 to identify viruses from input metagenome. Finished")    
@@ -283,9 +293,11 @@ def main(args):
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run VIBRANT to check \"keep2\" and \"manual_check\" groups and get the final VirSorter2 virus sequences. Finished")  
        
         ## Thirdly, run DVF
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-DVF')} python {os.path.join(args['root_dir'],'scripts/run_DVF.py')} {args['input_metagenome']} {inner_dvf_outdir} {args['input_length_limit']} {args['DVF_db']} >/dev/null 2>&1")
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-DVF')} python {os.path.join(args['root_dir'],'scripts/run_DVF.py')} {header_replaced_input_metagenome} {inner_dvf_outdir} {args['input_length_limit']} {args['DVF_db']} >/dev/null 2>&1")
         final_dvf_virus_fasta_file = os.path.join(inner_dvf_outdir, 'final_dvf_virus.fasta')
         scripts.module.get_dvf_result_seq(args, inner_dvf_outdir, final_dvf_virus_fasta_file)
+        
+        os.system(f"rm {header_replaced_input_metagenome}")
         
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2-DVF method. Run DeepVirFinder to identify viruses from input metagenome. Finished")   
@@ -306,7 +318,9 @@ def main(args):
         ## Firstly, run VIBRANT 
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run VIBRANT to identify and annotate viruses from input metagenome. In processing...")
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_VIBRANT.py')} {args['input_metagenome']} {args['vb_vs_outdir']} {args['threads']} {args['virome']} {args['input_length_limit']} {args['db_dir']} >/dev/null 2>&1")
+        header_replaced_input_metagenome = os.path.join(args['out_dir'], f"{Path(args['input_metagenome']).stem}.fasta")
+        scripts.module.make_short_headers_fasta(args['input_metagenome'], header_replaced_input_metagenome)          
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-VIBRANT')} python {os.path.join(args['root_dir'],'scripts/run_VIBRANT.py')} {header_replaced_input_metagenome} {args['vb_vs_outdir']} {args['threads']} {args['virome']} {args['input_length_limit']} {args['db_dir']} >/dev/null 2>&1")
         scripts.module.parse_vibrant_lytic_and_lysogenic_info(inner_vb_outdir, Path(args['input_metagenome']).stem)
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run VIBRANT to identify and annotate viruses from input metagenome. Finished") 
@@ -315,7 +329,7 @@ def main(args):
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run VirSorter2 to identify viruses from input metagenome. Also plus CheckV to QC and trim, and KEGG, Pfam, and VOG HMMs to annotate viruses. In processing...")    
     
-        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2.py')} {args['input_metagenome']} {inner_vs_outdir} {args['threads']} {args['input_length_limit']} >/dev/null 2>&1")
+        os.system(f"conda run -p {os.path.join(args['conda_env_dir'], 'ViWrap-vs2')} python {os.path.join(args['root_dir'],'scripts/run_VirSorter2.py')} {header_replaced_input_metagenome} {inner_vs_outdir} {args['threads']} {args['input_length_limit']} >/dev/null 2>&1")
     
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run VirSorter2 to identify viruses from input metagenome. Finished")    
@@ -353,6 +367,7 @@ def main(args):
         final_vs2_virus_fasta_file = os.path.join(inner_vs_outdir, 'final_vs2_virus.fasta')
         scripts.module.get_final_vs2_virus(inner_vs_outdir, keep1_list_file, keep2_list_vb_passed_file, manual_check_list_vb_passed_file, final_vs2_virus_fasta_file)
         
+        os.system(f"rm {header_replaced_input_metagenome}")
         time_current = f"[{str(datetime.now().replace(microsecond=0))}]"
         logger.info(f"{time_current} | Run VIBRANT-VirSorter2 method. Run VIBRANT to check \"keep2\" and \"manual_check\" groups and get the final VirSorter2 virus sequences. Finished")  
                   
