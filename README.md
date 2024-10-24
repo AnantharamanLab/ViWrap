@@ -45,9 +45,9 @@ ______
 
 **[Improvement]**
 
-(1) Add one step to only use short fasta headers for vb/vs/dvf fasta inputs.
+(1) Add one step to only use short fasta headers (without spaces or '\t' in the header) for vb/vs/dvf fasta inputs.
 
-(2) Update the conda env step script to use fixed yml files.
+(2) Update the conda env step script by using fixed yml files.
 
 
 
