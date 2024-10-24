@@ -265,17 +265,32 @@ Since ViWrap has many dependencies to be installed, it would be much easier to s
 
 Choose one:
 1. Install in separate directory:
-   1. `conda create -c bioconda -c conda-forge -p /path/to/ViWrap_conda_environments/ViWrap python=3.8 biopython=1.80 mamba=1.3.0 numpy=1.24.2 pandas=1.5.3 pyfastx=0.8.4 matplotlib=3.6.3 seaborn=0.12.2 diamond=2.0.15 hmmer=3.3.2 pyparsing=2.4.7`
-   2. `conda activate /path/to/ViWrap_conda_environments/ViWrap`
-
-   Note: `/path/to/conda_environments` indicates the directory that you will need to use to store all conda environments for ViWrap
+   
+   1. `wget https://github.com/AnantharamanLab/ViWrap/blob/main/yamls/ViWrap.yml`
+2. `conda env create -f /path/to/downloaded/ViWrap.yml -p /path/to/ViWrap_conda_environments/ViWrap`
+   
+   3. `conda activate /path/to/ViWrap_conda_environments/ViWrap`
+   
+   Note: 
+   
+   1. `/path/to/downloaded/ViWrap.yml` indicates the downloaded ViWrap.yml file address. If it is just in the current directory, you can simply use `ViWrap.yml`. 
+   
+   2. `/path/to/ViWrap_conda_environments` indicates the directory that you will need to use to store all conda environments for ViWrap.
+   3. For the first two steps, one can also use one-line conda environment setting up string as: `conda create -c bioconda -c conda-forge -p /path/to/ViWrap_conda_environments/ViWrap python=3.8 biopython=1.80 mamba=1.3.0 numpy=1.24.2 pandas=1.5.3 pyfastx=0.8.4 matplotlib=3.6.3 seaborn=0.12.2 diamond=2.0.15 hmmer=3.3.2 pyparsing=2.4.7` 
    
 2. Install in normal conda folder
-   1. `conda create -c bioconda -c conda-forge -n ViWrap python=3.8 biopython=1.80 mamba=1.3.0 numpy=1.24.2 pandas=1.5.3 pyfastx=0.8.4 matplotlib=3.6.3 seaborn=0.12.2 diamond=2.0.15 hmmer=3.3.2 pyparsing=2.4.7`
-   2. `conda activate ViWrap`
-   
-   If you choose to proceed this route, you will just need to use the path to your ViWrap conda installation. It will look something like this: `/path/to/miniconda3/envs/ViWrap/`
-   
+
+   1. `wget https://github.com/AnantharamanLab/ViWrap/blob/main/yamls/ViWrap.yml`
+   2. `conda env create -f /path/to/downloaded/ViWrap.yml -n ViWrap`
+
+   3. `conda activate ViWrap`
+
+   Note: 
+
+   1. If you choose to proceed this route, you will just need to use the path to your ViWrap conda installation. It will look something like this: `/path/to/miniconda3/envs/ViWrap/`
+
+   2.  For the first two steps, one can also use one-line conda environment setting up string as: `conda create -c bioconda -c conda-forge -n ViWrap python=3.8 biopython=1.80 mamba=1.3.0 numpy=1.24.2 pandas=1.5.3 pyfastx=0.8.4 matplotlib=3.6.3 seaborn=0.12.2 diamond=2.0.15 hmmer=3.3.2 pyparsing=2.4.7`
+
    
 
 #### Step 2 GitHub installation
@@ -322,21 +337,22 @@ will create the environment named `/tmp/test-env` which resides in `/tmp/` inste
 The following 12 conda environments will be set up, the **estimated running time will be ~10 minutes**, depending on your current internet speed:
 
 ```
-625M	./ViWrap-Mapping
-772M	./ViWrap-vRhyme
-4.0G	./ViWrap-iPHoP
-1.7G	./ViWrap-DVF
-271M	./ViWrap-vs2
-390M	./ViWrap-GTDBTk
-540M	./ViWrap-dRep
-102M	./ViWrap-CheckV
-1.6G	./ViWrap-vContact2
-88M	./ViWrap-Tax
-153M	./ViWrap-VIBRANT
+4.7G	./ViWrap # The ViWrap conda env
+460M	./ViWrap-VIBRANT
 1.6G	./ViWrap-geNomad
+585M	./ViWrap-vRhyme
+1.5G	./ViWrap-vContact2
+112M	./ViWrap-CheckV
+217M	./ViWrap-dRep
+83M	./ViWrap-Tax
+3.1G	./ViWrap-iPHoP
+367M	./ViWrap-GTDBTk
+133M	./ViWrap-vs2
+182M	./ViWrap-Mapping
+1.5G	./ViWrap-DVF
 ```
 
-**Note:**  We have fixed the versions of Python modules to prevent potential errors caused by version upgrades. If you encounter any issues with these conda environments, please verify the module versions set in "scripts/master_set_up_env.py". 
+**Note:**  We have fixed the versions of Python modules to prevent potential errors caused by version upgrades. 
 
 #### Step 4 Set up ViWrap database
 

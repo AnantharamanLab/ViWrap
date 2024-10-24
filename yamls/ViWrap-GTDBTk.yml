@@ -1,0 +1,60 @@
+name: ViWrap-GTDBTk
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1=conda_forge
+  - _openmp_mutex=4.5=2_gnu
+  - boost=1.70.0=py38h9de70de_1
+  - boost-cpp=1.70.0=h7b93d67_3
+  - bzip2=1.0.8=hd590300_5
+  - ca-certificates=2023.11.17=hbcca054_0
+  - capnproto=0.9.1=ha19adfc_4
+  - colorama=0.4.6=pyhd8ed1ab_0
+  - dendropy=4.6.1=pyhdfd78af_0
+  - fastani=1.32=he1c1bb9_0
+  - fasttree=2.1.11=h031d066_2
+  - gsl=2.7=he838d99_0
+  - gtdbtk=2.3.2=pyhdfd78af_0
+  - hmmer=3.4=hdbdd923_0
+  - icu=67.1=he1b5a44_0
+  - ld_impl_linux-64=2.40=h41732ed_0
+  - libblas=3.9.0=20_linux64_openblas
+  - libcblas=3.9.0=20_linux64_openblas
+  - libffi=3.4.2=h7f98852_5
+  - libgcc-ng=13.2.0=h807b86a_3
+  - libgfortran-ng=13.2.0=h69a702a_3
+  - libgfortran5=13.2.0=ha4646dd_3
+  - libgomp=13.2.0=h807b86a_3
+  - liblapack=3.9.0=20_linux64_openblas
+  - libnsl=2.0.1=hd590300_0
+  - libopenblas=0.3.25=pthreads_h413a1c8_0
+  - libsqlite=3.44.2=h2797004_0
+  - libstdcxx-ng=13.2.0=h7e041cc_3
+  - libuuid=2.38.1=h0b41bf4_0
+  - libxcrypt=4.4.36=hd590300_1
+  - libzlib=1.2.13=hd590300_5
+  - lz4-c=1.9.3=h9c3ff4c_1
+  - mash=2.3=ha9a2dd8_3
+  - ncurses=6.4=h59595ed_2
+  - numpy=1.20.0=py38h18fd61f_0
+  - openssl=3.2.0=hd590300_1
+  - pip=23.3.2=pyhd8ed1ab_0
+  - pplacer=1.1.alpha19=h9ee0642_2
+  - prodigal=2.6.3=h031d066_6
+  - pydantic=1.10.13=py38h01eb140_1
+  - python=3.8.18=hd12c33a_1_cpython
+  - python_abi=3.8=4_cp38
+  - readline=8.2=h8228510_1
+  - setuptools=68.2.2=pyhd8ed1ab_0
+  - tk=8.6.13=noxft_h4845f30_101
+  - tqdm=4.66.1=pyhd8ed1ab_0
+  - typing-extensions=4.9.0=hd8ed1ab_0
+  - typing_extensions=4.9.0=pyha770c72_0
+  - wheel=0.42.0=pyhd8ed1ab_0
+  - xz=5.2.6=h166bdaf_0
+  - zlib=1.2.13=hd590300_5
+  - zstd=1.4.9=ha95c52a_0
+
+# This yml mainly contains: python=3.8.18 gtdbtk=2.3.2 numpy=1.20.0
