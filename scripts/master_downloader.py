@@ -140,7 +140,7 @@ def main(args):
     
     
     # Step 6 Make iPHoP db
-    #os.system(f"wget -c https://portal.nersc.gov/cfs/m342/iphop/db/iPHoP.latest_rw.tar.gz --no-check-certificate -O {os.path.join(args['db_dir'], 'iPHoP.latest_rw.tar.gz')}") 
+    os.system(f"wget -c https://portal.nersc.gov/cfs/m342/iphop/db/iPHoP.latest_rw.tar.gz --no-check-certificate -O {os.path.join(args['db_dir'], 'iPHoP.latest_rw.tar.gz')}") 
     os.mkdir(args['iPHoP_db'])
     os.system(f"tar xzf {os.path.join(args['db_dir'], 'iPHoP.latest_rw.tar.gz')} --directory {args['iPHoP_db']}")
     os.system(f"mv {os.path.join(args['db_dir'], 'iPHoP_db/*_pub_rw/*')} {args['iPHoP_db']}")
