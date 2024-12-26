@@ -880,7 +880,39 @@ def get_read_info(metaG_reads, input_reads_type):
             read_base = fq1_read_total_base
             sample2read_info[sample] = [read_count, read_base]  
             
-    return sample2read_info           
+    return sample2read_info   
+
+def get_input_read_info(input_sample2read_info):
+
+    # Check if the file exists
+    if not os.path.exists(input_sample2read_info):
+        raise FileNotFoundError(f"The file {input_sample2read_info} does not exist.")
+
+    # Initialize the output dictionary
+    sample2read_info = {}
+
+    # Open and read the file
+    with open(input_sample2read_info, 'r') as file:
+        # Skip the header line
+        header = file.readline().strip()
+        if not header.startswith("Sample\tRead counts\tRead bases"):
+            raise ValueError("The file format is invalid. The header is incorrect.")
+
+        # Parse the remaining lines
+        for line in file:
+            line = line.strip()
+            if line:  # Skip empty lines
+                parts = line.split("\t")
+                if len(parts) != 3:
+                    raise ValueError(f"Invalid line format: {line}")
+
+                sample, read_count, read_base = parts
+                try:
+                    sample2read_info[sample] = [int(read_count), int(read_base)]
+                except ValueError:
+                    raise ValueError(f"Non-integer values found in line: {line}")
+
+    return sample2read_info    
     
 def get_virus_normalized_abundance(mapping_result_dir, virus_raw_abundance, virus_normalized_abundance, sample2read_info, sample2read_info_file):
     # Step 1 Get virus_raw_abundance dict
@@ -1809,6 +1841,7 @@ def get_run_input_arguments(args):
     argu_items = []
     if args['input_metagenome'] != 'none': argu_items.append('--input_metagenome' + ' ' + args['input_metagenome'])
     if args['input_reads'] != 'none': argu_items.append('--input_reads' + ' ' + args['input_reads'])  
+    if args['input_cov'] != 'none': argu_items.append('--input_cov' + ' ' + args['input_cov'] + ' ' + '--input_sample2read_info' + ' ' + args['input_sample2read_info']) 
     argu_items.append('--out_dir' + ' ' + args['out_dir'])
     argu_items.append('--db_dir' + ' ' + args['db_dir'])
     argu_items.append('--identify_method' + ' ' + args['identify_method'])
@@ -2762,3 +2795,42 @@ def write_down_scaffold2MAG_map_file(scaffold2MAG_map_file, scaffold2MAG_map):
             MAG, viral_tag = scaffold2MAG_map[scaffold]
             f.write(f"{scaffold}\t{MAG}\t{viral_tag}\n")
             
+def parse_to_get_vRhyme_input_coverage_file(viral_scaffold, mapping_outdir):
+    """
+    Parses the all_coverm_raw_result.txt file, renames viral sequence headers, filters the data,
+    and saves the filtered table as vRhyme_input_coverage.txt.
+
+    Args:
+        viral_scaffold (dict or similar): Dictionary or structure containing the viral sequence headers.
+        mapping_outdir (str): Directory containing the mapping result files.
+    """
+    # Step 1: Parse all_coverm_raw_result.txt
+    coverm_raw_table = pd.read_csv(f'{mapping_outdir}/all_coverm_raw_result.txt', sep='\t')
+    coverm_raw_table_subset = coverm_raw_table.drop(['contigLen', 'totalAvgDepth'], axis=1)
+
+    # Step 2: Initialize dictionary to map old names to new names
+    dict_virus_rename = {}
+
+    # Step 3: Store viral sequences (Assuming store_seq is implemented to return a sequence list)
+    viral_seq = store_seq(viral_scaffold)  # Assuming viral_scaffold is a provided variable
+    for header in viral_seq:
+        new_name = header.replace('>', '', 1)
+        old_name = ''
+        if '||' in new_name:
+            old_name = new_name.rsplit('||', 1)[0]
+        elif '_fragment_' in new_name:
+            old_name = new_name.rsplit('_fragment_', 1)[0]
+        elif '|provirus_' in new_name:
+            old_name = new_name.rsplit('|provirus_', 1)[0]
+        else:
+            old_name = new_name
+        dict_virus_rename[old_name] = new_name
+
+    # Step 4: Filter the DataFrame to keep only rows where 'contigName' is a key in dict_virus_rename
+    coverm_raw_table_subset = coverm_raw_table_subset[coverm_raw_table_subset['contigName'].isin(dict_virus_rename.keys())]
+
+    # Step 5: Replace the 'contigName' values based on dict_virus_rename
+    coverm_raw_table_subset.replace({"contigName": dict_virus_rename}, inplace=True)
+
+    # Step 6: Save the filtered DataFrame as vRhyme_input_coverage.txt
+    coverm_raw_table_subset.to_csv(f'{mapping_outdir}/vRhyme_input_coverage.txt', sep='\t', index=False)            
